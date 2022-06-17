@@ -1,0 +1,22 @@
+#Listado de archivos ignorados
+ESE_CRT.sdf
+ESE_CRT.sln
+ESE_CRT.suo
+ESE_CRT.v11.suo
+ESE_CRT.opensdf
+/media
+/libs
+/Debug
+/ESE_CRT/Debug
+/ESE_CRT/data 
+/ESE_CRT/ESE_CRT-XLS
+/ESE_CRT/freeglut.dll
+/ESE_CRT/libxl.dll
+/ESE_CRT/ESE_CRT.vcxproj
+/ESE_CRT/ESE_CRT.vcxproj.filters
+/ESE_CRT/ESE_CRT.vcxproj.user
+/ESE_CRT/~AutoRecover.ESE_CRT.vcxproj
+/ESE_CRT/ESE_CRT.APS
+/ESE_CRT/ESE_CRT.rc
+/ESE_CRT/icon.aps
+/ESE_CRT/resource.h

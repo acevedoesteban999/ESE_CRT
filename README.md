@@ -1,21 +1,20 @@
-# ESE_CRT v0.1.0 
+# ESE_CRT v1.0.0 
 
-Este proyecto tiene como objetivo el desarrollo de una aplicación
-para simular el movimiento del brazo ESE_GRS de 6 articulaciones y 
-generar superficies complejas utilizando planos y superficies a partir 
+ESE_CRT es una aplicación para Windpws para simular el movimiento del ESE_CRT de 3 ejes y 
+generar superficies complejas utilizando planos y mallas a partir 
 de puntos, líneas y curvas con un acabado final en el editor 3D Autodesk 
-Inventor. Puede vincularse con el [ESE_GRSConnectionSimulator](https://github.com/Esteban1914/ESE_GRS_ConnectionSimulator)
-para usar otros servicios.
+Inventor. 
+Codigo de arduino en [ESE_CRT_Arduino](https://github.com/Esteban1914/ESE_CRT_Arduino)
 
 
-## [Descargar ESE_CRT](https://github.com/Esteban1914/ESE_CART/raw/master/media/ESE_CART/ESE_CART.rar)
+## [Descargar ESE_CRT](https://github.com/Esteban1914/ESE_CART/raw/master/media/ESE_CRT/ESE_CRT.rar)
 
-![Foto de ESE_CRT(https://github.com/Esteban1914/ESE_GRS/blob/master/media/ESE_CART.png)
-![Foto de ESE_CRT(https://github.com/Esteban1914/ESE_GRS/blob/master/media/ESE_CART.png)
+![Foto de ESE_CRT(https://github.com/Esteban1914/ESE_CRT/blob/master/media/ESE_CRT.png)
+![Foto de ESE_CRT(https://github.com/Esteban1914/ESE_CRT/blob/master/media/ESE_CRT1.png)
 
 
 ## Plataforma
->WindowsX64
+>Windows
 
 ## Lenguaje
 >C++ 
@@ -27,17 +26,14 @@ para usar otros servicios.
 
 ## Conexiones
 > - Puerto Serie
-> - Sockets(Eternet y Wifi)
 
 ## Sobre los desarrolladores
 >***Creación y mantenimiento del brazo físico:***
-> - Telegram:@ACB273
->
->***Comunicación entre sensores y arduino:***
-> - Telegram:@Andros_Cuba_98
+> - Telegram:  @ACB273
 >
 >***Comunicación arduino PC y desarrollo de la aplicación:***
-> - Telegram:@EstebanACB2
+> - Telegram:  @EstebanACB2
+> - Correo:    acevedoesteban999@gmail.com
 
 ***Importante para el desarrollo en Visual Studio 2012***
 > 1. Configuration Properites->General->characterSet=Not Set

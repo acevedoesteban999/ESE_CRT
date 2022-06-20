@@ -10,8 +10,8 @@ Codigo de arduino en [ESE_CRT_Arduino](https://github.com/Esteban1914/ESE_CRT_Ar
 
 ## [Descargar ESE_CRT](https://github.com/Esteban1914/ESE_CART/raw/master/media/ESE_CRT/ESE_CRT.rar)
 
-![Foto de ESE_CRT(https://github.com/Esteban1914/ESE_CRT/blob/master/media/ESE_CRT.png)
-![Foto de ESE_CRT(https://github.com/Esteban1914/ESE_CRT/blob/master/media/ESE_CRT1.png)
+![Foto de ESE_CRT](https://github.com/Esteban1914/ESE_CRT/blob/master/media/ESE_CRT.png)
+![Foto de ESE_CRT](https://github.com/Esteban1914/ESE_CRT/blob/master/media/ESE_CRT1.png)
 
 
 ## Plataforma

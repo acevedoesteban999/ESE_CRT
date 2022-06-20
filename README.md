@@ -4,6 +4,7 @@ ESE_CRT es una aplicación para Windpws para simular el movimiento del ESE_CRT de
 generar superficies complejas utilizando planos y mallas a partir 
 de puntos, líneas y curvas con un acabado final en el editor 3D Autodesk 
 Inventor. 
+Simulador en [ESE_CRT_Simulator](https://github.com/Esteban1914/ESE_CRT_Simulator)
 Codigo de arduino en [ESE_CRT_Arduino](https://github.com/Esteban1914/ESE_CRT_Arduino)
 
 

@@ -12,9 +12,9 @@ Inventor.
 ![Foto de ESE_CRT](https://github.com/Esteban1914/ESE_CRT/blob/master/media/ESE_CRT.png)
 ![Foto de ESE_CRT](https://github.com/Esteban1914/ESE_CRT/blob/master/media/ESE_CRT1.png)
 
-##Simulador: [ESE_CRT_Simulator](https://github.com/Esteban1914/ESE_CRT_Simulator)
+## Simulador: [ESE_CRT_Simulator](https://github.com/Esteban1914/ESE_CRT_Simulator)
 
-##Codigo de arduino: [ESE_CRT_Arduino](https://github.com/Esteban1914/ESE_CRT_Arduino)
+## Codigo de arduino: [ESE_CRT_Arduino](https://github.com/Esteban1914/ESE_CRT_Arduino)
 
 ## Plataforma
 >Windows

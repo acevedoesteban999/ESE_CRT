@@ -11,7 +11,7 @@ private:
 	bool TimeDurationBool;
 	bool DrawLineForElement;
 public:
-	Box():Forms("DefaultNameBox",*new CRD(0,0,0),0,0,0,0)
+	Box():Forms("DefaultNameBox",CRD(0,0,0),0,0,0,0)
 	{ 
 	   cont=0;
 	   cant=10;
@@ -40,7 +40,7 @@ public:
 		delete[]forms;
 	};
 	void ChecketCont(Box*b){
-		if(b->cont>=b->cant)
+		if(b->cont>=b->cant-1)
 		{
 			Forms**newForms=new Forms*[b->cant+10];
 			b->cant+=10;

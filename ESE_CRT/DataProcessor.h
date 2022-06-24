@@ -1,5 +1,6 @@
 #pragma once
 #define PI 3.14159265
+#include "ESE_CRT.h"
 class DataUnion
 {
 	union Union
@@ -206,44 +207,66 @@ public:
 	return 1;
 
     };
-	static bool PorcesarDatos(char ByteLow,char ByteHigh,GLfloat*angles)
+	static void PorcesarDatos(char Byte,GLfloat DataESE[3],GLfloat RazonDeAumento)
    {
 
-	for(int i=2;i<8;i++)
+	if(BitData(Byte,7))
 	{
-		switch (i)
-		{
-		  case 2:
-		  case 3:
-		  case 4:
-		  case 5:
-		  case 6:
-		  case 7:
-			    if(BitData(ByteLow,i)==1)
-			       {
-				     if(BitData(ByteHigh,i)==1)
-						 angles[i-2]+=(GLfloat)0.9;
-					 else
-						 angles[i-2]-=(GLfloat)0.9;
+		if(BitData(Byte,4))
+			DataESE[0]-=RazonDeAumento;
+		else
+			DataESE[0]+=RazonDeAumento;
+	}
+	if(BitData(Byte,6))
+	{
+		if(BitData(Byte,3))
+			DataESE[1]-=RazonDeAumento;
+		else
+			DataESE[1]+=RazonDeAumento;
+	}
+	if(BitData(Byte,5))
+	{
+		if(BitData(Byte,2))
+			DataESE[2]-=RazonDeAumento;
+		else
+			DataESE[2]+=RazonDeAumento;
+	}
 
-					 if(angles[i-2]>=360)
-						angles[i-2]-=360;
-					else if(angles[i-2]<=-360)
-						angles[i-2]+=360;
-					else if (angles[i-2]==-0)
-						angles[i-2]=0;
 
-					angles[i-2]=(GLfloat)std::floor(100*(double)angles[i-2]+0.5)/100;
-					 
-			       }	
-		         break;      	
-	   }//end switch
+	//for(int i=2;i<8;i++)
+	//{
+	//	switch (i)
+	//	{
+	//	  case 2:
+	//	  case 3:
+	//	  case 4:
+	//	  case 5:
+	//	  case 6:
+	//	  case 7:
+	//		    if(BitData(Byte,i)==1)
+	//		       {
+	//			     if(BitData(Byte,i)==1)
+	//					 angles[i-2]+=(GLfloat)0.9;
+	//				 else
+	//					 angles[i-2]-=(GLfloat)0.9;
+
+	//				 if(angles[i-2]>=360)
+	//					angles[i-2]-=360;
+	//				else if(angles[i-2]<=-360)
+	//					angles[i-2]+=360;
+	//				else if (angles[i-2]==-0)
+	//					angles[i-2]=0;
+
+	//				angles[i-2]=(GLfloat)std::floor(100*(double)angles[i-2]+0.5)/100;
+	//				 
+	//		       }	
+	//	         break;      	
+	//   }//end switch
+	//
+	//}//end for
+
+
 	
-	}//end for
-	if(BitData(ByteHigh,1)==1)
-	     return true;
-
-	return false;
 
 };
 	static void RectificarAngules(GLfloat*angles){
@@ -278,13 +301,13 @@ public:
 	 }
 	return f;
 };
-	static bool CodigoCliente(char lowByte,char hightByte)
+	static bool CodigoCliente(char Byte)
 	{
-		if(CodigoESE(lowByte,hightByte)&&DataProcessor::BitData(lowByte,1)==1&&lowByte<(char)35)
+		if(CodigoESE(Byte)&&DataProcessor::BitData(Byte,1)==1)
 			return true;
 		return false;	
 	}
-	static bool CodigoServer(char lowByte,char hightByte)
+	/*static bool CodigoServer(char lowByte,char hightByte)
 	{
 		
 		if(CodigoESE(lowByte,hightByte)&&DataProcessor::BitData(lowByte,1)==1&&lowByte>=(char)35)
@@ -292,27 +315,24 @@ public:
 		if(lowByte==(char)59||lowByte==(char)115)
 			return true;
 		return false;	
-	}
-	static bool CodigoSeguridad(char lowByte,char hightByte)
+	}*/
+	static bool CodigoSeguridad(char Byte)
 	{
-		if(lowByte==(char)4&&hightByte==(char)1)
-			return true;
-		return false;
+		return (Byte==(char)19);
 	}
-	static bool CodigoESE(char lowByte,char hightByte)
+	static bool CodigoESE(char Byte)
 	{
-		if(DataProcessor::BitData(lowByte,0)==1&&DataProcessor::BitData(hightByte,0)==1)
-			return true;
-		return false;
+		return DataProcessor::BitData(Byte,0);
+			
 	}	
-	static bool ExistMensage59(char*mensajes)
+	/*static bool ExistMensage59(char*mensajes)
 	{
 		for(unsigned i=0;i<strlen(mensajes);i+=2)
 			if(mensajes[i]==(char)59)
 				return true;
 		return false;
-	}
-	static unsigned CantMensajes(char*mensajes)
+	}*/
+	/*static unsigned CantMensajes(char*mensajes)
 	{
 		unsigned cont=0;
 		for(unsigned i=0;i<strlen(mensajes);i=+2)
@@ -328,7 +348,7 @@ public:
 				cont++;
 		return cont;
 
-	}
+	}*/
 	/////WebSocket
 	static bool GetBit(char Byte,unsigned posittion)
     {

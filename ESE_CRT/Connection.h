@@ -114,7 +114,6 @@ public:
 		Puerto=new char[1];
 		this->t=ConnectionType::SERIAL_PORT;
 	};
-	//PuertoSerie(System::String^PuertoCom, unsigned long Velocidad);
 	~SerialPort()
     {
 		delete[]Puerto;

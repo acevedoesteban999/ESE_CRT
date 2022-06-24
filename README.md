@@ -1,4 +1,4 @@
-# ESE_CRT v1.0.0 
+# ESE_CRT v1.0.1 
 
 ESE_CRT es una aplicación para Windpws para simular el movimiento del ESE_CRT de 3 ejes y 
 generar superficies complejas utilizando planos y mallas a partir 

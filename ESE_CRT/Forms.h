@@ -2,11 +2,12 @@
 #include "CRD.h"
 enum Type
 {
-	ANIMACION,FORMS,BUTTONEXIT,BUTTON,BUTTONACEPTRB,BUTTONCANCELRB,BUTTONINITSETANGULES,BUTTONCANCELSETANGULES,TEXTBOX,LABEL,RADIOBUTTONGROUP,RADIOBUTTON,BOX
+	ANIMACION,FORMS,BUTTONEXIT,BUTTON,BUTTONACEPTRB,BUTTONCANCELRB,BUTTONINITSETANGULES,BUTTONCANCELSETANGULES,TEXTBOX,LABEL,RADIOBUTTONGROUP,RADIOBUTTON,BOX,CONTAINER,NULLFORMS
 };
 enum INTERFZType{
 	ACEPT,CANCEL,SPECIFIC
 };
+
 class Forms
 {
 public:
@@ -88,6 +89,9 @@ public:
 	static void SetDraw(bool noDraw,Forms*f){
 		f->NoDraw=noDraw;
 	}
+	void SetDraw(bool _noDraw){
+		NoDraw=_noDraw;
+	}
 	virtual void NewTotalProp(float wigth,float height){
 		
 		if(reshapeBool)
@@ -153,6 +157,7 @@ public:
 	virtual void MoveOnReshape(bool reshape){
 		this->reshapeBool=reshape;
 	};
+	virtual void AddForms(Forms*SetForms){}
 	//StackAnimation
 	virtual void STANSetAnimation(char*name,CRD coord,float wigth,float TotalWigth,float TotalHeight,float x,float R,float G,float B,float speed){};
 	//RadBut
@@ -189,7 +194,17 @@ public:
 	virtual void BoxSetFocus(int focus){}
 	virtual void BoxSetFocusColorTimer(char*ElementName){};
 	virtual void BoxSetDrawLineForElement(bool DrAw){};
+	//Container
+	virtual Forms* ContainerGetForms(char*FormsName){return nullptr;}
 	//PURAS
 	virtual void Draw()=0; 
 	virtual unsigned Click()=0;
+};
+class NullForms:public Forms
+{
+public:
+	NullForms():Forms(){t=Type::NULLFORMS;}
+	~NullForms(){}
+	void Draw(){};
+	unsigned Click(){return 0;}
 };

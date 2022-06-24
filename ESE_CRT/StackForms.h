@@ -6,6 +6,7 @@
 class StackForms
 {
 private:
+	NullForms nullForms;
 	Forms**forms;
 	unsigned cant;
 	unsigned cont;
@@ -35,7 +36,7 @@ public:
 		if(form->destruir)
 			return;
 	
-	if(sf->cont>=sf->cant)
+	if(sf->cont>=sf->cant-1)
 	{
 		Forms**NewForms=new Forms*[sf->cant+10];
 		sf->cant+=10;
@@ -183,13 +184,12 @@ public:
 	}
 	static Forms* GetForm(char*name,StackForms*sf)
 	{
-		for(int i=(int)sf->cont-1;i>=0;i--)
+		for(unsigned i=0;i<sf->cont;i++)
 		{
 			if(sf->ExistForm(name,sf->forms[i]))
 				return sf->forms[i];
 		}
-		    Forms*f=new Button("ErrorGetForms",Type::FORMS,*new CRD(0,0,0),0,0,0,0,0,0,0);
-			return f;
+		return &sf->nullForms;
 	
 	}; 
 	static Forms* GetForm(unsigned numero,StackForms*sf){if(numero<sf->cont)return sf->forms[numero];};

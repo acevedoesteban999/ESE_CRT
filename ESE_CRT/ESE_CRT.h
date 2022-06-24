@@ -22,6 +22,8 @@
 #include "Connection.h"
 #include "XLSClass.h"
 #include <mmsystem.h>
+#include "Container.h"
+#define RazonDeAumento 1
 
 using namespace std;
 enum Language
@@ -65,11 +67,11 @@ public:
    	static void cargarInitDatos();
 	static void salvarInitDatos();
 	static void recivirDatosCOM();
-	static char* VerificacionDatos(char*cc,unsigned&strleN);
-	static void Acceso(bool acceso);
-	static bool ChekEntada(char*c,unsigned&i);
-	static bool VerificacionSeguridad(char*c,unsigned i);
-	static bool CodigoCliente(char*c,unsigned i);
+	//static char* VerificacionDatos(char*cc,unsigned&strleN);
+	//static void Acceso(bool acceso);
+	//static bool ChekEntada(char*c,unsigned&i);
+	static bool VerificacionSeguridad(char c);
+	static bool CodigoCliente(char c,bool&pintar);
 	static bool SetAnglesREdirecc();
 	//HILOS
 	static void ThreadCOM();

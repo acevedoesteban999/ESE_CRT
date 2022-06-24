@@ -1,6 +1,6 @@
 #include "ESE_CRT.h"
 ////////////////////////////////////////////////////////////////VERSION//////////////////////////////////////////////////////////
-														char*ESE_CRT_Version="1.0.0";
+														char*ESE_CRT_Version="1.0.1";
 ///////////////////////////////////////////////////////////VARIABLES GLOBALES////////////////////////////////////////////////////
 bool recibir_serie=false;
 bool CargObjct=false,cargMenu=false;
@@ -32,7 +32,7 @@ unsigned connstGrab=10000;
 bool GrabarBool=false;
 char Grabar[10000];
 unsigned GrabarCont=0;
-float GrabarAngle[6];
+float GrabarAngle[3];
 /////////////////////////////
 char byt;
 char*toSaveCOM="COM2",*toSaveIp="127.0.0.1",*toSaveHost="localhost";
@@ -53,7 +53,7 @@ float &movESE_CRTX=movRatX,&movESE_CRTY=movRatY,movESE_CRTZ=25;
 float height,wigth;
 double trasladarX=0,trasladarY=0,trasladarZ=0;
 double anglesRedirecc[6]={0,0,0,0,0,0};
-GLfloat DataESE[6]={0,0,0,0,0,0};
+GLfloat DataESE[3]={0,0,0};
 GLfloat heightOrtho,wigthOrtho;
 GLdouble movWheel=1;
 Language idioma=SPANISH;
@@ -140,6 +140,391 @@ char*Frases(unsigned frase)
 	}
 	switch (idioma)
 	{
+		case SPANISH:
+			switch (frase)
+			{
+			   case 0:
+				return "Editar Bocetos";
+				
+		       case 1:
+				return "Salvar Bocetos";
+				
+			   case 2:
+				return "Bocetos:" ;
+				
+			   case 3:
+				return "Vista Total" ;
+				
+				case 4:
+				return "Agregar" ;
+				
+				case 5:
+				return "Quitar" ;
+				
+				case 6:
+				return "English" ;
+				
+				case 7:
+				return "Puntos" ;
+				
+				case 8:
+				return "Lineas" ;
+				
+				case 9:
+				return "StripLine" ;
+				
+				case 10:
+				return "Splines" ;
+				
+				case 11:
+				return "Cancelar" ;
+				
+				case 12:
+				return "Mostrar" ;
+				
+				case 13:
+				return "A Crear: " ;
+				
+				case 14:
+				return "Plano Nuevo" ;
+				
+				case 15:
+				return "Plano Libre" ;
+				
+				case 16:
+				return "Plano XY" ;
+				
+				case 17:
+				return "Plano XZ" ;
+				
+				case 18:
+				return "Plano YZ" ;
+				
+				case 19:
+				return "Por defecto" ;
+				
+				case 20:
+				return "Punto Fianal" ;
+				
+				case 21:
+				return "Boceto_" ;
+				
+				case 22:
+				return "Fboceto_" ;
+				
+				case 23:
+				return "Puntos:" ;
+				
+				case 24:
+				return "A Remover:  " ;
+				
+				case 25:
+				return "Unirse al Host" ;
+				
+				case 26:
+				return "Puerto Serie" ;
+				
+				case 27:
+				return "Terminar?" ;
+				
+				case 28:
+				return "A Salvar:" ;
+				
+				case 29:
+				return "Todos los Bocetos" ;
+				
+				case 30:
+				return "Panoramica" ;
+				
+				case 31:
+				return "Frontal(XY)" ;
+				
+				case 32:
+				return "Posterior(-XY)" ;
+				
+				case 33:
+				return "Derecha(ZY)" ;
+				
+				case 34:
+				return "Izquierda(-ZY)" ;
+				
+				case 35:
+				return "Superior(X-Z)";
+				
+				case 36:
+				return "Inferior(XZ)";
+				
+				case 37:
+				return "Unir Piezas";
+				
+				case 38:
+				return "Inicar Conexion";
+				
+				case 39:
+				return "Vista";
+				
+				case 40:
+				return "Modelo a Pintar";
+				
+				case 41:
+				return "Establecer Angulos";
+				
+				case 42:
+				return "Idioma";
+				
+				case 43:
+				return "Detener Conexion";
+				
+				case 44:
+				return "Error; nombre en uso";
+				
+				case 45:
+				return "Conexion finalizada";  
+				
+				case 46:
+				return "Salvado en  .../ESE_CRT-XLS/";
+				
+				case 47:
+				return "Error tratando de salvar los archivos";
+				
+				case 48:
+				return "Error; Entrada Incorrecta";
+				
+				case 49:
+				return "Se ha cargado correctamente";
+				
+				case 50:
+				return "Error; Conexion ya Establecida";
+				
+				case 51:
+				return "Redireccionado correctamente";
+				
+				case 52:
+				return "Detalles";
+				
+				case 53:
+				return "->Verificacion";
+				
+				case 54:
+				return "->Error:Verificacion Adelantada";
+				
+				case 55:
+				return "->Error:Verificacion Atrasada";
+				
+				case 56:
+				return "Codigo:";
+				
+				case 57:
+				return "->Redireccionamiento";
+				
+				case 58:
+				return "->Siguiente Focus";
+				
+				case 59:
+				return "->Focus Click";
+				
+				case 60:
+				return "->Boton Aceptar";
+
+				case 61:
+				return "->Boton Cancelar";
+				
+				case 62:
+				return "Algunos cambios de idoma no se aplicaran hasta el reinicio";
+				
+				case 63:
+				return ":Error;No hay Funcionaidad para dicha Entrada";
+				
+				case 64:
+				return "!!Esperando Referenaciar!!";
+				
+				case 65:
+				return "Esperando Referenaciar";
+				
+				case 66:
+				return "Idioma cambiado a Spanish";
+				
+				case 67:
+				return "Spanish";
+				
+				case 68:
+				return "Habilitar Modo Registro";
+				
+				case 69:
+				return "Deshabilitar Modo Registro";
+				
+				case 70:
+				return "BSpline";
+				
+				case 71:
+				return "F1-Ayuda";
+				
+				case 72:
+				return "F2-Mostrar / Ocultar Piezas (.obj)";
+				
+				case 73:
+				return "F3-Rotar al plano (Solo para interfaz de dibujo)";
+				
+				case 74:
+				return "F4-Vista panoramica con angulos de articulacion en 0 (Sin conexion establecida)";
+				
+				case 75:
+				return "F5-Vista panoramica con Redireccionamiento (Sin conexion establecida)";
+				
+				case 76:
+				return "F6-Ir al punto final del brazo";
+				
+				case 77:
+				return "F7-Seguir al punto final del brazo";
+				
+				case 78:
+				return "F8-Ir a una 'Media' entre todos los punto de un plano (Solo para interfaz de dibujo)";
+				
+				case 79:
+				return "Conexion Finalizada";
+				
+				case 80:
+				return "Modo Registro Desactivado";
+				
+				case 81:
+				return "Modo Registro Activado";
+				
+				case 82:
+				return "Cuidado, se ha producido un error al cargar los ficheros";
+				
+				case 83:
+				return "Sobre ESE_CRT";
+				
+				case 85:
+				return "Enlace del Github:";
+				
+				case 87:
+				return "Copiar Enlace";
+				
+				case 88:
+				return "El Enlace se ha Copiado";
+				
+				case 89:
+				return "Reconectando con el servidor";
+				
+				case 90:
+				return "Desconectar";
+				
+				case 91:
+					return "Conexion Reestablecida";
+
+				case 92:
+					return "Cargando Objetos ";
+
+				case 93:
+					return "Habilitar Sonido";
+
+				case 94:
+					return "Deshabilitar Sonido";
+				
+				case 95:
+					return "Sonido Activado";
+
+				case 96:
+					return "Sonido Desactivado";
+
+				case 97:
+					return "Salir?";
+
+				case 98:
+					return "Salir";
+				
+				case 99:
+					return "Error al Conectar con ";
+
+				case 101:
+					return "Conexion Perdida";
+
+				case 102:
+					return "Servidor Cerrado";
+
+				case 103:
+					return "Acceso";
+
+				case 104:
+					return "Sin Acceso";
+
+				case 105:
+					return "Acceso Concedido";
+
+				case 106:
+					return "Acceso Denegado";
+
+				case 107:
+					return "Solicitar Acceso";
+
+				case 108:
+					return "Quitar Acceso";
+
+				case 109:
+					return "Se tiene Acceso";
+
+				case 110:
+					return "No se tiene Acceso";
+
+				case 111:
+					return "Web Host";
+
+				case 112:
+					return "Esperando Referenaciar para transmitir boceto";
+
+				case 113:
+					return "Boceto Transmitido";
+
+				case 114:
+					return "Referenciado";
+
+				case 115:
+					return "Sin Referenaciar";
+
+				case 116:
+					return "Quitar Boceto";
+
+				case 117:
+					return "Agregar Boceto";
+
+				case 118:
+					return "Item:Puntos";
+
+				case 119:
+					return "Item:Lineas";
+				
+				case 120:
+					return "Item:StripLineas";
+				
+				case 121:
+					return "Item:SpLines";
+				
+				case 122:
+					return "Item:Bspline";
+				
+				case 123:
+					return "Cancelar ultimo punto";
+				
+				case 124:
+					return "Mostrar Plano";
+				
+				case 125:
+					return "Ocultar Plano";
+				
+				case 126:
+					return "Obtener USER";
+
+				case 127:
+					return "Perder USER";
+				
+				case 128:
+					return "Iniciar Host";
+				default:
+				return "No Encontrado";	
+
+			}
+		break;
 	case ENGLISH:
 			switch (frase)
 			{
@@ -530,391 +915,7 @@ char*Frases(unsigned frase)
 				
 			}
 		
-	case SPANISH:
-			switch (frase)
-			{
-			   case 0:
-				return "Editar Bocetos";
-				
-		       case 1:
-				return "Salvar Bocetos";
-				
-			   case 2:
-				return "Bocetos:" ;
-				
-			   case 3:
-				return "Vista Total" ;
-				
-				case 4:
-				return "Agregar" ;
-				
-				case 5:
-				return "Quitar" ;
-				
-				case 6:
-				return "English" ;
-				
-				case 7:
-				return "Puntos" ;
-				
-				case 8:
-				return "Lineas" ;
-				
-				case 9:
-				return "StripLine" ;
-				
-				case 10:
-				return "Splines" ;
-				
-				case 11:
-				return "Cancelar" ;
-				
-				case 12:
-				return "Mostrar" ;
-				
-				case 13:
-				return "A Crear: " ;
-				
-				case 14:
-				return "Plano Nuevo" ;
-				
-				case 15:
-				return "Plano Libre" ;
-				
-				case 16:
-				return "Plano XY" ;
-				
-				case 17:
-				return "Plano XZ" ;
-				
-				case 18:
-				return "Plano YZ" ;
-				
-				case 19:
-				return "Por defecto" ;
-				
-				case 20:
-				return "Punto Fianal" ;
-				
-				case 21:
-				return "Boceto_" ;
-				
-				case 22:
-				return "Fboceto_" ;
-				
-				case 23:
-				return "Puntos:" ;
-				
-				case 24:
-				return "A Remover:  " ;
-				
-				case 25:
-				return "Unirse al Host" ;
-				
-				case 26:
-				return "Puerto Serie" ;
-				
-				case 27:
-				return "Terminar?" ;
-				
-				case 28:
-				return "A Salvar:" ;
-				
-				case 29:
-				return "Todos los Bocetos" ;
-				
-				case 30:
-				return "Panoramica" ;
-				
-				case 31:
-				return "Frontal(XY)" ;
-				
-				case 32:
-				return "Posterior(-XY)" ;
-				
-				case 33:
-				return "Derecha(ZY)" ;
-				
-				case 34:
-				return "Izquierda(-ZY)" ;
-				
-				case 35:
-				return "Superior(X-Z)";
-				
-				case 36:
-				return "Inferior(XZ)";
-				
-				case 37:
-				return "Unir Piezas";
-				
-				case 38:
-				return "Inicar Conexion";
-				
-				case 39:
-				return "Vista";
-				
-				case 40:
-				return "Modelo a Pintar";
-				
-				case 41:
-				return "Establecer Angulos";
-				
-				case 42:
-				return "Idioma";
-				
-				case 43:
-				return "Detener Conexion";
-				
-				case 44:
-				return "Error; nombre en uso";
-				
-				case 45:
-				return "Conexion finalizada";  
-				
-				case 46:
-				return "Salvado en  .../ESE_CRT-XLS/";
-				
-				case 47:
-				return "Error tratando de salvar los archivos";
-				
-				case 48:
-				return "Error; Entrada Incorrecta";
-				
-				case 49:
-				return "Se ha cargado correctamente";
-				
-				case 50:
-				return "Error; Conexion ya Establecida";
-				
-				case 51:
-				return "Redireccionado correctamente";
-				
-				case 52:
-				return "Detalles";
-				
-				case 53:
-				return "->Verificacion";
-				
-				case 54:
-				return "->Error:Verificacion Adelantada";
-				
-				case 55:
-				return "->Error:Verificacion Atrasada";
-				
-				case 56:
-				return "Codigo:";
-				
-				case 57:
-				return "->Redireccionamiento";
-				
-				case 58:
-				return "->Siguiente Focus";
-				
-				case 59:
-				return "->Focus Click";
-				
-				case 60:
-				return "->Boton Aceptar";
-
-				case 61:
-				return "->Boton Cancelar";
-				
-				case 62:
-				return "Algunos cambios de idoma no se aplicaran hasta el reinicio";
-				
-				case 63:
-				return ":Error;No hay Funcionaidad para dicha Entrada";
-				
-				case 64:
-				return "!!Esperando Referenaciar!!";
-				
-				case 65:
-				return "Esperando Referenaciar";
-				
-				case 66:
-				return "Idioma cambiado a Spanish";
-				
-				case 67:
-				return "Spanish";
-				
-				case 68:
-				return "Habilitar Modo Registro";
-				
-				case 69:
-				return "Deshabilitar Modo Registro";
-				
-				case 70:
-				return "BSpline";
-				
-				case 71:
-				return "F1-Ayuda";
-				
-				case 72:
-				return "F2-Mostrar / Ocultar Piezas (.obj)";
-				
-				case 73:
-				return "F3-Rotar al plano (Solo para interfaz de dibujo)";
-				
-				case 74:
-				return "F4-Vista panoramica con angulos de articulacion en 0 (Sin conexion establecida)";
-				
-				case 75:
-				return "F5-Vista panoramica con Redireccionamiento (Sin conexion establecida)";
-				
-				case 76:
-				return "F6-Ir al punto final del brazo";
-				
-				case 77:
-				return "F7-Seguir al punto final del brazo";
-				
-				case 78:
-				return "F8-Ir a una 'Media' entre todos los punto de un plano (Solo para interfaz de dibujo)";
-				
-				case 79:
-				return "Conexion Finalizada";
-				
-				case 80:
-				return "Modo Registro Desactivado";
-				
-				case 81:
-				return "Modo Registro Activado";
-				
-				case 82:
-				return "Cuidado, se ha producido un error al cargar los ficheros";
-				
-				case 83:
-				return "Sobre ESE_CRT";
-				
-				case 85:
-				return "Enlace del Github:";
-				
-				case 87:
-				return "Copiar Enlace";
-				
-				case 88:
-				return "El Enlace se ha Copiado";
-				
-				case 89:
-				return "Reconectando con el servidor";
-				
-				case 90:
-				return "Desconectar";
-				
-				case 91:
-					return "Conexion Reestablecida";
-
-				case 92:
-					return "Cargando Objetos ";
-
-				case 93:
-					return "Habilitar Sonido";
-
-				case 94:
-					return "Deshabilitar Sonido";
-				
-				case 95:
-					return "Sonido Activado";
-
-				case 96:
-					return "Sonido Desactivado";
-
-				case 97:
-					return "Salir?";
-
-				case 98:
-					return "Salir";
-				
-				case 99:
-					return "Error al Conectar con ";
-
-				case 101:
-					return "Conexion Perdida";
-
-				case 102:
-					return "Servidor Cerrado";
-
-				case 103:
-					return "Acceso";
-
-				case 104:
-					return "Sin Acceso";
-
-				case 105:
-					return "Acceso Concedido";
-
-				case 106:
-					return "Acceso Denegado";
-
-				case 107:
-					return "Solicitar Acceso";
-
-				case 108:
-					return "Quitar Acceso";
-
-				case 109:
-					return "Se tiene Acceso";
-
-				case 110:
-					return "No se tiene Acceso";
-
-				case 111:
-					return "Web Host";
-
-				case 112:
-					return "Esperando Referenaciar para transmitir boceto";
-
-				case 113:
-					return "Boceto Transmitido";
-
-				case 114:
-					return "Redireccionado";
-
-				case 115:
-					return "Sin Referenaciar";
-
-				case 116:
-					return "Quitar Boceto";
-
-				case 117:
-					return "Agregar Boceto";
-
-				case 118:
-					return "Item:Puntos";
-
-				case 119:
-					return "Item:Lineas";
-				
-				case 120:
-					return "Item:StripLineas";
-				
-				case 121:
-					return "Item:SpLines";
-				
-				case 122:
-					return "Item:Bspline";
-				
-				case 123:
-					return "Cancelar ultimo punto";
-				
-				case 124:
-					return "Mostrar Plano";
-				
-				case 125:
-					return "Ocultar Plano";
-				
-				case 126:
-					return "Obtener USER";
-
-				case 127:
-					return "Perder USER";
-				
-				case 128:
-					return "Iniciar Host";
-				default:
-				return "No Encontrado";	
-
-			}
-		break;
+	
 	}
 	///////////////////////////////////////////////////////////
 	return "NULL";
@@ -973,9 +974,9 @@ ESE_CRT::ESE_CRT(){
 	glutInitWindowSize(Initwigth-100,Initheight-100);//tama�o de la ventana
 	height=(float)Initheight-100;
 	wigth=(float)Initheight-100;
+	
 	Window=glutCreateWindow("ESE_CRT");//creo e inicio la ventana
 	glEnable(GL_DEPTH_TEST);//acivo el buffer de profundidad
-	
 	/////////////////////////FUNCIONES POR DEFECTO/////////////////
 
 	//funciones pedfinidad por el usuario para q GLUT las llame al realiarse un evento  
@@ -995,23 +996,19 @@ ESE_CRT::ESE_CRT(){
 	//InitMenu();
 	delete ThreadLoadObject;
 	ThreadLoadObject=new thread(ThreadCargObject);
-	ManejadorForms->Add( new Label("labelESE_CRT","ESE_CRT",CRD(0,0,0),1,(GLfloat)0.7,(GLfloat)0.7,(GLfloat)0.7,wigth,height),ManejadorForms);
-	//ManejadorForms->Sub("labelESE_CRT",ManejadorForms);
-	ManejadorForms->Add(new Label("labelVersion",Frases(100),CRD(0,0,0),1,(GLfloat)0.6,(GLfloat)0.6,(GLfloat)0.6,wigth,height),ManejadorForms);
+
+	Container*ct=new Container("ESE_CRTContainer");
+	ct->AddForms(new Label("labelESE_CRT","ESE_CRT",CRD(0,0,0),1,(GLfloat)0.7,(GLfloat)0.7,(GLfloat)0.7,wigth,height));
+	ct->AddForms(new Label("labelVersion",Frases(100),CRD(0,0,0),1,(GLfloat)0.6,(GLfloat)0.6,(GLfloat)0.6,wigth,height));
+	ct->AddForms(new Label("labelChar","aaaaaaa",CRD(97,-5,0),0,0,1,0,wigth,height));
+	ct->AddForms(new Label("labelUnsigned","bbbbbbb",CRD(97,5,0),0,0,1,0,wigth,height));
+	ct->AddForms(new Label("labelReferenaciar","cccccc",CRD(0,19,0),1,0,1,0,wigth,height));
+	ct->ContainerGetForms("labelChar")->SetDraw(true);
+	ct->ContainerGetForms("labelUnsigned")->SetDraw(true);
+	ct->ContainerGetForms("labelReferenaciar")->SetDraw(true);
+
+	ManejadorForms->Add(ct,ManejadorForms);
 	ManejadorForms->Add(new Button("ButtonExit",Type::BUTTONEXIT,CRD(0,0,0),1,0,0,15,15,wigth,height),ManejadorForms);
-	ManejadorForms->Add(new RadioButton("radioButtonMostrarAngules",CRD(0,0,0),Frases(52),wigth,height,true),ManejadorForms);
-	ManejadorForms->SetlabelColor("radioButtonMostrarAngules",(GLfloat)0.8,(GLfloat)0.8,(GLfloat)0.8,ManejadorForms);
-	MostrarAngules=true;
-	ManejadorForms->Add(new Label("labelAngule0",(char*)to_string(DataESE[0]).c_str(),CRD(0,0,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-	ManejadorForms->Add(new Label("labelAngule1",(char*)to_string(DataESE[1]).c_str(),CRD(0,0,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-	ManejadorForms->Add(new Label("labelAngule2",(char*)to_string(DataESE[2]).c_str(),CRD(0,0,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-	ManejadorForms->Add(new Label("labelAngule3",(char*)to_string(DataESE[3]).c_str(),CRD(0,0,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-	ManejadorForms->Add(new Label("labelAngule4",(char*)to_string(DataESE[4]).c_str(),CRD(0,0,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-	ManejadorForms->Add(new Label("labelAngule5",(char*)to_string(DataESE[5]).c_str(),CRD(0,0,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-	ManejadorForms->Add(new Label("labelCoordX",(char*)(string("x:")+to_string(cooRd.x)).c_str(),CRD(0,0,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-	ManejadorForms->Add(new Label("labelCoordY",(char*)(string("y:")+to_string(cooRd.y)).c_str(),CRD(0,0,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-	ManejadorForms->Add(new Label("labelCoordZ",(char*)(string("z:")+to_string(cooRd.z)).c_str(),CRD(0,0,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-    ShowAngules();
 	ManejadorForms->Add(Interfaz(0),ManejadorForms);
 	InitMenu();
 	glutPostRedisplay();
@@ -1092,7 +1089,7 @@ void ESE_CRT::InitMenu()
 	if(!recibir_serie)
 	{
 		glutAddMenuEntry(Frases(38),0);//iniicar conexion
-		glutAddMenuEntry(Frases(41),4);//set angules
+		//glutAddMenuEntry(Frases(41),4);//set angules
 		glutAddMenuEntry(Frases(300),-15);//set angulesRedirecc
 		glutAddSubMenu(Frases(39),SubMenuVista);//Vista
 		if(cargMenu)
@@ -1130,7 +1127,6 @@ void ESE_CRT::InitMenu()
 void ESE_CRT::wheelAndRotate(){
 	//procedimientos de rotacion y acercamiento y alejamiento de la camara con el mouse
 	glScalef((GLfloat)movWheel,(GLfloat)movWheel,(GLfloat)movWheel);
-
 	glRotatef((GLfloat)movRatX/velGiro,1.0,0.0,0.0);
 	glRotatef((GLfloat)movRatY/velGiro,0.0,0.0,1.0);
 	glRotatef((GLfloat)movESE_CRTZ/velGiro,0.0,0.0,1.0);
@@ -1248,77 +1244,78 @@ void ESE_CRT::smallEjeCoord(GLfloat size){
 
 }
 void ESE_CRT::ShowAngules(bool IsAtCreate,bool IsAtReciv){
-	                  if(MostrarAngules)
-						{
-							//Verificar si el angulo coincide con  el de redireccionar
-							try
-								{
-								for(unsigned i=0;i<6;i++)
-								{
-									if((float)DataESE[i]!=anglesRedirecc[i])
-									{
-										if(IsRedireccDraw)
-										{
-											
-											ManejadorForms->SetlabelColor("radioButtonMostrarAngules",(GLfloat)0.8,(GLfloat)0.8,(GLfloat)0.8,ManejadorForms);										
-											IsRedireccDraw=false;											
-											if(MostrarAngules)
-											{
-												ManejadorForms->GetForm("labelAngule0",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
-												ManejadorForms->GetForm("labelAngule1",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
-												ManejadorForms->GetForm("labelAngule2",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
-												ManejadorForms->GetForm("labelAngule3",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
-												ManejadorForms->GetForm("labelAngule4",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
-												ManejadorForms->GetForm("labelAngule5",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
-												ManejadorForms->GetForm("labelCoordX",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
-												ManejadorForms->GetForm("labelCoordY",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
-												ManejadorForms->GetForm("labelCoordZ",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
-											}
-											
-										}
-										
-										throw(true);
-									}
-								}
+	
+	     //             if(MostrarAngules)
+						//{
+						//	//Verificar si el angulo coincide con  el de redireccionar
+						//	try
+						//		{
+						//		for(unsigned i=0;i<6;i++)
+						//		{
+						//			if((float)DataESE[i]!=anglesRedirecc[i])
+						//			{
+						//				if(IsRedireccDraw)
+						//				{
+						//					
+						//					ManejadorForms->SetlabelColor("radioButtonMostrarAngules",(GLfloat)0.8,(GLfloat)0.8,(GLfloat)0.8,ManejadorForms);										
+						//					IsRedireccDraw=false;											
+						//					if(MostrarAngules)
+						//					{
+						//						ManejadorForms->GetForm("labelAngule0",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
+						//						ManejadorForms->GetForm("labelAngule1",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
+						//						ManejadorForms->GetForm("labelAngule2",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
+						//						ManejadorForms->GetForm("labelAngule3",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
+						//						ManejadorForms->GetForm("labelAngule4",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
+						//						ManejadorForms->GetForm("labelAngule5",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
+						//						ManejadorForms->GetForm("labelCoordX",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
+						//						ManejadorForms->GetForm("labelCoordY",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
+						//						ManejadorForms->GetForm("labelCoordZ",ManejadorForms)->SetColor((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
+						//					}
+						//					
+						//				}
+						//				
+						//				throw(true);
+						//			}
+						//		}
 
-								if(!IsRedireccDraw||IsAtCreate)
-								{
-									if(IsAtReciv)
-										if(ModoSonido)sonidos(3);
-									
-									ManejadorForms->SetlabelColor("radioButtonMostrarAngules",0,(GLfloat)1,0,ManejadorForms);
-									IsRedireccDraw=true;
-									if(MostrarAngules)
-									{
-									ManejadorForms->GetForm("labelAngule0",ManejadorForms)->SetColor(0,(GLfloat)1,0);
-									ManejadorForms->GetForm("labelAngule1",ManejadorForms)->SetColor(0,(GLfloat)1,0);
-									ManejadorForms->GetForm("labelAngule2",ManejadorForms)->SetColor(0,(GLfloat)1,0);
-									ManejadorForms->GetForm("labelAngule3",ManejadorForms)->SetColor(0,(GLfloat)1,0);
-									ManejadorForms->GetForm("labelAngule4",ManejadorForms)->SetColor(0,(GLfloat)1,0);
-									ManejadorForms->GetForm("labelAngule5",ManejadorForms)->SetColor(0,(GLfloat)1,0);
-									ManejadorForms->GetForm("labelCoordX",ManejadorForms)->SetColor(0,(GLfloat)1,0);
-									ManejadorForms->GetForm("labelCoordY",ManejadorForms)->SetColor(0,(GLfloat)1,0);
-									ManejadorForms->GetForm("labelCoordZ",ManejadorForms)->SetColor(0,(GLfloat)1,0);
-									}
-									
-								}
-								
-							}catch(bool)
-							{
-							};
+						//		if(!IsRedireccDraw||IsAtCreate)
+						//		{
+						//			if(IsAtReciv)
+						//				if(ModoSonido)sonidos(3);
+						//			
+						//			ManejadorForms->SetlabelColor("radioButtonMostrarAngules",0,(GLfloat)1,0,ManejadorForms);
+						//			IsRedireccDraw=true;
+						//			if(MostrarAngules)
+						//			{
+						//			ManejadorForms->GetForm("labelAngule0",ManejadorForms)->SetColor(0,(GLfloat)1,0);
+						//			ManejadorForms->GetForm("labelAngule1",ManejadorForms)->SetColor(0,(GLfloat)1,0);
+						//			ManejadorForms->GetForm("labelAngule2",ManejadorForms)->SetColor(0,(GLfloat)1,0);
+						//			ManejadorForms->GetForm("labelAngule3",ManejadorForms)->SetColor(0,(GLfloat)1,0);
+						//			ManejadorForms->GetForm("labelAngule4",ManejadorForms)->SetColor(0,(GLfloat)1,0);
+						//			ManejadorForms->GetForm("labelAngule5",ManejadorForms)->SetColor(0,(GLfloat)1,0);
+						//			ManejadorForms->GetForm("labelCoordX",ManejadorForms)->SetColor(0,(GLfloat)1,0);
+						//			ManejadorForms->GetForm("labelCoordY",ManejadorForms)->SetColor(0,(GLfloat)1,0);
+						//			ManejadorForms->GetForm("labelCoordZ",ManejadorForms)->SetColor(0,(GLfloat)1,0);
+						//			}
+						//			
+						//		}
+						//		
+						//	}catch(bool)
+						//	{
+						//	};
 
-							 
-							 ManejadorForms->GetForm("labelAngule0",ManejadorForms)->AddNewText((char*)to_string(DataESE[0]).c_str());
-							 ManejadorForms->GetForm("labelAngule1",ManejadorForms)->AddNewText((char*)to_string(DataESE[1]).c_str());
-							 ManejadorForms->GetForm("labelAngule2",ManejadorForms)->AddNewText((char*)to_string(DataESE[2]).c_str());
-							 ManejadorForms->GetForm("labelAngule3",ManejadorForms)->AddNewText((char*)to_string(DataESE[3]).c_str());
-							 ManejadorForms->GetForm("labelAngule4",ManejadorForms)->AddNewText((char*)to_string(DataESE[4]).c_str());
-							 ManejadorForms->GetForm("labelAngule5",ManejadorForms)->AddNewText((char*)to_string(DataESE[5]).c_str());
-							 ManejadorForms->GetForm("labelCoordX",ManejadorForms)->AddNewText((char*)(string("x:")+to_string(cooRd.x)).c_str());	
-							 ManejadorForms->GetForm("labelCoordY",ManejadorForms)->AddNewText((char*)(string("y:")+to_string(cooRd.y)).c_str());
-							 ManejadorForms->GetForm("labelCoordZ",ManejadorForms)->AddNewText((char*)(string("z:")+to_string(cooRd.z)).c_str());
-							 
-						}
+						//	 
+						//	 ManejadorForms->GetForm("labelAngule0",ManejadorForms)->AddNewText((char*)to_string(DataESE[0]).c_str());
+						//	 ManejadorForms->GetForm("labelAngule1",ManejadorForms)->AddNewText((char*)to_string(DataESE[1]).c_str());
+						//	 ManejadorForms->GetForm("labelAngule2",ManejadorForms)->AddNewText((char*)to_string(DataESE[2]).c_str());
+						//	 ManejadorForms->GetForm("labelAngule3",ManejadorForms)->AddNewText((char*)to_string(DataESE[3]).c_str());
+						//	 ManejadorForms->GetForm("labelAngule4",ManejadorForms)->AddNewText((char*)to_string(DataESE[4]).c_str());
+						//	 ManejadorForms->GetForm("labelAngule5",ManejadorForms)->AddNewText((char*)to_string(DataESE[5]).c_str());
+						//	 ManejadorForms->GetForm("labelCoordX",ManejadorForms)->AddNewText((char*)(string("x:")+to_string(cooRd.x)).c_str());	
+						//	 ManejadorForms->GetForm("labelCoordY",ManejadorForms)->AddNewText((char*)(string("y:")+to_string(cooRd.y)).c_str());
+						//	 ManejadorForms->GetForm("labelCoordZ",ManejadorForms)->AddNewText((char*)(string("z:")+to_string(cooRd.z)).c_str());
+						//	 
+						//}
 }
 Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 	Box*box=new Box("BoxInterfazPricipal",CRD(10,170,0),wigth,height);
@@ -1871,8 +1868,6 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 			{
 				ManejadorForms->Add(Interfaz(9),ManejadorForms);
 			}
-			ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->AddNewText(Frases(115));
-			ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->SetColor(1,1,0);
 			EsperandoReedireccionar=true;	
 			ManejadorForms->ActvDesactOnlyForm("BoxInterfazPricipal",false,ManejadorForms);
 			ActiveDesactAcept=ManejadorForms->GetForm("BoxInterfazPricipalButtonAcept",ManejadorForms)->GetActiveDesavt();
@@ -1930,18 +1925,18 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 void ESE_CRT::reshape(int x,int y){
 	wigth=(float)x;height=(float)y;
 	ManejadorForms->NewTotalsProp((float)x,(float)y,ManejadorForms);
-	ManejadorForms->GetForm("labelVersion",ManejadorForms)->NewCRD(CRD(wigth-50,height-20,0));
+	ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelVersion")->NewCRD(CRD(wigth-50,height-20,0));
 	ManejadorForms->GetForm("ButtonExit",ManejadorForms)->NewCRD(CRD(wigth-25,8,0));
-	ManejadorForms->GetForm("radioButtonMostrarAngules",ManejadorForms)->NewCRD(CRD(wigth-120,8,0));
-	ManejadorForms->GetForm("labelAngule0",ManejadorForms)->NewCRD(CRD(wigth-120,25,0));
-	ManejadorForms->GetForm("labelAngule1",ManejadorForms)->NewCRD(CRD(wigth-120,40,0));
-	ManejadorForms->GetForm("labelAngule2",ManejadorForms)->NewCRD(CRD(wigth-120,55,0));
-	ManejadorForms->GetForm("labelAngule3",ManejadorForms)->NewCRD(CRD(wigth-120,70,0));
-	ManejadorForms->GetForm("labelAngule4",ManejadorForms)->NewCRD(CRD(wigth-120,85,0));
-	ManejadorForms->GetForm("labelAngule5",ManejadorForms)->NewCRD(CRD(wigth-120,100,0));
-	ManejadorForms->GetForm("labelCoordX",ManejadorForms)->NewCRD(CRD(wigth-120,115,0));
-	ManejadorForms->GetForm("labelCoordY",ManejadorForms)->NewCRD(CRD(wigth-120,130,0));
-	ManejadorForms->GetForm("labelCoordZ",ManejadorForms)->NewCRD(CRD(wigth-120,145,0));
+	//ManejadorForms->GetForm("radioButtonMostrarAngules",ManejadorForms)->NewCRD(CRD(wigth-120,8,0));
+	//ManejadorForms->GetForm("labelAngule0",ManejadorForms)->NewCRD(CRD(wigth-120,25,0));
+	//ManejadorForms->GetForm("labelAngule1",ManejadorForms)->NewCRD(CRD(wigth-120,40,0));
+	//ManejadorForms->GetForm("labelAngule2",ManejadorForms)->NewCRD(CRD(wigth-120,55,0));
+	//ManejadorForms->GetForm("labelAngule3",ManejadorForms)->NewCRD(CRD(wigth-120,70,0));
+	//ManejadorForms->GetForm("labelAngule4",ManejadorForms)->NewCRD(CRD(wigth-120,85,0));
+	//ManejadorForms->GetForm("labelAngule5",ManejadorForms)->NewCRD(CRD(wigth-120,100,0));
+	//ManejadorForms->GetForm("labelCoordX",ManejadorForms)->NewCRD(CRD(wigth-120,115,0));
+	//ManejadorForms->GetForm("labelCoordY",ManejadorForms)->NewCRD(CRD(wigth-120,130,0));
+	//ManejadorForms->GetForm("labelCoordZ",ManejadorForms)->NewCRD(CRD(wigth-120,145,0));
 	glViewport(0,0,x,y);//creo una zona de la ventana con el contenido  
 	glMatrixMode(GL_MODELVIEW);
 	glutPostRedisplay();
@@ -2226,7 +2221,7 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 												  
 			 /////////////////////////////////////////////////////////RADIOBUTTON//////////////////////////////////////////////////////////
 		     case Type::RADIOBUTTON:
-				   if(ModoSonido)sonidos(9);
+				   /*if(ModoSonido)sonidos(9);
 			       if(Forms::IsPulsdo((float)x,(float)y,ManejadorForms->GetForm("radioButtonMostrarAngules",ManejadorForms)))
 				   {
 					   if(!MostrarAngules)
@@ -2257,7 +2252,7 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 						ManejadorForms->Sub("labelCoordZ",ManejadorForms);
 						MostrarAngules=false;
 					   }
-				   }		
+				   }		*/
 		   break;
 		                                //////////////////////////////BUTTONS////////////////////
 		    case Type::BUTTONACEPTRB:
@@ -2300,62 +2295,62 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 		   break;
 
 	       case Type::BUTTONINITSETANGULES:
-			   if(ModoSonido)sonidos(9);
-			   for(unsigned i=0;i<6;i++)
-			   {
-				   s=("textBoxsSetAngules");
-				   if(eRror)
-				   {
-						break;
-				   }
-				   s+=to_string(i);
-				   char*datA=ManejadorForms->GetForm((char*)s.c_str(),ManejadorForms)->GetEscritura();
-				   bool negtv=false,punto=false;
-				   for(unsigned i=0;i<strlen(datA);i++)
-						{
-						  if(!isdigit(datA[i]))
-							 {
-							  if(datA[i]=='.'&&punto==false)
-							  {
-								  punto=true;
-							  }
-							  else if(datA[i]=='-'&&negtv==false&&i==0)
-								 {
-								  negtv=true;
-								 }
-							  else
-								 {
-								  eRror=true;
-								  break;
-								 }
-							 }
-					   }
-				   s.clear();
-			   }
-			   if(eRror)
-			   {
-				   messeng->NewMeSSenger(messeng,Frases(48),position::CENTER_TOP,wigth,height,3,1,0,0,2);
-				  if(ModoSonido)sonidos(6);
-			   }
-			   else
-			   {
-				   messeng->NewMeSSenger(messeng,Frases(49),position::CENTER_TOP,wigth,height,3,0,1,0,2);
-				   for(unsigned i=0;i<6;i++)
-				   {
-				   s=("textBoxsSetAngules");
-				   s+=to_string(i);
-					if(strlen(ManejadorForms->GetForm((char*)s.c_str(),ManejadorForms)->GetEscritura()))
-					   DataESE[i]=(GLfloat)atof(ManejadorForms->GetForm((char*)s.c_str(),ManejadorForms)->GetEscritura());
-					s.clear();
-				
-				   }
-				   // DataProcessor::CalcularCoordenadas(cooRd,DataESE);
-				   DataProcessor::CalcularCoordenadas(cooRd,DataESE);
-				   	
-				   ShowAngules();
-				   	
-				   if(ModoSonido)sonidos(8);
-				}
+			 //  if(ModoSonido)sonidos(9);
+			 //  for(unsigned i=0;i<6;i++)
+			 //  {
+				//   s=("textBoxsSetAngules");
+				//   if(eRror)
+				//   {
+				//		break;
+				//   }
+				//   s+=to_string(i);
+				//   char*datA=ManejadorForms->GetForm((char*)s.c_str(),ManejadorForms)->GetEscritura();
+				//   bool negtv=false,punto=false;
+				//   for(unsigned i=0;i<strlen(datA);i++)
+				//		{
+				//		  if(!isdigit(datA[i]))
+				//			 {
+				//			  if(datA[i]=='.'&&punto==false)
+				//			  {
+				//				  punto=true;
+				//			  }
+				//			  else if(datA[i]=='-'&&negtv==false&&i==0)
+				//				 {
+				//				  negtv=true;
+				//				 }
+				//			  else
+				//				 {
+				//				  eRror=true;
+				//				  break;
+				//				 }
+				//			 }
+				//	   }
+				//   s.clear();
+			 //  }
+			 //  if(eRror)
+			 //  {
+				//   messeng->NewMeSSenger(messeng,Frases(48),position::CENTER_TOP,wigth,height,3,1,0,0,2);
+				//  if(ModoSonido)sonidos(6);
+			 //  }
+			 //  else
+			 //  {
+				//   messeng->NewMeSSenger(messeng,Frases(49),position::CENTER_TOP,wigth,height,3,0,1,0,2);
+				//   for(unsigned i=0;i<6;i++)
+				//   {
+				//   s=("textBoxsSetAngules");
+				//   s+=to_string(i);
+				//	if(strlen(ManejadorForms->GetForm((char*)s.c_str(),ManejadorForms)->GetEscritura()))
+				//	   DataESE[i]=(GLfloat)atof(ManejadorForms->GetForm((char*)s.c_str(),ManejadorForms)->GetEscritura());
+				//	s.clear();
+				//
+				//   }
+				//   // DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+				//   DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+				//   	
+				//   ShowAngules();
+				//   	
+				//   if(ModoSonido)sonidos(8);
+				//}
 			 break;     
 	   }
 	   
@@ -2387,7 +2382,7 @@ void ESE_CRT::keyboard(unsigned char tecla,int x,int y )
 	  }
 	  else
 	  {
-		for(unsigned i=0;i<6;i++)
+		for(unsigned i=0;i<3;i++)
 		   GrabarAngle[i]=(float)DataESE[i];
 		GrabarCont=0;
 		GrabarBool=true;
@@ -2410,36 +2405,36 @@ void ESE_CRT::keyboard(unsigned char tecla,int x,int y )
 	  switch (tecla)
 	    {
         case '1':
-			DataESE[0]+=(GLfloat)0.9;
+			DataESE[0]+=(GLfloat)RazonDeAumento;
 			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 		break;
 
 		case '2':
-			DataESE[0]-=(GLfloat)0.9;	
+			DataESE[0]-=(GLfloat)RazonDeAumento;	
 			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 		break;
 
 		case '3':
-			DataESE[1]+=(GLfloat)0.9;
+			DataESE[1]+=(GLfloat)RazonDeAumento;
 			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 		break;
 
 		case '4':
-			DataESE[1]-=(GLfloat)0.9;
+			DataESE[1]-=(GLfloat)RazonDeAumento;
 			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 		break;
 
 		case '5':
-			DataESE[2]+=(GLfloat)0.9;
+			DataESE[2]+=(GLfloat)RazonDeAumento;
 			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 		break;
 
 		case '6':
-			DataESE[2]-=(GLfloat)0.9;
+			DataESE[2]-=(GLfloat)RazonDeAumento;
 			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 		break;
 
-		case '7':
+		/*case '7':
 			DataESE[3]+=(GLfloat)0.9;
 			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 		break;
@@ -2467,7 +2462,7 @@ void ESE_CRT::keyboard(unsigned char tecla,int x,int y )
 		case '=':
 			DataESE[5]-=(GLfloat)0.9;
 			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
-		break;
+		break;*/
 
 		case '<':
 			 trasladarY+=5;
@@ -2535,9 +2530,9 @@ void ESE_CRT::SpecialKeys(int tecla,int x,int y ){
 		DataESE[0]=(GLfloat)anglesRedirecc[0];
 		DataESE[1]=(GLfloat)anglesRedirecc[1];
 		DataESE[2]=(GLfloat)anglesRedirecc[2];
-		DataESE[3]=(GLfloat)anglesRedirecc[3];
+		/*DataESE[3]=(GLfloat)anglesRedirecc[3];
 		DataESE[4]=(GLfloat)anglesRedirecc[4];
-		DataESE[5]=(GLfloat)anglesRedirecc[5];
+		DataESE[5]=(GLfloat)anglesRedirecc[5];*/
 		 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 		ShowAngules();
 	break;
@@ -2591,9 +2586,9 @@ void ESE_CRT::SpecialKeys(int tecla,int x,int y ){
 			DataESE[0]=(GLfloat)anglesRedirecc[0];
 			DataESE[1]=(GLfloat)anglesRedirecc[1];
 			DataESE[2]=(GLfloat)anglesRedirecc[2];
-			DataESE[3]=(GLfloat)anglesRedirecc[3];
+			/*DataESE[3]=(GLfloat)anglesRedirecc[3];
 			DataESE[4]=(GLfloat)anglesRedirecc[4];
-			DataESE[5]=(GLfloat)anglesRedirecc[5];
+			DataESE[5]=(GLfloat)anglesRedirecc[5];*/
 			MenuVista(-1);
 			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 			ShowAngules();
@@ -2617,9 +2612,9 @@ void ESE_CRT::SpecialKeys(int tecla,int x,int y ){
 		   DataESE[0]=0;
            DataESE[1]=0;
            DataESE[2]=0;
-           DataESE[3]=0;
+          /* DataESE[3]=0;
 	 	   DataESE[4]=0;
-		   DataESE[5]=0;
+		   DataESE[5]=0;*/
 		   SeguirPuntoFinal=false;
 		   MenuVista(-1);
 		   DataProcessor::CalcularCoordenadas(cooRd,DataESE);
@@ -2687,7 +2682,7 @@ void ESE_CRT::default_menu(int opcion){
 	switch (opcion)
 	{
 	case 4:///SET DataESE
-		if(ModoSonido)sonidos(9);
+		/*if(ModoSonido)sonidos(9);
 	    default_menu(-6);
 		ManejadorForms->Add(new TextBox("textBoxsSetAngules0",CRD(0,175,0),110,wigth,height,(char*)to_string(DataESE[0]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
 		ManejadorForms->Add(new TextBox("textBoxsSetAngules1",CRD(0,200,0),110,wigth,height,(char*)to_string(DataESE[1]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
@@ -2697,7 +2692,7 @@ void ESE_CRT::default_menu(int opcion){
 		ManejadorForms->Add(new TextBox("textBoxsSetAngules5",CRD(0,300,0),110,wigth,height,(char*)to_string(DataESE[5]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
 		ManejadorForms->Add(new Button("buttonInitSetAngules",Type::BUTTONINITSETANGULES, CRD(0,325,0),0,1,0,80,10,wigth,height),ManejadorForms);
 		ManejadorForms->Add(new Button("buttonCancelSetAngules",Type::BUTTONCANCELSETANGULES, CRD(80,325,0),1,0,0,30,10,wigth,height),ManejadorForms);
-		SetAngules=true;
+		SetAngules=true;*/
 		break;
 	case 3://Cancel setangules
 			if(ModoSonido)sonidos(9);
@@ -2747,11 +2742,21 @@ void ESE_CRT::default_menu(int opcion){
 			   char*msg=SeriPort.GetMesage(SeriPort);
 			   if(ModoLogger)cout<<endl<<SeriPort.getChar()<<":"<<SeriPort.getunsigned()<<endl;
 		      //add
-			    ManejadorForms->Add(new Label("labelChar",SeriPort.getChar(),*(new CRD(97,-5,0)),0,0,1,0,wigth,height),ManejadorForms);
+			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelESE_CRT")->SetColor(0,(GLfloat)1,0);
+			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelChar")->AddNewText(SeriPort.getChar());
+			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelUnsigned")->AddNewText((char*)to_string(SeriPort.getunsigned()).c_str());
+			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelChar")->SetDraw(false);
+			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelUnsigned")->SetDraw(false);
+			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->AddNewText(Frases(115));
+			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetColor(1,1,0);
+			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetDraw(false);
+			  
+
+			    /*ManejadorForms->Add(new Label("labelChar",SeriPort.getChar(),*(new CRD(97,-5,0)),0,0,1,0,wigth,height),ManejadorForms);
 			    ManejadorForms->Add(new Label("labelUnsigned",(char*)to_string(SeriPort.getunsigned()).c_str(),*(new CRD(97,5,0)),0,0,1,0,wigth,height),ManejadorForms);
 			    ManejadorForms->SetColor("labelESE_CRT",0,1,0,ManejadorForms);
 			    ManejadorForms->Add(new Label("labelReferenaciar",Frases(115),*(new CRD(0,19,0)),1,0,1,0,wigth,height),ManejadorForms);
-				ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->SetColor(1,1,0);
+				ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->SetColor(1,1,0);*/
 			    StackAnimation*sa=new StackAnimation("StackAnimationsConnection");
 			    sa->STANSetAnimation("AnimacionRoja", CRD(wigth-100,height-50,0),75,wigth,height,-25,1,0,0,1.5);
 			    sa->STANSetAnimation("AnimacionVerde", CRD(wigth-100,height-50,0),75,wigth,height,0,0,1,0,1.5);
@@ -2791,14 +2796,12 @@ void ESE_CRT::default_menu(int opcion){
 			}
 			ThreadSerialPort->join();
 			SeriPort.CloseConnection();
-			ManejadorForms->Sub("labelChar",ManejadorForms);
-			ManejadorForms->Sub("labelUnsigned",ManejadorForms);
-			ManejadorForms->SetColor("labelESE_CRT",(GLfloat)0.7,(GLfloat)0.7,(GLfloat)0.7,ManejadorForms);	
+			ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelChar")->SetDraw(true);
+			ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelUnsigned")->SetDraw(true);
+			ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetDraw(true);
+			ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelESE_CRT")->SetColor((GLfloat)0.7,(GLfloat)0.7,(GLfloat)0.7);
+			
 			ManejadorForms->Sub("StackAnimationsConnection",ManejadorForms);
-			ManejadorForms->Sub("labelReferenaciar",ManejadorForms);
-			ManejadorForms->Sub("labelAcceso",ManejadorForms);
-			ManejadorForms->Sub("labelServer",ManejadorForms);
-			ManejadorForms->Sub("labelContClientes",ManejadorForms);
 			EsperandoReedireccionar=true;
 			ErrorConnect=false;
 			Acces=false;
@@ -2981,7 +2984,7 @@ void ESE_CRT::MenuIdioma(int opcion)
 ///////////////////////// DATOS//////////////////////////////////////////////////
 void ESE_CRT::recivirDatosCOM(){
 	if(recibir_serie)
-	   { 
+	   {
 					/*COMANDOS
 		///////////////////////////////Comando de Cliente///////////////////////
 		(7)-00000111->Referenaciar
@@ -3017,6 +3020,13 @@ void ESE_CRT::recivirDatosCOM(){
 		(115)01110011->ESE_CRT RESPUESTA_PUETE_WEB
 		(119)01110100->CLIENTE DESCONECTADO
 						*/
+
+										/*
+                                      Comandos
+                                00000111-7   (Referenciar)
+                                00001011-11  (Pintar)
+                                00010011-19  (Codigo Verificacion)
+                                         */
 		  if(StopThread)
 			   return;
 			////////////////////////////////////////////////////ERROR:RECONECTAR/////////////////////////////////////////////////////////////
@@ -3034,15 +3044,7 @@ void ESE_CRT::recivirDatosCOM(){
 		  }
 			///////////////////////////////////////////////////////RECIVO DATOS/////////////////////////////////////////////////////////////////////////
 		  char*c=SeriPort.Recibir();//Recivo un dato
-		  if(c!=NULL)
-		  {
-			  cout<<"///////////////Bytes de entrada:////////////////////"<<endl;
-			  for(unsigned i=0;i<strlen(c);i++)
-				  DataProcessor::printByte(c[i]);
-			  cout<<"////////////////////////////////////////////////////"<<endl;
-		  }
-
-			if(!recibir_serie)
+		  if(!recibir_serie)
 			  return;
 			/////////////////////////////////////////////////////////ERROR CONEXION////////////////////////////////////////////////////////////////////
 		  if(SeriPort.Error())	 //Si algo dio error
@@ -3059,16 +3061,16 @@ void ESE_CRT::recivirDatosCOM(){
 				ErrorConnect=true;
 				EsperandoReedireccionar=true;
 				SeriPort.CloseConnection();
-				
-				ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->AddNewText(Frases(115));
-				ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->SetColor(1,1,0);
+				ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->AddNewText(Frases(115));
+				ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetColor(1,1,0);
+				/*ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->AddNewText(Frases(115));
+				ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->SetColor(1,1,0);*/
 				ManejadorForms->GetForm("BoxInterfazPricipalButtonCancel",ManejadorForms)->ActivateDesactivate(false);
 				ManejadorForms->GetForm("BoxInterfazPricipalButtonAcept",ManejadorForms)->ActivateDesactivate(true);
 				ManejadorForms->Add(Interfaz(9),ManejadorForms);
-				ManejadorForms->GetForm("labelAcceso",ManejadorForms)->AddNewText(Frases(104));
-				ManejadorForms->GetForm("labelAcceso",ManejadorForms)->SetColor(1,1,0);
+		
 				
-				Acces=false;
+				/*Acces=false;
 				Acceso(Acces);
 				if(PlanoAcceso)
 				{
@@ -3077,46 +3079,38 @@ void ESE_CRT::recivirDatosCOM(){
 					ManejadorSketchs->Sub("PlanoAcceso",ManejadorSketchs);
 					ManejadorSketchs->SetDraw(false,ManejadorSketchs);
 					
-				}
+				}*/
 				if(ModoSonido)sonidos(1);
 				delete[]c;
 				return;
 		  }
 		   if(c!=NULL)///////si no esta vacio////////// 
-		     {
-			  unsigned strleN=strlen(c);
-			  ///////////////////////////////////////////////////////VERIFICACION DE DATOS////////////////////////////////////////////////////////////
-			  c=VerificacionDatos(c,strleN); //Add y/o guado el error los errores arrasrtandos
-		      for(unsigned i=0;i<strleN;i+=2)	//Un 'for' por si llegan mas de 2 bytes
+		   {
+		      for(unsigned i=0;i<strlen(c);i++)	//Un 'for' por si llegan mas de 1 byte
 			  {
+				bool pintar=false;
 				contt++;
 				if(ModoLogger)
 				{
-					DataProcessor::printByte(c[i+1],false);
-					cout<<"-";
 					DataProcessor::printByte(c[i],false);
-					cout<<"-["<<contt<<"]-";
+					cout<<"-["<<contt<<"]";
 				}
 				if(GrabarBool)
 				{
 					if(GrabarCont==connstGrab)
 						connstGrab=0;
 					Grabar[GrabarCont++]=c[i];
-					Grabar[GrabarCont++]=c[i+1];
 				}
-				
-				if(strleN/2>1)
-					if(ModoLogger)cout<<"{"<<i/2+1<<"/"<<strleN/2<<"}"<<"("<<strleN<<")-";
 				/////////////////////////////////////////////////////VERIFICACION DE SEGURIDAD////////////////////////////////////////////////////////
 				if(c[i]!=7)
 				{
-					if(VerificacionSeguridad(c,i))
+					if(VerificacionSeguridad(c[i]))
 						continue;
 				}
 				////////////////////////////////////////////////////CODIGO DE DIBUJO//////////////////////////////////////////////////////////////
-				 if(DataProcessor::CodigoCliente(c[i],c[i+1]))
+				 if(DataProcessor::CodigoCliente(c[i]))
 				 {
-					 ESE_CRT::CodigoCliente(c,i);
+					 ESE_CRT::CodigoCliente(c[i],pintar);
 			     }
 				 else if(EsperandoReedireccionar)///////PARA Q NO SE EJECUTE NADA HASTA Q NO SE REDIRECCIONE///////
 				 {
@@ -3125,12 +3119,14 @@ void ESE_CRT::recivirDatosCOM(){
 					 if(ModoSonido)sonidos(6);
 				 }
 				//////////////////////////////////////////////////////////////MOVER Y/O PINTAR///////////////////////////////////////////////////////////
-				 else if(DataProcessor::CodigoESE(c[i],c[i+1]))
+				 else if(DataProcessor::CodigoESE(c[i]))
 			     {
-				    bool pintar=DataProcessor::PorcesarDatos(c[i],c[i+1],DataESE);//ejecuto la lectura de los bits y muevo los angulos(true es pintar)
-					DataProcessor::CalcularCoordenadas(cooRd,DataESE);
-					ShowAngules(false,true);
-					
+					if(!pintar)
+					{
+						DataProcessor::PorcesarDatos(c[i],DataESE,(GLfloat)RazonDeAumento);//ejecuto la lectura de los bits y muevo los angulos(true es pintar)
+						DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+						ShowAngules(false,true);
+					}
 					if(interfaz==2)///////Actualizo la ultima coordenada en el StackBoceto///////
 				       ManejadorSketchs->ActualizaLastCood(cooRd,ManejadorSketchs);
 					else if(interfaz==-5)
@@ -3172,7 +3168,7 @@ void ESE_CRT::recivirDatosCOM(){
 						DataProcessor::printByte(c[i+1]);
 						cout<<"-";
 						DataProcessor::printByte(c[i]);
-						cout<<"-["<<contt<<"]-No es un codigo ESE, Bytes no procesados(Tal vez ocurra un error en la seguridad del protocolo";
+						cout<<"-["<<contt<<"]-No es un codigo ESE, Bytes no procesados(Tal vez ocurra un error en la seguridad del protocolo)";
 					 }
 				 }
 				 if(ModoLogger)cout<<"("<<tCOM.Incrementa(&tCOM)<<")"<<endl;
@@ -3194,9 +3190,9 @@ void ESE_CRT::salvarInitDatos(){
 	f.write((char*)&DataESE[0],sizeof(GLfloat));
 	f.write((char*)&DataESE[1],sizeof(GLfloat));
 	f.write((char*)&DataESE[2],sizeof(GLfloat));
-	f.write((char*)&DataESE[3],sizeof(GLfloat));
+	/*f.write((char*)&DataESE[3],sizeof(GLfloat));
 	f.write((char*)&DataESE[4],sizeof(GLfloat));
-	f.write((char*)&DataESE[5],sizeof(GLfloat));
+	f.write((char*)&DataESE[5],sizeof(GLfloat));*/
 	f.write((char*)&movWheel,sizeof(GLdouble));
 	f.write((char*)&trasladarX,sizeof(double));
 	f.write((char*)&trasladarY,sizeof(double));
@@ -3230,7 +3226,6 @@ void ESE_CRT::salvarInitDatos(){
 	f.write((char*)&toSavePortWeb,sizeof(unsigned));
 	
 	f.write((char*)&idioma,sizeof(Language));
-	f.write((char*)&Connecttype,sizeof(ConnectionType));
 	f.close();
 	DestruirVariablesGlobales();
 }
@@ -3249,9 +3244,9 @@ void ESE_CRT::cargarInitDatos(){
 	   f.read((char*)&DataESE[0],sizeof(GLfloat));
 	   f.read((char*)&DataESE[1],sizeof(GLfloat));
 	   f.read((char*)&DataESE[2],sizeof(GLfloat));
-	   f.read((char*)&DataESE[3],sizeof(GLfloat));
-	   f.read((char*)&DataESE[4],sizeof(GLfloat));
-	   f.read((char*)&DataESE[5],sizeof(GLfloat));
+	   //f.read((char*)&DataESE[3],sizeof(GLfloat));
+	   //f.read((char*)&DataESE[4],sizeof(GLfloat));
+	   //f.read((char*)&DataESE[5],sizeof(GLfloat));
 	   f.read((char*)&movWheel,sizeof(GLdouble));
 	   f.read((char*)&trasladarX,sizeof(double));
 	   f.read((char*)&trasladarY,sizeof(double));
@@ -3297,7 +3292,7 @@ void ESE_CRT::cargarInitDatos(){
 		delete[]h;
 	    DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 		f.read((char*)&idioma,sizeof(Language));
-		f.read((char*)&Connecttype,sizeof(ConnectionType));
+		//f.read((char*)&Connecttype,sizeof(ConnectionType));
 	    f.close();
 		SetAnglesREdirecc();
 	}
@@ -3325,101 +3320,100 @@ void ESE_CRT::cargarInitDatos(){
 	}
 	
 	}
-char* ESE_CRT::VerificacionDatos(char*cc,unsigned&strleN){
-		unsigned RealStrleN=strleN;
-		bool adjunt=false;
-		if(bytBool)
-		{
-			if(strleN%2==0)
-				adjunt=true;
-			if(ModoLogger)
-			{
-				cout<<"Se ha adjuntado {";
-				DataProcessor::printByte(byt,false);
-				printf("} a {");
-				DataProcessor::printByte(cc[0],false);
-				printf("}\n");
-			}
-			char*newc=new char[strleN+2];
-			newc[strleN+1]=0;
-			newc[0]=byt;
-			newc[1]=cc[0];
-			for(unsigned i=1;i<strleN;i++)
-				newc[i+1]=cc[i];
-			delete[]cc;
-			cc=newc;
-			strleN=strlen(cc);
-			bytBool=false;
-		}
-		//if(!DataProcessor::ExistMensage59(cc))
-		if((strleN)%2!=0)
-		{
-			if(!bytBool)
-			{
-				if(ModoLogger)
-				{
-					cout<<"Cuidado,ha llegado "<<RealStrleN<<" bytes"<<(adjunt?"(+1)porque se ha adjuntado un elemento q estaba en espera,":",")<<"{";
-					DataProcessor::printByte(cc[strleN-1],false);
-					printf("}=>esperando a adjuntarse\n");
-				}	
-				adjunt=false;
-				byt=cc[strleN-1];
-				cc[strleN-1]=0;
-				strleN=strlen(cc);
-				bytBool=true;
-			}
-		}
-		return cc;
-}
-bool ESE_CRT::VerificacionSeguridad(char*c,unsigned i)
+//char* ESE_CRT::VerificacionDatos(char*cc,unsigned&strleN){
+//		unsigned RealStrleN=strleN;
+//		bool adjunt=false;
+//		if(bytBool)
+//		{
+//			if(strleN%2==0)
+//				adjunt=true;
+//			if(ModoLogger)
+//			{
+//				cout<<"Se ha adjuntado {";
+//				DataProcessor::printByte(byt,false);
+//				printf("} a {");
+//				DataProcessor::printByte(cc[0],false);
+//				printf("}\n");
+//			}
+//			char*newc=new char[strleN+2];
+//			newc[strleN+1]=0;
+//			newc[0]=byt;
+//			newc[1]=cc[0];
+//			for(unsigned i=1;i<strleN;i++)
+//				newc[i+1]=cc[i];
+//			delete[]cc;
+//			cc=newc;
+//			strleN=strlen(cc);
+//			bytBool=false;
+//		}
+//		//if(!DataProcessor::ExistMensage59(cc))
+//		if((strleN)%2!=0)
+//		{
+//			if(!bytBool)
+//			{
+//				if(ModoLogger)
+//				{
+//					cout<<"Cuidado,ha llegado "<<RealStrleN<<" bytes"<<(adjunt?"(+1)porque se ha adjuntado un elemento q estaba en espera,":",")<<"{";
+//					DataProcessor::printByte(cc[strleN-1],false);
+//					printf("}=>esperando a adjuntarse\n");
+//				}	
+//				adjunt=false;
+//				byt=cc[strleN-1];
+//				cc[strleN-1]=0;
+//				strleN=strlen(cc);
+//				bytBool=true;
+//			}
+//		}
+//		return cc;
+//}
+bool ESE_CRT::VerificacionSeguridad(char c)
 {
-	if(contt%11==0&&!EsperandoReedireccionar)///////////VERIFICACION//////////
+	if(contt%10==0&&!EsperandoReedireccionar)///////////VERIFICACION//////////
 	{
-		if(DataProcessor::BitData(c[i],0)==0||DataProcessor::BitData(c[i+1],0)==0)
+		if(DataProcessor::CodigoSeguridad(c))
 		{
 			if(ModoLogger)cout<<Frases(53)<<endl;
-			if(contt>10000)
-				contt=0;
 			return true;
 		}
 		if(ModoLogger)cout<<Frases(55)<<endl;
 		messeng->NewMeSSenger(messeng,Frases(55),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,20,1,0,0,2);
 		
-		ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->AddNewText(Frases(115));
-		ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->SetColor(1,1,0);
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->AddNewText(Frases(115));
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetColor(1,1,0);
+		//ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->AddNewText(Frases(115));
+		//ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->SetColor(1,1,0);
 		
 		EsperandoReedireccionar=true;
 		if(ModoSonido)sonidos(1);
 		return true;
 	}
-	if(!EsperandoReedireccionar&&(DataProcessor::BitData(c[i],0)==0||DataProcessor::BitData(c[i+1],0)==0))	///////////VERIFICACION//////////
+	if(!EsperandoReedireccionar&&DataProcessor::CodigoSeguridad(c))	///////////VERIFICACION//////////
 	{
 		if(ModoLogger)cout<<Frases(54)<<endl;
 		messeng->NewMeSSenger(messeng,Frases(54),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,20,1,0,0,2);
 		
-		ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->AddNewText(Frases(115));
-		ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->SetColor(1,1,0);
-		
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->AddNewText(Frases(115));
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetColor(1,1,0);
 		EsperandoReedireccionar=true;
 		if(ModoSonido)sonidos(1);
 		return true;
 	}
 	return false;
 }
-bool ESE_CRT::CodigoCliente(char*c,unsigned i)
+bool ESE_CRT::CodigoCliente(char c,bool&pintar)
 {
-	double*aDoub=new double;	
-	CRD aa;
-	if(ModoLogger)cout<<Frases(56)<<(unsigned)c[i];
-	switch (c[i])
+	if(ModoLogger)cout<<Frases(56)<<(unsigned)c;
+	switch (c)
 	{
+	case 11:////////////////////Pintar/////////////////////////
+		pintar=true;
 	case 7: ////////////////////REDIRECCIONAR//////////////////
 		SpecialKeys(-1,0,0);
 		messeng->NewMeSSenger(messeng,Frases(51),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,2,0,1,0,2);
 		EsperandoReedireccionar=false;
 		
-		ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->AddNewText(Frases(114));
-		ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->SetColor(0,1,0);
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->AddNewText(Frases(114));
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetColor(0,1,0);
 		
 		if(ModoLogger)cout<<Frases(57);
 		if(ModoSonido)sonidos(3);
@@ -3440,224 +3434,176 @@ bool ESE_CRT::CodigoCliente(char*c,unsigned i)
 			
 		}
 		return true;				
-	case 11:  ///////////////////Next Focus////////////////
-		if(Acces)
-		{
-			if(ModoSonido)sonidos(9);
-			
-			ManejadorForms->NextFocus("BoxInterfazPricipal",ManejadorForms);
-			
-			if(ModoLogger)cout<<Frases(58);
-		}
-	break;			
-	case 15:   //////////////////////Focus Click//////////////
-		if(Acces)
-		{
-			delete aDoub;
-			
-			aDoub=ManejadorForms->FocusClick("BoxInterfazPricipal",ManejadorForms);
-			
-			teclaRaton(GLUT_LEFT_BUTTON,GLUT_UP,(int)aDoub[0],(int)aDoub[1]);
-			if(ModoLogger)cout<<Frases(59);
-		}
-	break;
-						   
-	case 19:  ///////////////////Acept Button////////////////
-		if(Acces)
-		{
-			
-			aa=ManejadorForms->GetForm("BoxInterfazPricipalButtonAcept",ManejadorForms)->GetCoord(ManejadorForms->GetForm("BoxInterfazPricipalButtonAcept",ManejadorForms));
-			
-			AceptCancelButtonDesdeThread=true;
-			teclaRaton(GLUT_LEFT_BUTTON,GLUT_UP,(int)aa.x,(int)aa.y);
-			if(ModoLogger)cout<<Frases(60);
-		}
-	break;
-
-	case 23://///////////////Cancel Button/////////////////
-		if(Acces)
-		{
-			
-			aa=ManejadorForms->GetForm("BoxInterfazPricipalButtonCancel",ManejadorForms)->GetCoord(ManejadorForms->GetForm("BoxInterfazPricipalButtonCancel",ManejadorForms));
-			
-			AceptCancelButtonDesdeThread=true;
-			teclaRaton(GLUT_LEFT_BUTTON,GLUT_UP,(int)aa.x,(int)aa.y);
-			if(ModoLogger)cout<<Frases(61);
-		}
-	if(ModoLogger)cout<<Frases(61);
-	break;
-
 	default:
 		if(ModoLogger)cout<<Frases(63);
 	break;
 	}
-	delete[]aDoub;
 	return false;
 }
-void ESE_CRT::Acceso(bool acceso)
-{
-	if(interfaz)
-		ManejadorForms->Add(Interfaz(0),ManejadorForms);
-	if(acceso)
-		default_menu(-5);
-	else
-		default_menu(-6);
-}
-bool ESE_CRT::ChekEntada(char*c,unsigned&i)
-{
-	if(c[i]==(char)63)/////////////////QUITAR BOCETO//////////////
-	{
-		if(PlanoAcceso)
-		{
-			if(ModoLogger)cout<<Frases(116)<<endl;
-			PlanoAcceso=false;
-			
-			ManejadorSketchs->Sub("PlanoAcceso",ManejadorSketchs);
-			ManejadorSketchs->SetDraw(false,ManejadorSketchs);
-			
-		}
-	}
-	else if(c[i]==(char)59)/////////////////ADD BOCETO//////////////////
-	{
-		if(ModoLogger)cout<<Frases(117)<<endl;
-		string data(c);
-		DataUnion du;
-		unsigned uns;
-		CRD crd[3];
-		CRD*crd1=new CRD[1];
-		if(i+1>data.length())
-		{
-			return false;
-		}
-		data=data.substr(i+1,data.length()-1);
-		du.SetStrCodif(data.c_str());
-		uns=du.u.Unsigned;
-		i+=uns+du.lengthDescodif-2;
-		if(uns>data.length())
-			return false;
-		data=data.substr(du.lengthDescodif,data.length()-1);
-
-		if(PlanoAcceso)
-		{
-			
-			ManejadorSketchs->Sub("PlanoAcceso",ManejadorSketchs);
-			
-		}
-		for(unsigned ii=0;ii<3;ii++)
-		{
-			du.SetStrCodif(data.c_str());
-			crd[ii].x=du.u.Double;
-			data=data.substr(du.lengthDescodif,data.length()-1);
-			du.SetStrCodif(data.c_str());
-			crd[ii].y=du.u.Double;
-			data=data.substr(du.lengthDescodif,data.length()-1);
-			du.SetStrCodif(data.c_str());
-			crd[ii].z=du.u.Double;
-			data=data.substr(du.lengthDescodif,data.length()-1);
-		}
-		TypePlano t=(TypePlano)(unsigned)(char)(data[0]-1);
-		data=data.substr(1,data.length()-1);
-		bool pintPlano=(data[0]-1)?true:false;
-		data=data.substr(1,data.length()-1);
-		ItemsType it=(ItemsType)(unsigned)(char)(data[0]-1);
-		data=data.substr(1,data.length()-1);
-		du.SetStrCodif(data.c_str());
-		uns=du.u.Unsigned;
-		data=data.substr(du.lengthDescodif,data.length()-1);
-		if(uns)
-		{
-			delete[]crd1;
-			crd1=new CRD[uns];
-			for(unsigned ii=0;ii<uns;ii++)
-			{
-				du.SetStrCodif(data.c_str());
-				crd1[ii].x=du.u.Double;
-				data=data.substr(du.lengthDescodif,data.length()-1);
-				du.SetStrCodif(data.c_str());
-				crd1[ii].y=du.u.Double;
-				data=data.substr(du.lengthDescodif,data.length()-1);
-				du.SetStrCodif(data.c_str());
-				crd1[ii].z=du.u.Double;
-				data=data.substr(du.lengthDescodif,data.length()-1);
-			}
-		}
-		Plano*pl=new Plano("PlanoAcceso",crd[1],crd[2],crd[0],t);
-		pl->items->t=it;
-		ManejadorSketchs->Add(pl,ManejadorSketchs);
-		for(unsigned ii=0;ii<uns;ii++)
-		{
-			ManejadorSketchs->bocetos[ManejadorSketchs->contB-1]->items->Add(crd1[ii]);
-		}
-		PlanoAcceso=true;
-		ManejadorSketchs->bocetos[ManejadorSketchs->contB-1]->pintarPlano=true;
-		ManejadorSketchs->SetDraw(true,ManejadorSketchs);
-		ManejadorSketchs->SetDrawAll(false,ManejadorSketchs);
-		ManejadorSketchs->PlanoCheckeeado=ManejadorSketchs->contB-1;
-		ManejadorSketchs->BocetoActual(ManejadorSketchs)->pintarPlano=pintPlano;
-		
-		return true;
-	}
-	else if(c[i]==(char)67)/////////////////DRAW POINTS//////////////////
-	{
-		if(ModoLogger)cout<<Frases(118)<<endl;
-		
-		Plano::ActualizaItem(ItemsType::POINTSS,ManejadorSketchs->BocetoActual(ManejadorSketchs));
-		
-	}
-	else if(c[i]==(char)71)/////////////////DRAW LINES//////////////////
-	{
-		if(ModoLogger)cout<<Frases(119)<<endl;
-		
-		Plano::ActualizaItem(ItemsType::LINES,ManejadorSketchs->BocetoActual(ManejadorSketchs));
-		
-	}
-	else if(c[i]==(char)75)/////////////////DRAW STRPLINES//////////////////
-	{
-		if(ModoLogger)cout<<Frases(120)<<endl;
-		
-		Plano::ActualizaItem(ItemsType::LINE_STRIP,ManejadorSketchs->BocetoActual(ManejadorSketchs));
-		
-	}
-	else if(c[i]==(char)79)/////////////////DRAW SPLINES//////////////////
-	{
-		if(ModoLogger)cout<<Frases(121)<<endl;
-		
-		Plano::ActualizaItem(ItemsType::SPLINE,ManejadorSketchs->BocetoActual(ManejadorSketchs));
-		
-	}
-	else if(c[i]==(char)83)/////////////////DRAW BSPLINES//////////////////
-	{
-		if(ModoLogger)cout<<Frases(122)<<endl;
-		
-		Plano::ActualizaItem(ItemsType::BSPLINE,ManejadorSketchs->BocetoActual(ManejadorSketchs));
-		
-	}
-	else if(c[i]==(char)87)/////////////////CANCEL POINT//////////////////
-	{
-		if(ModoLogger)cout<<Frases(123)<<endl;
-		
-		Plano::CancelLastPoint(ManejadorSketchs->BocetoActual(ManejadorSketchs));
-		if(ModoSonido)sonidos(6);
-		
-	}
-	else if(c[i]==(char)91)/////////////////MOSTRAR PLANO//////////////////
-	{
-		if(ModoLogger)cout<<Frases(124)<<endl;
-		
-		ManejadorSketchs->Pintar_NoPintar_LineaSuspensiva(true,ManejadorSketchs);
-		ManejadorSketchs->BocetoActual(ManejadorSketchs)->pintarPlano=true;
-		
-	}
-	else if(c[i]==(char)95)/////////////////NO MOSTRAR PLANO//////////////////
-	{
-		if(ModoLogger)cout<<Frases(125)<<endl;
-		
-		ManejadorSketchs->Pintar_NoPintar_LineaSuspensiva(true,ManejadorSketchs);
-		ManejadorSketchs->BocetoActual(ManejadorSketchs)->pintarPlano=false;
-		
-	}
-	return false;
-};
+//void ESE_CRT::Acceso(bool acceso)
+//{
+//	if(interfaz)
+//		ManejadorForms->Add(Interfaz(0),ManejadorForms);
+//	if(acceso)
+//		default_menu(-5);
+//	else
+//		default_menu(-6);
+//}
+//bool ESE_CRT::ChekEntada(char*c,unsigned&i)
+//{
+//	if(c[i]==(char)63)/////////////////QUITAR BOCETO//////////////
+//	{
+//		if(PlanoAcceso)
+//		{
+//			if(ModoLogger)cout<<Frases(116)<<endl;
+//			PlanoAcceso=false;
+//			
+//			ManejadorSketchs->Sub("PlanoAcceso",ManejadorSketchs);
+//			ManejadorSketchs->SetDraw(false,ManejadorSketchs);
+//			
+//		}
+//	}
+//	else if(c[i]==(char)59)/////////////////ADD BOCETO//////////////////
+//	{
+//		if(ModoLogger)cout<<Frases(117)<<endl;
+//		string data(c);
+//		DataUnion du;
+//		unsigned uns;
+//		CRD crd[3];
+//		CRD*crd1=new CRD[1];
+//		if(i+1>data.length())
+//		{
+//			return false;
+//		}
+//		data=data.substr(i+1,data.length()-1);
+//		du.SetStrCodif(data.c_str());
+//		uns=du.u.Unsigned;
+//		i+=uns+du.lengthDescodif-2;
+//		if(uns>data.length())
+//			return false;
+//		data=data.substr(du.lengthDescodif,data.length()-1);
+//
+//		if(PlanoAcceso)
+//		{
+//			
+//			ManejadorSketchs->Sub("PlanoAcceso",ManejadorSketchs);
+//			
+//		}
+//		for(unsigned ii=0;ii<3;ii++)
+//		{
+//			du.SetStrCodif(data.c_str());
+//			crd[ii].x=du.u.Double;
+//			data=data.substr(du.lengthDescodif,data.length()-1);
+//			du.SetStrCodif(data.c_str());
+//			crd[ii].y=du.u.Double;
+//			data=data.substr(du.lengthDescodif,data.length()-1);
+//			du.SetStrCodif(data.c_str());
+//			crd[ii].z=du.u.Double;
+//			data=data.substr(du.lengthDescodif,data.length()-1);
+//		}
+//		TypePlano t=(TypePlano)(unsigned)(char)(data[0]-1);
+//		data=data.substr(1,data.length()-1);
+//		bool pintPlano=(data[0]-1)?true:false;
+//		data=data.substr(1,data.length()-1);
+//		ItemsType it=(ItemsType)(unsigned)(char)(data[0]-1);
+//		data=data.substr(1,data.length()-1);
+//		du.SetStrCodif(data.c_str());
+//		uns=du.u.Unsigned;
+//		data=data.substr(du.lengthDescodif,data.length()-1);
+//		if(uns)
+//		{
+//			delete[]crd1;
+//			crd1=new CRD[uns];
+//			for(unsigned ii=0;ii<uns;ii++)
+//			{
+//				du.SetStrCodif(data.c_str());
+//				crd1[ii].x=du.u.Double;
+//				data=data.substr(du.lengthDescodif,data.length()-1);
+//				du.SetStrCodif(data.c_str());
+//				crd1[ii].y=du.u.Double;
+//				data=data.substr(du.lengthDescodif,data.length()-1);
+//				du.SetStrCodif(data.c_str());
+//				crd1[ii].z=du.u.Double;
+//				data=data.substr(du.lengthDescodif,data.length()-1);
+//			}
+//		}
+//		Plano*pl=new Plano("PlanoAcceso",crd[1],crd[2],crd[0],t);
+//		pl->items->t=it;
+//		ManejadorSketchs->Add(pl,ManejadorSketchs);
+//		for(unsigned ii=0;ii<uns;ii++)
+//		{
+//			ManejadorSketchs->bocetos[ManejadorSketchs->contB-1]->items->Add(crd1[ii]);
+//		}
+//		PlanoAcceso=true;
+//		ManejadorSketchs->bocetos[ManejadorSketchs->contB-1]->pintarPlano=true;
+//		ManejadorSketchs->SetDraw(true,ManejadorSketchs);
+//		ManejadorSketchs->SetDrawAll(false,ManejadorSketchs);
+//		ManejadorSketchs->PlanoCheckeeado=ManejadorSketchs->contB-1;
+//		ManejadorSketchs->BocetoActual(ManejadorSketchs)->pintarPlano=pintPlano;
+//		
+//		return true;
+//	}
+//	else if(c[i]==(char)67)/////////////////DRAW POINTS//////////////////
+//	{
+//		if(ModoLogger)cout<<Frases(118)<<endl;
+//		
+//		Plano::ActualizaItem(ItemsType::POINTSS,ManejadorSketchs->BocetoActual(ManejadorSketchs));
+//		
+//	}
+//	else if(c[i]==(char)71)/////////////////DRAW LINES//////////////////
+//	{
+//		if(ModoLogger)cout<<Frases(119)<<endl;
+//		
+//		Plano::ActualizaItem(ItemsType::LINES,ManejadorSketchs->BocetoActual(ManejadorSketchs));
+//		
+//	}
+//	else if(c[i]==(char)75)/////////////////DRAW STRPLINES//////////////////
+//	{
+//		if(ModoLogger)cout<<Frases(120)<<endl;
+//		
+//		Plano::ActualizaItem(ItemsType::LINE_STRIP,ManejadorSketchs->BocetoActual(ManejadorSketchs));
+//		
+//	}
+//	else if(c[i]==(char)79)/////////////////DRAW SPLINES//////////////////
+//	{
+//		if(ModoLogger)cout<<Frases(121)<<endl;
+//		
+//		Plano::ActualizaItem(ItemsType::SPLINE,ManejadorSketchs->BocetoActual(ManejadorSketchs));
+//		
+//	}
+//	else if(c[i]==(char)83)/////////////////DRAW BSPLINES//////////////////
+//	{
+//		if(ModoLogger)cout<<Frases(122)<<endl;
+//		
+//		Plano::ActualizaItem(ItemsType::BSPLINE,ManejadorSketchs->BocetoActual(ManejadorSketchs));
+//		
+//	}
+//	else if(c[i]==(char)87)/////////////////CANCEL POINT//////////////////
+//	{
+//		if(ModoLogger)cout<<Frases(123)<<endl;
+//		
+//		Plano::CancelLastPoint(ManejadorSketchs->BocetoActual(ManejadorSketchs));
+//		if(ModoSonido)sonidos(6);
+//		
+//	}
+//	else if(c[i]==(char)91)/////////////////MOSTRAR PLANO//////////////////
+//	{
+//		if(ModoLogger)cout<<Frases(124)<<endl;
+//		
+//		ManejadorSketchs->Pintar_NoPintar_LineaSuspensiva(true,ManejadorSketchs);
+//		ManejadorSketchs->BocetoActual(ManejadorSketchs)->pintarPlano=true;
+//		
+//	}
+//	else if(c[i]==(char)95)/////////////////NO MOSTRAR PLANO//////////////////
+//	{
+//		if(ModoLogger)cout<<Frases(125)<<endl;
+//		
+//		ManejadorSketchs->Pintar_NoPintar_LineaSuspensiva(true,ManejadorSketchs);
+//		ManejadorSketchs->BocetoActual(ManejadorSketchs)->pintarPlano=false;
+//		
+//	}
+//	return false;
+//};
 
 bool ESE_CRT::SetAnglesREdirecc()
 {

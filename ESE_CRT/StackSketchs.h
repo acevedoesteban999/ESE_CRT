@@ -41,7 +41,7 @@ public:
 			if(!strcmp(sb->bocetos[i]->name,p->name))
 				sb->Sub(sb->bocetos[i]->name,sb);
 
-		if(sb->contB>=sb->cantB)
+		if(sb->contB>=sb->cantB-1)
 		{
 			Plano**Newp=new Plano*[sb->cantB+10];
 			sb->cantB+=10;

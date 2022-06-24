@@ -143,20 +143,20 @@ public:
 					sheet->writeNum(2,10,GrabarAngles[5]);
 					unsigned row=3;
 					CRD crd;
-					for(unsigned j=0;j<GrabarCont;j+=2)
+					for(unsigned j=0;j<GrabarCont;j++)
 					{	
-						if(!DataProcessor::CodigoCliente(bytes[j],bytes[j+1])&&!DataProcessor::CodigoSeguridad(bytes[j],bytes[j+1]))
+						if(!DataProcessor::CodigoCliente(bytes[j])&&!DataProcessor::CodigoSeguridad(bytes[j]))
 						{
-							DataProcessor::PorcesarDatos(bytes[j],bytes[j+1],GrabarAngles);
+							DataProcessor::PorcesarDatos(bytes[j],GrabarAngles,(GLfloat)1);
 						}
 						else if(bytes[j]==7)
 						{
 							GrabarAngles[0]=(float)AnglulesRediredireccionarGrabar[0];
 							GrabarAngles[1]=(float)AnglulesRediredireccionarGrabar[1];
 							GrabarAngles[2]=(float)AnglulesRediredireccionarGrabar[2];
-							GrabarAngles[3]=(float)AnglulesRediredireccionarGrabar[3];
-							GrabarAngles[4]=(float)AnglulesRediredireccionarGrabar[4];
-							GrabarAngles[5]=(float)AnglulesRediredireccionarGrabar[5];
+							//GrabarAngles[3]=(float)AnglulesRediredireccionarGrabar[3];
+							//GrabarAngles[4]=(float)AnglulesRediredireccionarGrabar[4];
+							//GrabarAngles[5]=(float)AnglulesRediredireccionarGrabar[5];
 						}
 						DataProcessor::CalcularCoordenadas(crd,GrabarAngles);
 						char*f=DataProcessor::GetByteStr(bytes[j+1]);
@@ -172,9 +172,9 @@ public:
 						sheet->writeNum(row,5,GrabarAngles[0]);
 						sheet->writeNum(row,6,GrabarAngles[1]);
 						sheet->writeNum(row,7,GrabarAngles[2]);
-						sheet->writeNum(row,8,GrabarAngles[3]);
+						/*sheet->writeNum(row,8,GrabarAngles[3]);
 						sheet->writeNum(row,9,GrabarAngles[4]);
-						sheet->writeNum(row++,10,GrabarAngles[5]);
+						sheet->writeNum(row++,10,GrabarAngles[5]);*/
 					}
 					unsigned contttttt=0;
 					string s="ESE_CRT-XLS/";

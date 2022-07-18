@@ -6,27 +6,27 @@ public:
 	//////////////////////////////////////////////////VARIABLES////////////////////////
 	int contLoaderObject;
     int cantLoaderObject;
-	GLfloat*angules;
-	double*CoordReales;
+	GLfloat*DataESE;
+	//double*CoordReales;
 	bool Salir,errorCarga;
 	/////////DINAMICOS///////////////
     LoaderObject**Stack;
 	///////////////////////////////////////////////////METODOS///////////////////////////
 
 	///////////////CONSTRUCTORES Y DESTUCTOR//////
-	StackLoaderObject(void)
+	StackLoaderObject(GLfloat*DataESE=nullptr)
 	{
+		this->DataESE=DataESE;
 		contLoaderObject=0;
 		cantLoaderObject=10;
-		angules=new GLfloat[6];
 		Stack=new LoaderObject*[cantLoaderObject];//inicializo el arreglo
-		CoordReales=new double[3];
+		//CoordReales=new double[3];
 		Salir=errorCarga=false;
 	};
 	~StackLoaderObject()
 	{
-		delete[]angules;
-		delete[]CoordReales;
+		//delete DataESE; no delete porq se va a eliminar en otra zona
+		//delete[]CoordReales;
 		for(unsigned i=0;i<(unsigned)contLoaderObject;i++)
 			delete Stack[i];
 		delete[]Stack;
@@ -173,134 +173,140 @@ public:
 		//37.481040954589844 361.38070678710937 472.38644409179687
 };
 	static void RotateAndMoveArticAndDraw(int caso,StackLoaderObject*slo){
-	//procedimientos(rotaciones segun angArtc's) q se hacen con aterioridad para q quede pintado en la posicion q se desee
+	//procedimientos(moviminto segun Data) q se hacen con aterioridad para q quede pintado en la posicion q se desee
 	
 	//cada caso corresponde con la posicion del LoaderObject en el Stack
 	switch (caso+1)
 	{
 	case 1:
-	case 4:
-	case 6:
-	case 8:
-	case 11:
-	case 13:
-	case 15:	
-		break;
-
-	case 2:
-		glTranslatef(0.0,0.0,(GLfloat)51.000);		
-		break;
-
 	case 3:
-		//////////////////////////////////////
-		glRotatef(slo->angules[0],0.0,0.0,1.0);	
-		break;
 	case 5:
-		glTranslatef(0.0,0.0,(GLfloat)37.300);
-		glRotatef(-90,1,0,0);
-		//////////////////////////////////////
-		glRotatef(slo->angules[1],0.0,0.0,1.0);	
-		break;			
-
 	case 7:
-		glTranslatef((GLfloat)150.00,0.0,0.0);
-		//////////////////////////////////////
-		glRotatef(slo->angules[2],0.0,0.0,1.0);	
 		break;
-
-	case 9:
-		glTranslatef((GLfloat)228.959,0.0,(GLfloat)-25.802);	
+	case 2:
+		glTranslatef(slo->DataESE[0],0,0);
 		break;
-
-	case 10:
-		//////////////////////////////////////
-		glRotatef(slo->angules[3],0.0,0.0,1.0);
-		break;
-
-	case 12:
-		glRotatef(90,1,0,0);
-		//////////////////////////////////////
-		glRotatef(slo->angules[4],0.0,0.0,1.0);
-		break;
-
-	case 14:
-		glRotatef(-90,0,0,1);
-		glRotatef(-90,1,0,0);
-		//////////////////////////////////////
-		glRotatef(slo->angules[5],0.0,0.0,1.0);
-		
-		
-		break;
-
-	case 16:
-		glTranslatef(0.0,0.0,(GLfloat)61.15);
-		glRotatef(90,1,0,0);
-		glRotatef(90,0,0,1);
-		glTranslatef(0.0,0.0,(GLfloat)-177.00);
-		break;
-	default:
-		// glTranslatef(0.0,(GLfloat)100,0);
-		break;
-	/*case 0:
-		break;
-
-	case 1:
-		   glTranslatef(0.0,0.0,(GLfloat)-0.25);
-		break;
-
-     case 2:
-		 glRotatef(slo->angules[0],0.0,0.0,1.0);
-		 glTranslatef(0.0,0.0,(GLfloat)7.45);	
-		break;
-
-	case 3:
-		glTranslatef(0.0,(GLfloat)-18.2,(GLfloat)36.5);
-	    glRotatef(-slo->angules[1],0,1,0);
-		break;
-
 	case 4:
-		glTranslatef(0.0,(GLfloat)0.5,0.0);
+		glTranslatef(0,slo->DataESE[1],0);
 		break;
-
-	case 5:
-		glTranslatef((GLfloat)-150,0,0);
-		glRotatef(-slo->angules[2],0,1,0);
+	case 6:
+		glTranslatef(0,0,slo->DataESE[2]);
 		break;
-		
-		case 6:
-		   glTranslatef(0.0,(GLfloat)12.3,0.0);	
-		break;
+/*
+	//case 2:
+	//	glTranslatef(0.0,0.0,(GLfloat)51.000);		
+	//	break;
 
-		case 7:
-			glTranslatef(0.0,0.0,(GLfloat)200);
-		break;
+	//case 3:
+	//	//////////////////////////////////////
+	//	glRotatef(slo->DataESE[0],0.0,0.0,1.0);	
+	//	break;
+	//case 5:
+	//	glTranslatef(0.0,0.0,(GLfloat)37.300);
+	//	glRotatef(-90,1,0,0);
+	//	//////////////////////////////////////
+	//	glRotatef(slo->DataESE[1],0.0,0.0,1.0);	
+	//	break;			
 
-		case 8:
-			glTranslatef(0,(GLfloat)7.716,(GLfloat)25.5);
-			glRotatef(slo->angules[3],1,0,0);
-		break;
+	//case 7:
+	//	glTranslatef((GLfloat)150.00,0.0,0.0);
+	//	//////////////////////////////////////
+	//	glRotatef(slo->DataESE[2],0.0,0.0,1.0);	
+	//	break;
 
-		case 9:
-			glTranslatef(0,0.0,(GLfloat)53);
-			glRotatef(slo->angules[4],0,1,0);
-		break;
+	//case 9:
+	//	glTranslatef((GLfloat)228.959,0.0,(GLfloat)-25.802);	
+	//	break;
 
-		case 10:	
-			glTranslatef(0.0,(GLfloat)-8.915,(GLfloat)35);
-			glRotatef(slo->angules[5],0,0,1);
-		break;
+	//case 10:
+	//	//////////////////////////////////////
+	//	glRotatef(slo->DataESE[3],0.0,0.0,1.0);
+	//	break;
 
-		case 11:
-			glTranslatef(0,0,(GLfloat)6);
-			break;
+	//case 12:
+	//	glRotatef(90,1,0,0);
+	//	//////////////////////////////////////
+	//	glRotatef(slo->DataESE[4],0.0,0.0,1.0);
+	//	break;
 
-		case 12:
-			glTranslatef((GLfloat)142.696,(GLfloat)0,(GLfloat)10.645);
-			break;
+	//case 14:
+	//	glRotatef(-90,0,0,1);
+	//	glRotatef(-90,1,0,0);
+	//	//////////////////////////////////////
+	//	glRotatef(slo->DataESE[5],0.0,0.0,1.0);
+	//	
+	//	
+	//	break;
 
-		case 13:
-			glTranslatef((GLfloat)34,0,0);
-			break;*/
+	//case 16:
+	//	glTranslatef(0.0,0.0,(GLfloat)61.15);
+	//	glRotatef(90,1,0,0);
+	//	glRotatef(90,0,0,1);
+	//	glTranslatef(0.0,0.0,(GLfloat)-177.00);
+	//	break;
+	//default:
+	//	// glTranslatef(0.0,(GLfloat)100,0);
+	//	break;
+	//*case 0:
+	//	break;
+
+	//case 1:
+	//	   glTranslatef(0.0,0.0,(GLfloat)-0.25);
+	//	break;
+
+ //    case 2:
+	//	 glRotatef(slo->DataESE[0],0.0,0.0,1.0);
+	//	 glTranslatef(0.0,0.0,(GLfloat)7.45);	
+	//	break;
+
+	//case 3:
+	//	glTranslatef(0.0,(GLfloat)-18.2,(GLfloat)36.5);
+	//    glRotatef(-slo->DataESE[1],0,1,0);
+	//	break;
+
+	//case 4:
+	//	glTranslatef(0.0,(GLfloat)0.5,0.0);
+	//	break;
+
+	//case 5:
+	//	glTranslatef((GLfloat)-150,0,0);
+	//	glRotatef(-slo->DataESE[2],0,1,0);
+	//	break;
+	//	
+	//	case 6:
+	//	   glTranslatef(0.0,(GLfloat)12.3,0.0);	
+	//	break;
+
+	//	case 7:
+	//		glTranslatef(0.0,0.0,(GLfloat)200);
+	//	break;
+
+	//	case 8:
+	//		glTranslatef(0,(GLfloat)7.716,(GLfloat)25.5);
+	//		glRotatef(slo->DataESE[3],1,0,0);
+	//	break;
+
+	//	case 9:
+	//		glTranslatef(0,0.0,(GLfloat)53);
+	//		glRotatef(slo->DataESE[4],0,1,0);
+	//	break;
+
+	//	case 10:	
+	//		glTranslatef(0.0,(GLfloat)-8.915,(GLfloat)35);
+	//		glRotatef(slo->DataESE[5],0,0,1);
+	//	break;
+
+	//	case 11:
+	//		glTranslatef(0,0,(GLfloat)6);
+	//		break;
+
+	//	case 12:
+	//		glTranslatef((GLfloat)142.696,(GLfloat)0,(GLfloat)10.645);
+	//		break;
+
+	//	case 13:
+	//		glTranslatef((GLfloat)34,0,0);
+	//		break;*/
 
 	}
 	LoaderObject::pintarse(slo->Stack[caso]);
@@ -316,14 +322,14 @@ public:
 
 } ;
 	//////////////SETS//////////////////////////////
-	static void setAnguleArt1(GLfloat*angules,StackLoaderObject*slo){
-	//no hace falta explicar VERDAD?
-	slo->angules[0]=angules[0];
-	slo->angules[1]=angules[1];
-	slo->angules[2]=angules[2];
-	slo->angules[3]=angules[3];
-	slo->angules[4]=angules[4];
-	slo->angules[5]=angules[5];
-};
+//	static void setAnguleArt1(GLfloat*DataESE,StackLoaderObject*slo){
+//	//no hace falta explicar VERDAD?
+//	slo->DataESE[0]=DataESE[0];
+//	slo->DataESE[1]=DataESE[1];
+//	slo->DataESE[2]=DataESE[2];
+//	slo->DataESE[3]=DataESE[3];
+//	slo->DataESE[4]=DataESE[4];
+//	slo->DataESE[5]=DataESE[5];
+//};
 };
 

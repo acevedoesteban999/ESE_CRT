@@ -52,7 +52,7 @@ float velGiro=3;
 float &movESE_CRTX=movRatX,&movESE_CRTY=movRatY,movESE_CRTZ=25;
 float height,wigth;
 double trasladarX=0,trasladarY=0,trasladarZ=0;
-double anglesRedirecc[6]={0,0,0,0,0,0};
+double anglesRedirecc[3]={0,0,0};
 GLfloat DataESE[3]={0,0,0};
 GLfloat heightOrtho,wigthOrtho;
 GLdouble movWheel=1;
@@ -60,7 +60,7 @@ Language idioma=SPANISH;
 ConnectionType Connecttype=ConnectionType::SERIAL_PORT;
 ///////////////////OBJECTS//////////////////////////////////////
 CRD cooRd(0,0,0);
-StackLoaderObject*ManejadorObject=new StackLoaderObject();
+StackLoaderObject*ManejadorObject=new StackLoaderObject(DataESE);
 SerialPort SeriPort;
 TimeDuration tCOM(true);
 StackSketchs*ManejadorSketchs=new StackSketchs();
@@ -1031,7 +1031,7 @@ void ESE_CRT::Inicializar(){
 	 glLoadIdentity();//cargo identidad
 	 //inicio la proyeccion
 	 initProyecc();
-	 ManejadorObject->setAnguleArt1(DataESE,ManejadorObject);////agrego los angulos de rotacion a mi ManejadorObject
+	 //ManejadorObject->setAnguleArt1(DataESE,ManejadorObject);////agrego los angulos de rotacion a mi ManejadorObject
 	 wheelAndRotate();//me giro y acerco o alejo 
 }
 bool ESE_CRT::IniciarCargObjetos()
@@ -2530,9 +2530,6 @@ void ESE_CRT::SpecialKeys(int tecla,int x,int y ){
 		DataESE[0]=(GLfloat)anglesRedirecc[0];
 		DataESE[1]=(GLfloat)anglesRedirecc[1];
 		DataESE[2]=(GLfloat)anglesRedirecc[2];
-		/*DataESE[3]=(GLfloat)anglesRedirecc[3];
-		DataESE[4]=(GLfloat)anglesRedirecc[4];
-		DataESE[5]=(GLfloat)anglesRedirecc[5];*/
 		 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 		ShowAngules();
 	break;
@@ -2586,10 +2583,6 @@ void ESE_CRT::SpecialKeys(int tecla,int x,int y ){
 			DataESE[0]=(GLfloat)anglesRedirecc[0];
 			DataESE[1]=(GLfloat)anglesRedirecc[1];
 			DataESE[2]=(GLfloat)anglesRedirecc[2];
-			/*DataESE[3]=(GLfloat)anglesRedirecc[3];
-			DataESE[4]=(GLfloat)anglesRedirecc[4];
-			DataESE[5]=(GLfloat)anglesRedirecc[5];*/
-			MenuVista(-1);
 			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
 			ShowAngules();
 		}
@@ -3621,7 +3614,7 @@ bool ESE_CRT::SetAnglesREdirecc()
 				string angle(c);
 				angle=angle.substr(1,angle.find_first_of(" "));
 				anglesRedirecc[contAngleRedirecc++]=(double)atof((char*)angle.c_str());
-				if(contAngleRedirecc==6)
+				if(contAngleRedirecc==3)
 					return true;
 			}
 		}

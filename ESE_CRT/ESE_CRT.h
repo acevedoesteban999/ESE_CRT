@@ -23,6 +23,7 @@
 #include "XLSClass.h"
 #include <mmsystem.h>
 #include "Container.h"
+#include "StackMessenger.h"
 #define RazonDeAumento 1
 
 using namespace std;

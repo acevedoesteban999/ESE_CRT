@@ -10,8 +10,18 @@ public:
 	TimE=0;
 	tBool=false;
 };
-	TimeDuration(bool InitIncrementa){if(InitIncrementa)this->tBool=true;this->TimeClock=(float)clock();};
-	TimeDuration(float t){this->tBool=true,this->TimE=t;TimeClock=(float)clock();};
+	TimeDuration(bool InitIncrementa)
+	{
+		if(InitIncrementa)
+			this->tBool=true;
+		this->TimeClock=(float)clock();
+	};
+	TimeDuration(float t)
+	{
+		this->tBool=true;
+		this->TimE=t;
+		TimeClock=(float)clock();
+	};
 	~TimeDuration(){};
 	static float Incrementa(TimeDuration*TimeDurat){
 	if(TimeDurat->tBool)
@@ -45,6 +55,7 @@ public:
 	static void  InitDecrementa(TimeDuration*TimeDurat,float tiMe){
 		TimeDurat->tBool=true;
 		TimeDurat->TimE=tiMe;
+		TimeDurat->TimeClock=(float)clock();
 };
 	static void ResetT(TimeDuration*TimeDurat){TimeDurat->TimeClock=0;TimeDurat->tBool=false;TimeDurat->TimE=0;};
 	static void ResettIncrementa(TimeDuration*TimeDurat){TimeDurat->TimE=0;};

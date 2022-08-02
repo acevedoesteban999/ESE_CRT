@@ -1,6 +1,6 @@
 #include "ESE_CRT.h"
 ////////////////////////////////////////////////////////////////VERSION//////////////////////////////////////////////////////////
-														char*ESE_CRT_Version="1.0.1";
+														char*ESE_CRT_Version="1.1.0";
 ///////////////////////////////////////////////////////////VARIABLES GLOBALES////////////////////////////////////////////////////
 bool recibir_serie=false;
 bool CargObjct=false,cargMenu=false;
@@ -59,7 +59,11 @@ GLdouble movWheel=1;
 Language idioma=SPANISH;
 ConnectionType Connecttype=ConnectionType::SERIAL_PORT;
 ///////////////////OBJECTS//////////////////////////////////////
-CRD cooRd(0,0,0);
+//CRD cooRd(0,0,0);
+CRD cooRd()
+{
+	return CRD(DataESE[0],DataESE[1],DataESE[2]);
+}
 StackLoaderObject*ManejadorObject=new StackLoaderObject(DataESE);
 SerialPort SeriPort;
 TimeDuration tCOM(true);
@@ -67,11 +71,11 @@ StackSketchs*ManejadorSketchs=new StackSketchs();
 thread*ThreadLoadObject=new thread();
 thread*ThreadSerialPort=new thread();
 //mutex MutexManejadorForms,MutexManejadorSketchs;
-MeSSenger*messeng=new MeSSenger();
+//MeSSenger*messeng=new MeSSenger();
 StackForms*ManejadorForms=new StackForms();
 ///////////////////////////////////////////////////////////METODOS//////////////////////////////////////////////////////////////
-
-///////////////////DESTRUCTOR GLOBAL/////////////////////////////////////////////////
+StackMessenger*ManejadorMensajes=new StackMessenger();
+///////////////////FUNCIONES GLOBALES/////////////////////////////////////////////////
 void sonidos(unsigned sonido)
 {
 	switch (sonido)
@@ -946,7 +950,7 @@ void DestruirVariablesGlobales()
 			ThreadSerialPort->join();
 		delete ThreadSerialPort;
 		delete ManejadorForms;
-		delete messeng;
+		delete ManejadorMensajes;
 		delete ManejadorSketchs;
 		delete ManejadorObject;
 		delete[]toSaveCOM;
@@ -963,6 +967,7 @@ void Exit()
 {
 	exit(0);
 }
+///////////////////CLASS/////////////////////////////////////////////////////////////
 ESE_CRT::ESE_CRT(){
 	atexit(Exit);
 	//Constructor
@@ -990,6 +995,7 @@ ESE_CRT::ESE_CRT(){
 	glutIdleFunc(Idle);//al no recivir eventos
 	glutCloseFunc(salvarInitDatos);//al cerrarse
 	glutPassiveMotionFunc(movPasiveRaton);	//al moverse pasivamente el mause(al desplazar emouse por la ventana de la app)
+	//glutMainLoop();
 	//////////////////////////INICIO MATRISES///////////////////////////////
 	initProyecc();//inicializo el tipo de proyeccion y sus dimenciones
 	cargarInitDatos();//cargar datos q se guardaron en un archivo .onrn q se guarda al cerrarse y hace q inicie donde lo dejastes(inicie el rotado lo demas tengo q programarlo)
@@ -1144,7 +1150,7 @@ void ESE_CRT::display(){
     Inicializar();//iniciaizo proyeccion y pongo los angulos del brazo 
 	Entorno();//Cargo los objetos, forms y demas elementos
 
-    glFlush();//siempre lleva esto 
+    glFlush();//siempre lleva esto  (asegura que los comandos anteriores de OpenGL debe completarse en un tiempo finito)
 	glutSwapBuffers();
 	//FPS
 	//tl.Incrementa(&tl);
@@ -1155,15 +1161,17 @@ void ESE_CRT::display(){
 void ESE_CRT::Entorno(){
 	  glPushMatrix();
 	  glLoadIdentity();
-
+	  cout<<".";
 	  if(SeguirPuntoFinal)//F7 Seguir punto final
 	  {
-	     trasladarX=-cooRd.x;
-	     trasladarY=-cooRd.y;
-	     trasladarZ=-cooRd.z;
+		 trasladarX=-DataESE[0];
+	     trasladarY=-DataESE[1];
+	     trasladarZ=-DataESE[2];
 	  }
 
-	  messeng->Drawing_and_Decremt(messeng);//Textos de los mensajes superiores centrados
+	  //ManejadorMensajes->Draw();//Textos de los mensajes superiores centrados
+	  if(ManejadorMensajes->Draw())
+		  glutPostRedisplay();
 	  if(!BoxAbout&&!Boxf1&&!BoxReconnect&&!BoxExit)
 		text("o",-2.0,-1.5,2*wigth-1,(GLfloat)0.8,(GLfloat)0.8,(GLfloat)0.8);
 	  
@@ -1195,7 +1203,11 @@ void ESE_CRT::Entorno(){
 			  glPointSize((GLfloat)(contMenuToDraw==-1?(GLfloat)2:5));
 			  glColor3f(0,0,0);
 			  glBegin(GL_POINTS);
-				glVertex3f((GLfloat)cooRd.x,(GLfloat)cooRd.y,(GLfloat)cooRd.z);
+				glVertex3f((GLfloat)DataESE[0],(GLfloat)DataESE[1],(GLfloat)DataESE[2]);
+			  glEnd();
+			  glBegin(GL_LINES);
+				glVertex3f(0,0,0);
+				glVertex3f((GLfloat)DataESE[0],(GLfloat)DataESE[1],(GLfloat)DataESE[2]);
 			  glEnd();
 		  glPopMatrix();
 	  }	
@@ -1311,9 +1323,9 @@ void ESE_CRT::ShowAngules(bool IsAtCreate,bool IsAtReciv){
 						//	 ManejadorForms->GetForm("labelAngule3",ManejadorForms)->AddNewText((char*)to_string(DataESE[3]).c_str());
 						//	 ManejadorForms->GetForm("labelAngule4",ManejadorForms)->AddNewText((char*)to_string(DataESE[4]).c_str());
 						//	 ManejadorForms->GetForm("labelAngule5",ManejadorForms)->AddNewText((char*)to_string(DataESE[5]).c_str());
-						//	 ManejadorForms->GetForm("labelCoordX",ManejadorForms)->AddNewText((char*)(string("x:")+to_string(cooRd.x)).c_str());	
-						//	 ManejadorForms->GetForm("labelCoordY",ManejadorForms)->AddNewText((char*)(string("y:")+to_string(cooRd.y)).c_str());
-						//	 ManejadorForms->GetForm("labelCoordZ",ManejadorForms)->AddNewText((char*)(string("z:")+to_string(cooRd.z)).c_str());
+						//	 ManejadorForms->GetForm("labelCoordX",ManejadorForms)->AddNewText((char*)(string("x:")+to_string(DataESE[0])).c_str());	
+						//	 ManejadorForms->GetForm("labelCoordY",ManejadorForms)->AddNewText((char*)(string("y:")+to_string(DataESE[1])).c_str());
+						//	 ManejadorForms->GetForm("labelCoordZ",ManejadorForms)->AddNewText((char*)(string("z:")+to_string(DataESE[2])).c_str());
 						//	 
 						//}
 }
@@ -1355,7 +1367,7 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 				if(!strcmp(ManejadorSketchs->bocetos[i]->name,ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxGetEscritura("textBoxNewBoceto")))
 				{
 					
-					messeng->NewMeSSenger(messeng,Frases(44),CENTER_TOP,wigth,height,3,1,0,0,2);
+					ManejadorMensajes->Add(Frases(44),CENTER_TOP,wigth,height,3,1,0,0,2);
 					ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxSetFocusColorTimer("textBoxNewBoceto");
 					box->Cancelar(box);
 					Err=true;
@@ -1406,7 +1418,7 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 		    ManejadorForms->Sub("BoxInterfazDetenerConnectionButtonCancel",ManejadorForms);
 		    ManejadorForms->Add(Interfaz(0),ManejadorForms);
 			default_menu(-5);
-			messeng->NewMeSSenger(messeng,Frases(45),position::CENTER_TOP,wigth,height,3,1,1,0,2);
+			ManejadorMensajes->Add(Frases(45),position::CENTER_TOP,wigth,height,3,1,1,0,2);
 		    return box;
 		break;
 		case 6:
@@ -1429,11 +1441,11 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 				All=false;
 			if(XLSClass::Salvar(ManejadorSketchs->bocetos,u,u1,All,All?ManejadorSketchs->contB:0))
 			{
-				messeng->NewMeSSenger(messeng, Frases(46),position::CENTER_TOP,wigth,height,3,0,1,0,2);
+				ManejadorMensajes->Add( Frases(46),position::CENTER_TOP,wigth,height,3,0,1,0,2);
 			}
 			else
 			{
-				messeng->NewMeSSenger(messeng, Frases(112),position::CENTER_TOP,wigth,height,5,1,1,0,2);
+				ManejadorMensajes->Add( Frases(112),position::CENTER_TOP,wigth,height,5,1,1,0,2);
 				if(ModoSonido)sonidos(2);
 			}
 			delete[]u;
@@ -1545,8 +1557,8 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 			desactivaAcept=true;
 		break;
 	case 2://///////////////////////////INTERFAZ_2////////////////////////
-		ManejadorSketchs->ActualizaLastCood(cooRd,ManejadorSketchs); 
-		Plano::ActualiWidthHeight(cooRd,ManejadorSketchs->BocetoActual(ManejadorSketchs));
+		ManejadorSketchs->ActualizaLastCood(cooRd(),ManejadorSketchs); 
+		Plano::ActualiWidthHeight(cooRd(),ManejadorSketchs->BocetoActual(ManejadorSketchs));
 		ManejadorSketchs->SetDraw(true,ManejadorSketchs);
 		RadioButtomPintar=0;
 		s=(ManejadorSketchs->BocetoActual(ManejadorSketchs)->name);
@@ -1981,8 +1993,9 @@ void ESE_CRT::movPasiveRaton(GLsizei x,GLsizei y)
 	} 
 };
 void ESE_CRT::Idle(){
-   if(recibir_serie||ManejadorForms->GetEstoyEscribindo()||!CargObjct)
-	  glutPostRedisplay();
+  // if(recibir_serie||ManejadorForms->GetEstoyEscribindo()||!CargObjct)
+	 // glutPostRedisplay();
+	//cout<<"|"<<endl;
 }
 void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 	if(boton==GLUT_LEFT_BUTTON && state==GLUT_UP)
@@ -2042,7 +2055,7 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 					CloseClipboard();
 					if(ModoSonido)sonidos(7);
 					if(ModoLogger)cout<<Frases(88)<<"->"<<Frases(86)<<endl;
-					messeng->NewMeSSenger(messeng,Frases(88),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,0,1,0,2);
+					ManejadorMensajes->Add(Frases(88),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,0,1,0,2);
 			   }  
 		   }
 		   else if(Forms::IsPulsdo((float)x,(float)y,ManejadorForms->GetForm("BoxExit",ManejadorForms)))
@@ -2188,19 +2201,19 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 										ManejadorSketchs->ResetNewPlano(ManejadorSketchs);
 										ManejadorSketchs->contNPl=4;	    
 										ManejadorSketchs->AddNewType(TypePlano::XY,ManejadorSketchs);
-										ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd,ManejadorSketchs,deFult);
+										ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd(),ManejadorSketchs,deFult);
 								   break;
 								case 3:///XZ//////
 										ManejadorSketchs->AddNewType(TypePlano::XZ,ManejadorSketchs);
 										ManejadorSketchs->ResetNewPlano(ManejadorSketchs);
 										ManejadorSketchs->contNPl=4;
-										ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd,ManejadorSketchs,deFult);
+										ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd(),ManejadorSketchs,deFult);
 								   break;
 								case 4:///YZ//////
 										ManejadorSketchs->AddNewType(TypePlano::YZ,ManejadorSketchs);
 										ManejadorSketchs->ResetNewPlano(ManejadorSketchs);
 										ManejadorSketchs->contNPl=4;
-										ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd,ManejadorSketchs,deFult);
+										ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd(),ManejadorSketchs,deFult);
 								   break;
 						   }
 						   ManejadorForms->Add(Interfaz(-5),ManejadorForms); 
@@ -2209,7 +2222,7 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 						 if(bocetoACrear>1)
 						 {
 							 deFult= ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxGetRBGChecket("RadioButtonGroupPlanoPosittion")==0?true:false;
-							 ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd,ManejadorSketchs,deFult);
+							 ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd(),ManejadorSketchs,deFult);
 						 }
 						 break;
 					}
@@ -2232,9 +2245,9 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 							ManejadorForms->Add(new Label("labelAngule3",(char*)to_string(DataESE[3]).c_str(), CRD(wigth-120,70,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
 							ManejadorForms->Add(new Label("labelAngule4",(char*)to_string(DataESE[4]).c_str(), CRD(wigth-120,85,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
 							ManejadorForms->Add(new Label("labelAngule5",(char*)to_string(DataESE[5]).c_str(), CRD(wigth-120,100,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-							ManejadorForms->Add(new Label("labelCoordX",(char*)(string("x:")+to_string(cooRd.x)).c_str(), CRD(wigth-120,115,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-							ManejadorForms->Add(new Label("labelCoordY",(char*)(string("y:")+to_string(cooRd.y)).c_str(), CRD(wigth-120,130,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-							ManejadorForms->Add(new Label("labelCoordZ",(char*)(string("z:")+to_string(cooRd.z)).c_str(), CRD(wigth-120,145,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
+							ManejadorForms->Add(new Label("labelCoordX",(char*)(string("x:")+to_string(DataESE[0])).c_str(), CRD(wigth-120,115,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
+							ManejadorForms->Add(new Label("labelCoordY",(char*)(string("y:")+to_string(DataESE[1])).c_str(), CRD(wigth-120,130,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
+							ManejadorForms->Add(new Label("labelCoordZ",(char*)(string("z:")+to_string(DataESE[2])).c_str(), CRD(wigth-120,145,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
 							
 							ShowAngules(true);
 							
@@ -2329,12 +2342,12 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 			 //  }
 			 //  if(eRror)
 			 //  {
-				//   messeng->NewMeSSenger(messeng,Frases(48),position::CENTER_TOP,wigth,height,3,1,0,0,2);
+				//   ManejadorMensajes->Add(Frases(48),position::CENTER_TOP,wigth,height,3,1,0,0,2);
 				//  if(ModoSonido)sonidos(6);
 			 //  }
 			 //  else
 			 //  {
-				//   messeng->NewMeSSenger(messeng,Frases(49),position::CENTER_TOP,wigth,height,3,0,1,0,2);
+				//   ManejadorMensajes->Add(Frases(49),position::CENTER_TOP,wigth,height,3,0,1,0,2);
 				//   for(unsigned i=0;i<6;i++)
 				//   {
 				//   s=("textBoxsSetAngules");
@@ -2344,8 +2357,8 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 				//	s.clear();
 				//
 				//   }
-				//   // DataProcessor::CalcularCoordenadas(cooRd,DataESE);
-				//   DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+				//   // DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
+				//   DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 				//   	
 				//   ShowAngules();
 				//   	
@@ -2367,10 +2380,11 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 }
 void ESE_CRT::keyboard(unsigned char tecla,int x,int y )
 {
-
+	
 	if(tecla=='g'||tecla=='G')
    {
-	  if(GrabarBool)
+	   ManejadorMensajes->Add("Se ha tocado la letra 'g' o 'G'",CENTER_TOP,wigth,height,5,1,1,1);
+	  /*if(GrabarBool)
 	  {
 		GrabarBool=false;
 
@@ -2378,7 +2392,7 @@ void ESE_CRT::keyboard(unsigned char tecla,int x,int y )
 		XLSClass asd;
 		asd.SalvarGrabar(GrabarAngle,Grabar,GrabarCont,anglesRedirecc);
 
-		messeng->NewMeSSenger(messeng,"Grabacion Terminada",position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,2,0,1,0,2);
+		ManejadorMensajes->Add("Grabacion Terminada",position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,2,0,1,0,2);
 	  }
 	  else
 	  {
@@ -2386,8 +2400,8 @@ void ESE_CRT::keyboard(unsigned char tecla,int x,int y )
 		   GrabarAngle[i]=(float)DataESE[i];
 		GrabarCont=0;
 		GrabarBool=true;
-		messeng->NewMeSSenger(messeng,"Grabando",position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,100,1,1,1,2);
-	  }
+		ManejadorMensajes->Add("Grabando",position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,100,1,1,1,2);
+	  }*/
   }
   if(ManejadorForms->GetEstoyEscribindo())
   {
@@ -2406,62 +2420,62 @@ void ESE_CRT::keyboard(unsigned char tecla,int x,int y )
 	    {
         case '1':
 			DataESE[0]+=(GLfloat)RazonDeAumento;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;
 
 		case '2':
 			DataESE[0]-=(GLfloat)RazonDeAumento;	
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;
 
 		case '3':
 			DataESE[1]+=(GLfloat)RazonDeAumento;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;
 
 		case '4':
 			DataESE[1]-=(GLfloat)RazonDeAumento;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;
 
 		case '5':
 			DataESE[2]+=(GLfloat)RazonDeAumento;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;
 
 		case '6':
 			DataESE[2]-=(GLfloat)RazonDeAumento;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;
 
 		/*case '7':
 			DataESE[3]+=(GLfloat)0.9;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;
 
 		case '8':
 			DataESE[3]-=(GLfloat)0.9;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;
 
 		case '9':	
 			DataESE[4]+=(GLfloat)0.9;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;
 
 		case '0':
 			DataESE[4]-=(GLfloat)0.9;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;
 
 		case '-':			
 			DataESE[5]+=(GLfloat)0.9;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;
 
 		case '=':
 			DataESE[5]-=(GLfloat)0.9;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		break;*/
 
 		case '<':
@@ -2530,7 +2544,7 @@ void ESE_CRT::SpecialKeys(int tecla,int x,int y ){
 		DataESE[0]=(GLfloat)anglesRedirecc[0];
 		DataESE[1]=(GLfloat)anglesRedirecc[1];
 		DataESE[2]=(GLfloat)anglesRedirecc[2];
-		 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+		 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		ShowAngules();
 	break;
 
@@ -2583,7 +2597,7 @@ void ESE_CRT::SpecialKeys(int tecla,int x,int y ){
 			DataESE[0]=(GLfloat)anglesRedirecc[0];
 			DataESE[1]=(GLfloat)anglesRedirecc[1];
 			DataESE[2]=(GLfloat)anglesRedirecc[2];
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 			ShowAngules();
 		}
 		else
@@ -2610,7 +2624,7 @@ void ESE_CRT::SpecialKeys(int tecla,int x,int y ){
 		   DataESE[5]=0;*/
 		   SeguirPuntoFinal=false;
 		   MenuVista(-1);
-		   DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+		   DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		   ShowAngules();
 		}
 		else
@@ -2624,9 +2638,9 @@ void ESE_CRT::SpecialKeys(int tecla,int x,int y ){
 	break;
 
 	case GLUT_KEY_F6:	//Ir al punto final del brazo
-		trasladarX=-cooRd.x;
-		trasladarY=-cooRd.y;
-		trasladarZ=-cooRd.z;
+		trasladarX=-DataESE[0];
+		trasladarY=-DataESE[1];
+		trasladarZ=-DataESE[2];
 		SeguirPuntoFinal=false;
 	break;
 
@@ -2634,7 +2648,7 @@ void ESE_CRT::SpecialKeys(int tecla,int x,int y ){
 		if(!SeguirPuntoFinal)
 		{   
 			SeguirPuntoFinal=true;
-			 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+			 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		}
 		break;
 	case GLUT_KEY_F8:
@@ -2728,7 +2742,7 @@ void ESE_CRT::default_menu(int opcion){
 			   msg[f.length()]=0;
 			   for(unsigned i=0;i<f.length();i++)
 				   msg[i]=f[i]; 
-			   messeng->NewMeSSenger(messeng,(char*)f.c_str(),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,5,1,0,0,2);
+			   ManejadorMensajes->Add((char*)f.c_str(),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,5,1,0,0,2);
 		   }
 		else 
 		   {
@@ -2762,7 +2776,7 @@ void ESE_CRT::default_menu(int opcion){
 				delete ThreadSerialPort;
 			    ThreadSerialPort=new thread(ThreadCOM);
 			    contMenuToDraw=-1;
-			    messeng->NewMeSSenger(messeng,msg,position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,0,1,0,2);
+			    ManejadorMensajes->Add(msg,position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,0,1,0,2);
 				delete[]toSaveCOM;
 				toSaveCOM=new char[strlen(SeriPort.getChar())+1];
 				toSaveCOM[strlen(SeriPort.getChar())]=0;
@@ -2837,14 +2851,14 @@ void ESE_CRT::default_menu(int opcion){
 	case -8: //desact modo logger
 			ModoLogger=false;
 			if(ModoSonido)sonidos(7);
-			messeng->NewMeSSenger(messeng,Frases(80),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,1,0,2);
+			ManejadorMensajes->Add(Frases(80),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,1,0,2);
 			cout<<Frases(80)<<endl;
 			InitMenu();
 		break;
 	case -9:  //activ modo logger
 			if(ModoSonido)sonidos(7);
 			ModoLogger=true;
-			messeng->NewMeSSenger(messeng,Frases(81),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,1,0,2);
+			ManejadorMensajes->Add(Frases(81),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,1,0,2);
 			cout<<Frases(81)<<endl;
 			InitMenu();
 		break;
@@ -2854,14 +2868,14 @@ void ESE_CRT::default_menu(int opcion){
 		break;
 	case -11: //descat modo mute
 		ModoSonido=false;
-		messeng->NewMeSSenger(messeng,Frases(96),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,1,0,2);
+		ManejadorMensajes->Add(Frases(96),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,1,0,2);
 		if(ModoLogger)cout<<Frases(96)<<endl;
 		InitMenu();
 		break;
 	case -12: //activ modo mut
 		ModoSonido=true;
 		if(ModoSonido)sonidos(7);
-		messeng->NewMeSSenger(messeng,Frases(95),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,1,0,2);
+		ManejadorMensajes->Add(Frases(95),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,1,0,2);
 		if(ModoLogger)cout<<Frases(95)<<endl;
 		InitMenu();
 		break;
@@ -2877,12 +2891,12 @@ void ESE_CRT::default_menu(int opcion){
 		case -15:
 			if(SetAnglesREdirecc())
 			{
-				messeng->NewMeSSenger(messeng,Frases(301),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,0,1,0,2);
+				ManejadorMensajes->Add(Frases(301),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,0,1,0,2);
 				SpecialKeys(GLUT_KEY_F4,0,0);
 			}
 			else
 			{
-				messeng->NewMeSSenger(messeng,Frases(302),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,0,0,2);
+				ManejadorMensajes->Add(Frases(302),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,0,0,2);
 			}
 			break;
 	}
@@ -2946,7 +2960,7 @@ void ESE_CRT::MenuToDraw(int caso){
      }
   else
   {
-	  messeng->NewMeSSenger(messeng,Frases(50),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,0,0,2);
+	  ManejadorMensajes->Add(Frases(50),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,0,0,2);
   }
 glutPostRedisplay();//refresco y ejecuto el displayFunc()
 }
@@ -2968,7 +2982,7 @@ void ESE_CRT::MenuIdioma(int opcion)
 		idioma=Language::ENGLISH;
 		break;
 	}
-	messeng->NewMeSSenger(messeng,Frases(62),position::CENTER_TOP,wigth,height,3,1,1,0,2);
+	ManejadorMensajes->Add(Frases(62),position::CENTER_TOP,wigth,height,3,1,1,0,2);
 	if(ModoSonido)sonidos(7);
 	if(ModoLogger)cout<<Frases(66)<<endl;
 	glutPostRedisplay();
@@ -3030,7 +3044,7 @@ void ESE_CRT::recivirDatosCOM(){
 				ErrorConnect=false;
 				ManejadorForms->Add(Interfaz(9),ManejadorForms);
 				if(ModoSonido)sonidos(5);
-				messeng->NewMeSSenger(messeng,Frases(91),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,0,1,0,2);
+				ManejadorMensajes->Add(Frases(91),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,0,1,0,2);
 				if(ModoLogger)cout<<Frases(91)<<endl;
 			}  
 		  	return;
@@ -3045,11 +3059,11 @@ void ESE_CRT::recivirDatosCOM(){
 				if(ModoLogger)cout<<SeriPort.ErrorStr()<<endl<<Frases(89);
 				if(SeriPort.ErrorStr()[0]=='C')
 				{
-					messeng->NewMeSSenger(messeng,Frases(102),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,0,0,2);
+					ManejadorMensajes->Add(Frases(102),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,0,0,2);
 				}
 				else
 				{
-					messeng->NewMeSSenger(messeng,Frases(101),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,0,0,2);
+					ManejadorMensajes->Add(Frases(101),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,0,0,2);
 				}
 				ErrorConnect=true;
 				EsperandoReedireccionar=true;
@@ -3107,7 +3121,7 @@ void ESE_CRT::recivirDatosCOM(){
 			     }
 				 else if(EsperandoReedireccionar)///////PARA Q NO SE EJECUTE NADA HASTA Q NO SE REDIRECCIONE///////
 				 {
-					 messeng->NewMeSSenger(messeng,Frases(65),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,2,1,1,0,2);
+					 ManejadorMensajes->Add(Frases(65),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,2,1,1,0,2);
 					 if(ModoLogger)cout<<Frases(64);
 					 if(ModoSonido)sonidos(6);
 				 }
@@ -3117,13 +3131,13 @@ void ESE_CRT::recivirDatosCOM(){
 					if(!pintar)
 					{
 						DataProcessor::PorcesarDatos(c[i],DataESE,(GLfloat)RazonDeAumento);//ejecuto la lectura de los bits y muevo los angulos(true es pintar)
-						DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+						DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 						ShowAngules(false,true);
 					}
 					if(interfaz==2)///////Actualizo la ultima coordenada en el StackBoceto///////
-				       ManejadorSketchs->ActualizaLastCood(cooRd,ManejadorSketchs);
+				       ManejadorSketchs->ActualizaLastCood(cooRd(),ManejadorSketchs);
 					else if(interfaz==-5)
-						ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd,ManejadorSketchs,deFult);
+						ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd(),ManejadorSketchs,deFult);
 					
 					if(pintar) 
 					{ 
@@ -3132,7 +3146,7 @@ void ESE_CRT::recivirDatosCOM(){
 						   
 						   if(ManejadorSketchs->contNPl<3||CambiarPointSpecificPlano!=3)
 						   {
-							   ManejadorSketchs->AddPuntoNewPlano(cooRd,ManejadorSketchs,CambiarPointSpecificPlano);
+							   ManejadorSketchs->AddPuntoNewPlano(cooRd(),ManejadorSketchs,CambiarPointSpecificPlano);
 							   
 							   ManejadorForms->Add(Interfaz(-1),ManejadorForms);
 							   
@@ -3147,7 +3161,7 @@ void ESE_CRT::recivirDatosCOM(){
 						  ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxSetActivateDesactivate("RadioButtomCancelLast",true); 
 						  
 						  
-						  ManejadorSketchs->AddPoint(cooRd,ManejadorSketchs);
+						  ManejadorSketchs->AddPoint(cooRd(),ManejadorSketchs);
 						  
 						  if(ModoSonido)sonidos(4);
 					   }
@@ -3283,7 +3297,7 @@ void ESE_CRT::cargarInitDatos(){
 		delete[]a;
 		delete[]d;
 		delete[]h;
-	    DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+	    DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		f.read((char*)&idioma,sizeof(Language));
 		//f.read((char*)&Connecttype,sizeof(ConnectionType));
 	    f.close();
@@ -3369,7 +3383,7 @@ bool ESE_CRT::VerificacionSeguridad(char c)
 			return true;
 		}
 		if(ModoLogger)cout<<Frases(55)<<endl;
-		messeng->NewMeSSenger(messeng,Frases(55),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,20,1,0,0,2);
+		ManejadorMensajes->Add(Frases(55),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,20,1,0,0,2);
 		
 		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->AddNewText(Frases(115));
 		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetColor(1,1,0);
@@ -3383,7 +3397,7 @@ bool ESE_CRT::VerificacionSeguridad(char c)
 	if(!EsperandoReedireccionar&&DataProcessor::CodigoSeguridad(c))	///////////VERIFICACION//////////
 	{
 		if(ModoLogger)cout<<Frases(54)<<endl;
-		messeng->NewMeSSenger(messeng,Frases(54),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,20,1,0,0,2);
+		ManejadorMensajes->Add(Frases(54),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,20,1,0,0,2);
 		
 		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->AddNewText(Frases(115));
 		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetColor(1,1,0);
@@ -3402,7 +3416,7 @@ bool ESE_CRT::CodigoCliente(char c,bool&pintar)
 		pintar=true;
 	case 7: ////////////////////REDIRECCIONAR//////////////////
 		SpecialKeys(-1,0,0);
-		messeng->NewMeSSenger(messeng,Frases(51),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,2,0,1,0,2);
+		ManejadorMensajes->Add(Frases(51),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,2,0,1,0,2);
 		EsperandoReedireccionar=false;
 		
 		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->AddNewText(Frases(114));
@@ -3410,12 +3424,12 @@ bool ESE_CRT::CodigoCliente(char c,bool&pintar)
 		
 		if(ModoLogger)cout<<Frases(57);
 		if(ModoSonido)sonidos(3);
-		 DataProcessor::CalcularCoordenadas(cooRd,DataESE);
+		 DataProcessor::CalcularCoordenadas(cooRd(),DataESE);
 		ShowAngules();
 		
-		ManejadorSketchs->ActualizaLastCood(cooRd,ManejadorSketchs); 
+		ManejadorSketchs->ActualizaLastCood(cooRd(),ManejadorSketchs); 
 		if(interfaz==-5)
-			ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd,ManejadorSketchs,deFult);
+			ManejadorSketchs->ActualizaNewPlanoToCreate(cooRd(),ManejadorSketchs,deFult);
 		
 		contt=0;
 		if(PlanoAcceso)
@@ -3637,12 +3651,12 @@ void ESE_CRT::ThreadCargObject()
 	if(ManejadorObject->errorCarga)
 	{
 		if(ModoSonido)sonidos(10);
-		messeng->NewMeSSenger(messeng,Frases(82),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,10,1,0,0,2);
+		ManejadorMensajes->Add(Frases(82),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,10,1,0,0,2);
 	}
 	else
 	{
 		if(ModoSonido)sonidos(2);
-		messeng->NewMeSSenger(messeng,Frases(400),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,10,0,1,0,2);
+		ManejadorMensajes->Add(Frases(400),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,10,0,1,0,2);
 	}
 }
 

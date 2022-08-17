@@ -1,6 +1,6 @@
 #include "ESE_CRT.h"
 ////////////////////////////////////////////////////////////////VERSION//////////////////////////////////////////////////////////
-														char*ESE_CRT_Version="1.1.0";
+														char*ESE_CRT_Version="1.2.0";
 ///////////////////////////////////////////////////////////VARIABLES GLOBALES////////////////////////////////////////////////////
 bool recibir_serie=false;
 bool CargObjct=false,cargMenu=false;
@@ -37,7 +37,7 @@ float GrabarAngle[3];
 char byt;
 char*toSaveCOM="COM2",*toSaveIp="127.0.0.1",*toSaveHost="localhost";
 unsigned toSaveSpeed=9600,toSavePort=55555,toSavePortWeb=8080;
-unsigned STRLEN,BoxInterfazPricipal=0,RadioButtonRestriccion=0;
+unsigned STRLEN,BoxInterfazPricipalL=0,RadioButtonRestriccion=0;
 unsigned bocetoARemover=0,RadioButtomPintar=0,PlanoChecket=0,bocetoACrear=0,BoxInterfaz0=0;
 unsigned CambiarPointSpecificPlano=3;
 unsigned contClientesServer=0,contAngleRedirecc=0;
@@ -47,10 +47,10 @@ int contt=0;
 int Window=0;
 int Initheight,Initwigth;
 int MenuCD,SubMenuVista,subMenuIdioma,subMenuToDraw;
+int height,wigth;
 float movRatXinit=25,movRatYinit=0,movRatX=10,movRatY=0;
 float velGiro=3;
 float &movESE_CRTX=movRatX,&movESE_CRTY=movRatY,movESE_CRTZ=25;
-float height,wigth;
 double trasladarX=0,trasladarY=0,trasladarZ=0;
 double anglesRedirecc[3]={0,0,0};
 GLfloat DataESE[3]={0,0,0};
@@ -65,7 +65,7 @@ CRD cooRd()
 	return CRD(DataESE[0],DataESE[1],DataESE[2]);
 }
 StackLoaderObject*ManejadorObject=new StackLoaderObject(DataESE);
-SerialPort SeriPort;
+SerialPort serialPort;
 TimeDuration tCOM(true);
 StackSketchs*ManejadorSketchs=new StackSketchs();
 thread*ThreadLoadObject=new thread();
@@ -73,6 +73,11 @@ thread*ThreadSerialPort=new thread();
 //mutex MutexManejadorForms,MutexManejadorSketchs;
 //MeSSenger*messeng=new MeSSenger();
 StackForms*ManejadorForms=new StackForms();
+_manejadorForms _ManejadorForms;
+//NO DELETE(MAMEJADORFORMS DELETE)
+_containerPrincipal*ContainerPrincipal=new _containerPrincipal("ContainerPrincipal",ESE_CRT_Version,&wigth,&height);
+_boxInterfazPrincipal*BoxInterfazPricipal=new _boxInterfazPrincipal("BoxInterfazPricipal",CRD(300,100,0),&wigth,&height);
+_boxConnection*BoxConnection=new _boxConnection("BoxConnection",CRD(500,100),toSaveIp,&toSavePort,&wigth,&height,ESE_CRT::IniciarConnection,ESE_CRT::DetenerConnection);
 ///////////////////////////////////////////////////////////METODOS//////////////////////////////////////////////////////////////
 StackMessenger*ManejadorMensajes=new StackMessenger();
 ///////////////////FUNCIONES GLOBALES/////////////////////////////////////////////////
@@ -933,7 +938,7 @@ void DestruirVariablesGlobales()
 		if(recibir_serie)
 		{
 			recibir_serie=false;
-			SeriPort.CloseConnection();
+			serialPort.CloseConnection();
 			ThreadSerialPort->join();				 
 		}
 		if(!ManejadorObject->Salir)
@@ -977,8 +982,8 @@ ESE_CRT::ESE_CRT(){
 	Initwigth=GetSystemMetrics (SM_CXSCREEN);//obtener tama�o x de pantalla
 	glutInitWindowPosition(0,0);//inicio de ventana de glut en 0,0 
 	glutInitWindowSize(Initwigth-100,Initheight-100);//tama�o de la ventana
-	height=(float)Initheight-100;
-	wigth=(float)Initheight-100;
+	height=Initheight-100;
+	wigth=Initheight-100;
 	
 	Window=glutCreateWindow("ESE_CRT");//creo e inicio la ventana
 	glEnable(GL_DEPTH_TEST);//acivo el buffer de profundidad
@@ -1003,20 +1008,25 @@ ESE_CRT::ESE_CRT(){
 	delete ThreadLoadObject;
 	ThreadLoadObject=new thread(ThreadCargObject);
 
-	Container*ct=new Container("ESE_CRTContainer");
-	ct->AddForms(new Label("labelESE_CRT","ESE_CRT",CRD(0,0,0),1,(GLfloat)0.7,(GLfloat)0.7,(GLfloat)0.7,wigth,height));
-	ct->AddForms(new Label("labelVersion",Frases(100),CRD(0,0,0),1,(GLfloat)0.6,(GLfloat)0.6,(GLfloat)0.6,wigth,height));
-	ct->AddForms(new Label("labelChar","aaaaaaa",CRD(97,-5,0),0,0,1,0,wigth,height));
-	ct->AddForms(new Label("labelUnsigned","bbbbbbb",CRD(97,5,0),0,0,1,0,wigth,height));
-	ct->AddForms(new Label("labelReferenaciar","cccccc",CRD(0,19,0),1,0,1,0,wigth,height));
+	/*Container*ct=new Container("ESE_CRTContainer");
+	ct->AddForms(new Label("labelESE_CRT","ESE_CRT",CRD(0,0,0),1,(GLfloat)0.7,(GLfloat)0.7,(GLfloat)0.7,(float)wigth,(float)height));
+	ct->AddForms(new Label("labelVersion",Frases(100),CRD(0,0,0),1,(GLfloat)0.6,(GLfloat)0.6,(GLfloat)0.6,(float)wigth,(float)height));
+	ct->AddForms(new Label("labelChar","aaaaaaa",CRD(97,-5,0),0,0,1,0,(float)wigth,(float)height));
+	ct->AddForms(new Label("labelUnsigned","bbbbbbb",CRD(97,5,0),0,0,1,0,(float)wigth,(float)height));
+	ct->AddForms(new Label("labelReferenaciar","cccccc",CRD(0,19,0),1,0,1,0,(float)wigth,(float)height));
 	ct->ContainerGetForms("labelChar")->SetDraw(true);
 	ct->ContainerGetForms("labelUnsigned")->SetDraw(true);
 	ct->ContainerGetForms("labelReferenaciar")->SetDraw(true);
+	ManejadorForms->Add(ct,ManejadorForms);*/
 
-	ManejadorForms->Add(ct,ManejadorForms);
-	ManejadorForms->Add(new Button("ButtonExit",Type::BUTTONEXIT,CRD(0,0,0),1,0,0,15,15,wigth,height),ManejadorForms);
+	ManejadorForms->Add(new Button("ButtonExit",Type::BUTTONEXIT,CRD(0,0,0),1,0,0,15,15,(float)wigth,(float)height),ManejadorForms);
 	ManejadorForms->Add(Interfaz(0),ManejadorForms);
+	
 	InitMenu();
+	///////////////////////_NEW////////////////////
+	_ManejadorForms.Add_Element(ContainerPrincipal);
+	_ManejadorForms.Add_Element(BoxInterfazPricipal);
+	_ManejadorForms.Add_Element(BoxConnection);
 	glutPostRedisplay();
 }
 ESE_CRT::~ESE_CRT(){
@@ -1050,9 +1060,9 @@ bool ESE_CRT::IniciarCargObjetos()
 			string g=string(to_string(ManejadorObject->contLoaderObject)+string("/16 (")+to_string(ManejadorObject->contLoaderObject*100/16)+string("%)"));
 			//ManejadorForms->GetForm("StackAnimation1",ManejadorForms)->NewTotalProp(0,0);
 			//ManejadorForms->GetForm("StackAnimation1",ManejadorForms)->Draw();
-			text("ESE_CRT"       ,-40,height/2-75,2*wigth-1,(GLfloat)0.9,(GLfloat)0.9,(GLfloat)0.9,true,true);
-			text((char*)h.c_str(),-60,height/2-100,2*wigth-1,(GLfloat)0.9,(GLfloat)0.9,(GLfloat)0.9,true);
-			text((char*)g.c_str(),-35,height/2-125,2*wigth-1,(GLfloat)0.8,(GLfloat)0.8,(GLfloat)0.8,true);
+			text("ESE_CRT"       ,(GLfloat)(-40,height/2-75,2*wigth-1),(GLfloat)0.9,(GLfloat)0.9,(GLfloat)0.9,true,true);
+			text((char*)h.c_str(),(GLfloat)(-60,height/2-100,2*wigth-1),(GLfloat)0.9,(GLfloat)0.9,(GLfloat)0.9,true);
+			text((char*)g.c_str(),(GLfloat)(-35,height/2-125,2*wigth-1),(GLfloat)0.8,(GLfloat)0.8,(GLfloat)0.8,true);
 			glPopMatrix();
 			glutPostRedisplay();
 			glLoadIdentity();
@@ -1095,8 +1105,9 @@ void ESE_CRT::InitMenu()
 	if(!recibir_serie)
 	{
 		glutAddMenuEntry(Frases(38),0);//iniicar conexion
+
 		//glutAddMenuEntry(Frases(41),4);//set angules
-		glutAddMenuEntry(Frases(300),-15);//set angulesRedirecc
+		//glutAddMenuEntry(Frases(300),-15);//set angulesRedirecc
 		glutAddSubMenu(Frases(39),SubMenuVista);//Vista
 		if(cargMenu)
 			glutAddSubMenu(Frases(40),subMenuToDraw);//To draw
@@ -1143,12 +1154,13 @@ void ESE_CRT::wheelAndRotate(){
 void ESE_CRT::display(){
 	glMatrixMode(GL_MODELVIEW);//cargo martiz de vista
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//borro todo 
-
 	if(!CargObjct||!cargMenu)
 		IniciarCargObjetos();
 
     Inicializar();//iniciaizo proyeccion y pongo los angulos del brazo 
 	Entorno();//Cargo los objetos, forms y demas elementos
+
+	_ManejadorForms._draw();
 
     glFlush();//siempre lleva esto  (asegura que los comandos anteriores de OpenGL debe completarse en un tiempo finito)
 	glutSwapBuffers();
@@ -1161,7 +1173,6 @@ void ESE_CRT::display(){
 void ESE_CRT::Entorno(){
 	  glPushMatrix();
 	  glLoadIdentity();
-	  cout<<".";
 	  if(SeguirPuntoFinal)//F7 Seguir punto final
 	  {
 		 trasladarX=-DataESE[0];
@@ -1173,7 +1184,7 @@ void ESE_CRT::Entorno(){
 	  if(ManejadorMensajes->Draw())
 		  glutPostRedisplay();
 	  if(!BoxAbout&&!Boxf1&&!BoxReconnect&&!BoxExit)
-		text("o",-2.0,-1.5,2*wigth-1,(GLfloat)0.8,(GLfloat)0.8,(GLfloat)0.8);
+		text("o",(GLfloat)(-2.0,-1.5,2*wigth-1),(GLfloat)0.8,(GLfloat)0.8,(GLfloat)0.8);
 	  
 	  ManejadorForms->DrawForms(ManejadorForms);//Dibujo los Forms
 	  
@@ -1330,7 +1341,7 @@ void ESE_CRT::ShowAngules(bool IsAtCreate,bool IsAtReciv){
 						//}
 }
 Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
-	Box*box=new Box("BoxInterfazPricipal",CRD(10,170,0),wigth,height);
+	Box*box=new Box("BoxInterfazPricipal",CRD(10,170,0),(float)wigth,(float)height);
 	Forms*f;
 	ManejadorSketchs->Pintar_NoPintar_LineaSuspensiva(false,ManejadorSketchs);
 	bool desactivaAcept=false,desactiaCancel=false;
@@ -1367,7 +1378,7 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 				if(!strcmp(ManejadorSketchs->bocetos[i]->name,ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxGetEscritura("textBoxNewBoceto")))
 				{
 					
-					ManejadorMensajes->Add(Frases(44),CENTER_TOP,wigth,height,3,1,0,0,2);
+					ManejadorMensajes->Add(Frases(44),CENTER_TOP,(float)wigth,(float)height,3,1,0,0,2);
 					ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxSetFocusColorTimer("textBoxNewBoceto");
 					box->Cancelar(box);
 					Err=true;
@@ -1418,7 +1429,7 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 		    ManejadorForms->Sub("BoxInterfazDetenerConnectionButtonCancel",ManejadorForms);
 		    ManejadorForms->Add(Interfaz(0),ManejadorForms);
 			default_menu(-5);
-			ManejadorMensajes->Add(Frases(45),position::CENTER_TOP,wigth,height,3,1,1,0,2);
+			ManejadorMensajes->Add(Frases(45),position::CENTER_TOP,(float)wigth,(float)height,3,1,1,0,2);
 		    return box;
 		break;
 		case 6:
@@ -1441,11 +1452,11 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 				All=false;
 			if(XLSClass::Salvar(ManejadorSketchs->bocetos,u,u1,All,All?ManejadorSketchs->contB:0))
 			{
-				ManejadorMensajes->Add( Frases(46),position::CENTER_TOP,wigth,height,3,0,1,0,2);
+				ManejadorMensajes->Add( Frases(46),position::CENTER_TOP,(float)wigth,(float)height,3,0,1,0,2);
 			}
 			else
 			{
-				ManejadorMensajes->Add( Frases(112),position::CENTER_TOP,wigth,height,5,1,1,0,2);
+				ManejadorMensajes->Add( Frases(112),position::CENTER_TOP,(float)wigth,(float)height,5,1,1,0,2);
 				if(ModoSonido)sonidos(2);
 			}
 			delete[]u;
@@ -1483,7 +1494,7 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 			ManejadorForms->Sub("BoxInterfazConnectionsButtonAcept",ManejadorForms);
 		    ManejadorForms->Sub("BoxInterfazConnectionsButtonCancel",ManejadorForms);
 			ManejadorForms->Add(Interfaz(0),ManejadorForms);
-			if(SeriPort.GetType()==ConnectionType::SERIAL_PORT)
+			if(serialPort.GetType()==ConnectionType::SERIAL_PORT)
 				default_menu(-5);
 			return box;
 			break;
@@ -1494,7 +1505,7 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 			ManejadorForms->Sub("BoxInterfazDetenerConnectionButtonAcept",ManejadorForms);
 		    ManejadorForms->Sub("BoxInterfazDetenerConnectionButtonCancel",ManejadorForms);
 			ManejadorForms->Add(Interfaz(0),ManejadorForms);
-			if(SeriPort.GetType()==ConnectionType::SERIAL_PORT)
+			if(serialPort.GetType()==ConnectionType::SERIAL_PORT)
 				default_menu(-5);
 			else
 				default_menu(-6);
@@ -1519,9 +1530,9 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 	{
 	case 0://///////////////////////////INTERFAZ_0////////////////////////
 		ManejadorSketchs->SetDraw(false,ManejadorSketchs);
-		f=new Label("LabelInterfaz0","ESE_CRT:", CRD(0,0,0),2,0,0,0,wigth,height);
+		f=new Label("LabelInterfaz0","ESE_CRT:", CRD(0,0,0),2,0,0,0,(float)wigth,(float)height);
 		box->AddForm(f,box);
-		f=new RadioButtonGroup("radioButtonGroupInterfaz0", CRD(0,0,0),wigth,height);
+		f=new RadioButtonGroup("radioButtonGroupInterfaz0", CRD(0,0,0),(float)wigth,(float)height);
 		f->RBGAddRB("radioButtonEditSketchs",Frases(0),BoxInterfaz0==0?true:false);
 		f->RBGAddRB("radioButtonSaveSketchs",Frases(1),BoxInterfaz0==1?true:false);
 		if(ManejadorSketchs->contB==0)
@@ -1533,9 +1544,9 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 	case 1://///////////////////////////INTERFAZ_1////////////////////////
 		ManejadorSketchs->SetDrawAll(false,ManejadorSketchs);
 		ManejadorSketchs->SetDraw(true,ManejadorSketchs);
-		f=new Label("LabelInterfaz1",Frases(2), CRD(0,0,0),2,0,0,0,wigth,height);
+		f=new Label("LabelInterfaz1",Frases(2), CRD(0,0,0),2,0,0,0,(float)wigth,(float)height);
 		box->AddForm(f,box);
-		f=new RadioButtonGroup("radioButtonGroupInterfaz1", CRD(10,150,0),wigth,height);
+		f=new RadioButtonGroup("radioButtonGroupInterfaz1", CRD(10,150,0),(float)wigth,(float)height);
 		f->RBGAddRB("RadioButtonVistaGeneral",Frases(3),true);
 		for(unsigned i=0;i<ManejadorSketchs->contB;i++)
 		{
@@ -1545,11 +1556,11 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 		if(f->RBGGetRBChecket("RadioButtonVistaGeneral"))
 			desactivaAcept=true;
 		box->AddForm(f,box);
-		f=new RadioButton("radioButtonAgregarBoceto", CRD(0,0,0),Frases(4),wigth,height);
+		f=new RadioButton("radioButtonAgregarBoceto", CRD(0,0,0),Frases(4),(float)wigth,(float)height);
 		if(!recibir_serie)
 		   f->ActivateDesactivate(false);															
 		box->AddForm(f,box,10);
-		f=new RadioButton("radioButtonRemoverBoceto", CRD(0,0,0),Frases(5),wigth,height);
+		f=new RadioButton("radioButtonRemoverBoceto", CRD(0,0,0),Frases(5),(float)wigth,(float)height);
 		if(ManejadorSketchs->contB==0)
 			f->ActivateDesactivate(false);
 		box->AddForm(f,box,10);
@@ -1563,9 +1574,9 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 		RadioButtomPintar=0;
 		s=(ManejadorSketchs->BocetoActual(ManejadorSketchs)->name);
 		s+=":";
-		f=new Label("LabelInterfaz2",(char*)s.c_str(), CRD(0,0,0),1,0,0,0,wigth,height);
+		f=new Label("LabelInterfaz2",(char*)s.c_str(), CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 		box->AddForm(f,box);
-		f=new RadioButtonGroup("radioButtonGroupInterfaz2", CRD(10,150,0),wigth,height);
+		f=new RadioButtonGroup("radioButtonGroupInterfaz2", CRD(10,150,0),(float)wigth,(float)height);
 		ItemsType checket;
 		checket=ManejadorSketchs->BocetoActual(ManejadorSketchs)->items->t;
 		f->RBGAddRB("radioButonAddPunto",Frases(7),checket==ItemsType::POINTSS||checket==ItemsType::ITEMS?true:false);
@@ -1574,22 +1585,22 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 		f->RBGAddRB("radioButonAddSpline",Frases(10),checket==ItemsType::SPLINE?true:false);
 		f->RBGAddRB("radioButonAddBSpline",Frases(70),checket==ItemsType::BSPLINE?true:false);
 		box->AddForm(f,box);
-		f=new RadioButton("RadioButtomCancelLast", CRD(0,0,0),Frases(11),wigth,height);
+		f=new RadioButton("RadioButtomCancelLast", CRD(0,0,0),Frases(11),(float)wigth,(float)height);
 		if(!ManejadorSketchs->BocetoActual(ManejadorSketchs)->items->cont)
 			f->ActivateDesactivate(false);
 		box->AddForm(f,box,10);
 		if(Plano::IsRestring(ManejadorSketchs->BocetoActual(ManejadorSketchs)))
 		{
-			f=new RadioButton("RadioButtomMostrarPlano", CRD(0,0,0),Frases(12),wigth,height,true);
+			f=new RadioButton("RadioButtomMostrarPlano", CRD(0,0,0),Frases(12),(float)wigth,(float)height,true);
 			box->AddForm(f,box,10);
 		}
 		desactivaAcept=true;
 		break;
 	case -5://///////////////////////////////////INTERFAZ_-5/////////////////////////
 		ManejadorSketchs->SetDraw(false,ManejadorSketchs);
-		f=new Label("LabelInterfaz-5",Frases(13), CRD(0,0,0),2,0,0,0,wigth,height);
+		f=new Label("LabelInterfaz-5",Frases(13), CRD(0,0,0),2,0,0,0,(float)wigth,(float)height);
 		box->AddForm(f,box);
-		f=new RadioButtonGroup("RadioButtonInterfaz-5", CRD(0,0,0),wigth,height);
+		f=new RadioButtonGroup("RadioButtonInterfaz-5", CRD(0,0,0),(float)wigth,(float)height);
 		f->RBGAddRB("RadioButtonPlanoXY",Frases(14),bocetoACrear==0?true:false);
 		f->RBGAddRB("RadioButtonPlanoFree",Frases(15),bocetoACrear==1?true:false);
 		f->RBGAddRB("RadioButtonPlanoXY",Frases(16),bocetoACrear==2?true:false);
@@ -1601,13 +1612,13 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 		{
 			if(bocetoACrear>1)
 			{
-				f=new RadioButtonGroup("RadioButtonGroupPlanoPosittion",CRD(0,0,0),wigth,height);
+				f=new RadioButtonGroup("RadioButtonGroupPlanoPosittion",CRD(0,0,0),(float)wigth,(float)height);
 				f->RBGAddRB("RadioButtonDefault",Frases(19),deFult?true:false);
 				f->RBGAddRB("RadioButtonEndPoint",Frases(20),!deFult?true:false);
 				box->AddForm(f,box);
 			}
 			s=(bocetoACrear==1?Frases(22):Frases(21))+to_string(ManejadorSketchs->contB);
-			f=new TextBox("textBoxNewBoceto", CRD(0,0,0),box->Wigth-10,wigth,height,(char*)s.c_str(),10);
+			f=new TextBox("textBoxNewBoceto", CRD(0,0,0),box->Wigth-10,(float)wigth,(float)height,(char*)s.c_str(),10);
 			box->AddForm(f,box);
 		}
 		box->BoxSetFocus(ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxGetFocus());
@@ -1615,9 +1626,9 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 	case -1:////////////////////////////////////////INTERFAZ_-1//////////////////////Add New Specific Boceto
 		ManejadorSketchs->SetDraw(false,ManejadorSketchs);
 		s=Frases(23)+to_string(ManejadorSketchs->contNPl)+"/3";
-		f=new Label("LabelInterfaz-1",(char*)s.c_str(), CRD(0,0,0),1,0,0,0,wigth,height);
+		f=new Label("LabelInterfaz-1",(char*)s.c_str(), CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 		box->AddForm(f,box);
-		f=new RadioButtonGroup("RadioButtonGroupPuntosNewBoceto",CRD(0,0,0),wigth,height);
+		f=new RadioButtonGroup("RadioButtonGroupPuntosNewBoceto",CRD(0,0,0),(float)wigth,(float)height);
 		ManejadorSketchs->SetToDrawNPl(3,ManejadorSketchs);
 		CambiarPointSpecificPlano=3;
 		for(unsigned i=0;i<ManejadorSketchs->contNPl;i++)
@@ -1629,7 +1640,7 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 		if(ManejadorSketchs->contNPl==3)
 		{
 			s=Frases(21)+to_string(ManejadorSketchs->contB);
-			f=new TextBox("textBoxNewBoceto", CRD(0,0,0),box->Wigth-10,wigth,height,(char*)s.c_str());
+			f=new TextBox("textBoxNewBoceto", CRD(0,0,0),box->Wigth-10,(float)wigth,(float)height,(char*)s.c_str());
 		    box->AddForm(f,box);
 		}
 		desactivaAcept=true;
@@ -1638,9 +1649,9 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 		bocetoARemover=0;
 		ManejadorSketchs->SetDraw(true,ManejadorSketchs);
 		s=Frases(24);
-		f=new Label("LabelInterfaz-2",(char*)s.c_str(), CRD(0,0,0),2,0,0,0,wigth,height);
+		f=new Label("LabelInterfaz-2",(char*)s.c_str(), CRD(0,0,0),2,0,0,0,(float)wigth,(float)height);
 		box->AddForm(f,box);
-		f=new RadioButtonGroup("radioButtonGroupInterfaz-2", CRD(10,150,0),wigth,height);
+		f=new RadioButtonGroup("radioButtonGroupInterfaz-2", CRD(10,150,0),(float)wigth,(float)height);
 		for(unsigned i=0;i<ManejadorSketchs->contB;i++)
 		{
 			s="radioButtonBoceto"+to_string(i);
@@ -1654,15 +1665,15 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 		box->SetCRD(CRD(10,40,0),box);
 		glutDestroyMenu(MenuCD);
 		
-		f=new TextBox("textBoxChar",CRD(0,0,0),100,wigth,height,toSaveCOM,15);
+		f=new TextBox("textBoxChar",CRD(0,0,0),100,(float)wigth,(float)height,toSaveCOM,15);
 		
 		box->AddForm(f,box);
 		
-		f=new TextBox("textBoxUnsigned",CRD(0,0,0),100,wigth,height,(char*)to_string(toSaveSpeed).c_str(),10,TextBoxType::UNSIGNEDCONTENT);
+		f=new TextBox("textBoxUnsigned",CRD(0,0,0),100,(float)wigth,(float)height,(char*)to_string(toSaveSpeed).c_str(),10,TextBoxType::UNSIGNEDCONTENT);
 		
 		
 		box->AddForm(f,box);
-		f=new RadioButtonGroup("RadioButtonGroupConnectionType", CRD(0,0,0),wigth,height);
+		f=new RadioButtonGroup("RadioButtonGroupConnectionType", CRD(0,0,0),(float)wigth,(float)height);
 		f->RBGAddRB("RadioButtomSerialPort",Frases(26),1);
 
 
@@ -1671,23 +1682,23 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 	case 4://///////////////////////////INTERFAZ_4////////////////////////
 		box->SetName("BoxInterfazDetenerConnection",box);
 		box->SetCRD(CRD(10,100,0),box);
-		f=new Label("LabelInterfaz4",Frases(27), CRD(0,0,0),1,0,0,0,wigth,height);
+		f=new Label("LabelInterfaz4",Frases(27), CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 		box->AddForm(f,box);
 		
 		break;
 	case 6:
 		ManejadorSketchs->SetDraw(false,ManejadorSketchs);
-		f=new Label("labelSelectSketsh",Frases(28),CRD(0,0,0),2,0,0,0,wigth,height);
+		f=new Label("labelSelectSketsh",Frases(28),CRD(0,0,0),2,0,0,0,(float)wigth,(float)height);
 		box->AddForm(f,box);
 		for(unsigned i=0;i<ManejadorSketchs->contB;i++)
 		{
 			s="RadioButtonSketch"+i;
-			f=new RadioButton((char*)s.c_str(),CRD(0,0,0),ManejadorSketchs->bocetos[i]->name,wigth,height,true);
+			f=new RadioButton((char*)s.c_str(),CRD(0,0,0),ManejadorSketchs->bocetos[i]->name,(float)wigth,(float)height,true);
 			box->AddForm(f,box);
 		}
 		if(ManejadorSketchs->contB>1)
 		{
-			f=new RadioButton("RadioButtonAllSketchs",CRD(0,0,0),Frases(29),wigth,height);
+			f=new RadioButton("RadioButtonAllSketchs",CRD(0,0,0),Frases(29),(float)wigth,(float)height);
 		box->AddForm(f,box);
 		}
 		break; 
@@ -1709,25 +1720,25 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 			ManejadorForms->ActvDesactOnlyForm("BoxInterfazPricipalButtonCancel",false,ManejadorForms);
 			ManejadorForms->ActvDesactOnlyForm("radioButtonMostrarAngules",false,ManejadorForms);
 			Boxf1=true;
-			box=new Box("BoxHelp",CRD(0,0,0),wigth,height);
+			box=new Box("BoxHelp",CRD(0,0,0),(float)wigth,(float)height);
 			box->Wigth=100;
-			f=new Label("Labelf1",Frases(71),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Labelf1",Frases(71),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Label("Labelf2",Frases(72),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Labelf2",Frases(72),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Label("Labelf3",Frases(73),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Labelf3",Frases(73),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Label("Labelf4",Frases(74),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Labelf4",Frases(74),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Label("Labelf5",Frases(75),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Labelf5",Frases(75),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Label("Labelf6",Frases(76),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Labelf6",Frases(76),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Label("Labelf7",Frases(77),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Labelf7",Frases(77),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Label("Labelf8",Frases(78),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Labelf8",Frases(78),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Button("ButonCancelHelp",Type::BUTTON,CRD(0,0,0),1,0,0,box->Wigth,25,wigth,height);
+			f=new Button("ButonCancelHelp",Type::BUTTON,CRD(0,0,0),1,0,0,box->Wigth,25,(float)wigth,(float)height);
 			box->AddForm(f,box);
 			box->SetCoordElementProp("Labelf1",box->BoxGetElementCoord("Labelf1")+CRD(box->Wigth/2,0,0)-CRD(strlen(Frases(71))*4.5,0,0));
 			box->SetCoordElementProp("Labelf2",box->BoxGetElementCoord("Labelf2")+CRD(box->Wigth/2,0,0)-CRD(strlen(Frases(72))*4.5,0,0));
@@ -1773,20 +1784,20 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 			ManejadorForms->ActvDesactOnlyForm("BoxInterfazPricipalButtonCancel",false,ManejadorForms);
 			ManejadorForms->ActvDesactOnlyForm("radioButtonMostrarAngules",false,ManejadorForms);
 			BoxAbout=true;
-			box=new Box("BoxAbout",CRD(0,0,0),wigth,height);
+			box=new Box("BoxAbout",CRD(0,0,0),(float)wigth,(float)height);
 			box->Wigth=100;
-			f=new Label("Label1",Frases(84),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Label1",Frases(84),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Label("Label2",Frases(85),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Label2",Frases(85),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Label("Label3",Frases(86),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Label3",Frases(86),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Button("ButonCopiarEnlace",Type::BUTTON,CRD(0,0,0),1,0,1,50,25,wigth,height);
+			f=new Button("ButonCopiarEnlace",Type::BUTTON,CRD(0,0,0),1,0,1,50,25,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Label("Label4",Frases(87),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Label4",Frases(87),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
 		
-			f=new Button("ButonCancelAbout",Type::BUTTON,CRD(0,0,0),1,0,0,box->Wigth,25,wigth,height);
+			f=new Button("ButonCancelAbout",Type::BUTTON,CRD(0,0,0),1,0,0,box->Wigth,25,(float)wigth,(float)height);
 			box->AddForm(f,box);
 			box->SetCoordElementProp("Label1",box->BoxGetElementCoord("Label1")+CRD(box->Wigth/2,0,0)-CRD(strlen(Frases(84))*4.5,0,0));
 			box->SetCoordElementProp("Label2",box->BoxGetElementCoord("Label2")+CRD(box->Wigth/2,0,0)-CRD(strlen(Frases(85))*4.5,0,0));
@@ -1831,18 +1842,18 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 			ManejadorForms->ActvDesactOnlyForm("StackAnimationsConnection",false,ManejadorForms);
 
 			BoxReconnect=true;
-			box=new Box("BoxReconnect",CRD(0,0,0),wigth,height);
+			box=new Box("BoxReconnect",CRD(0,0,0),(float)wigth,(float)height);
 			box->Wigth=100;
-			f=new Label("Label1",Frases(89),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Label1",Frases(89),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
 			f=new StackAnimation("StackAnimationsBoxREconnect");
-			f->STANSetAnimation("AnimacionRoja", CRD(0,0,0),100,wigth,height,-25,1,0,0,1.5);
-			f->STANSetAnimation("AnimacionVerde", CRD(0,0,0),100,wigth,height,0,0,1,0,1.5);
-			f->STANSetAnimation("AnimacionAzul", CRD(0,0,0),100,wigth,height,25,0,0,1,1.5);
+			f->STANSetAnimation("AnimacionRoja", CRD(0,0,0),100,(float)wigth,(float)height,-25,1,0,0,1.5);
+			f->STANSetAnimation("AnimacionVerde", CRD(0,0,0),100,(float)wigth,(float)height,0,0,1,0,1.5);
+			f->STANSetAnimation("AnimacionAzul", CRD(0,0,0),100,(float)wigth,(float)height,25,0,0,1,1.5);
 			box->AddForm(f,box);
-			f=new Label("Label2",Frases(90),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Label2",Frases(90),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Button("ButonDesconectar",Type::BUTTON,CRD(0,0,0),1,0,0,box->Wigth,25,wigth,height);
+			f=new Button("ButonDesconectar",Type::BUTTON,CRD(0,0,0),1,0,0,box->Wigth,25,(float)wigth,(float)height);
 			box->AddForm(f,box);
 			box->SetCoordElementProp("Label1",box->BoxGetElementCoord("Label1")+CRD(box->Wigth/2,0,0)-CRD(strlen(Frases(89))*4.5,0,0));
 			box->SetCoordElementProp("Label2",box->BoxGetElementCoord("Label2")+CRD(box->Wigth/2,0,0)-CRD(strlen(Frases(90))*4.5,0,0));
@@ -1890,13 +1901,13 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 			ManejadorForms->ActvDesactOnlyForm("ButtonExit",false,ManejadorForms);
 			BoxExit=true;
 			glutDestroyMenu(MenuCD);
-			box=new Box("BoxExit",CRD(0,0,0),wigth,height);
+			box=new Box("BoxExit",CRD(0,0,0),(float)wigth,(float)height);
 			box->Wigth=100;
-			f=new Label("Label1",Frases(97),CRD(0,0,0),1,0,0,0,wigth,height);
+			f=new Label("Label1",Frases(97),CRD(0,0,0),1,0,0,0,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Button("ButonAceptExit",Type::BUTTON,CRD(0,0,0),0,1,0,50,25,wigth,height);
+			f=new Button("ButonAceptExit",Type::BUTTON,CRD(0,0,0),0,1,0,50,25,(float)wigth,(float)height);
 			box->AddForm(f,box);
-			f=new Button("ButonCancelExit",Type::BUTTON,CRD(0,0,0),1,0,0,50,25,wigth,height);
+			f=new Button("ButonCancelExit",Type::BUTTON,CRD(0,0,0),1,0,0,50,25,(float)wigth,(float)height);
 			box->AddForm(f,box);
 			box->SetCoordElementProp("Label1",box->BoxGetElementCoord("Label1")+CRD(box->Wigth/2,0,0)-CRD(strlen(Frases(97))*4.5,0,0));
 			box->SetWigthElementProp("ButonAceptExit",box->Wigth-5);
@@ -1935,9 +1946,10 @@ Box* ESE_CRT::Interfaz(unsigned interfzAponer,INTERFZType t) {
 }
 /////////////////////FUNCIONES DE GLUT A LLAMAR POR DEFECTO////////////////////////////
 void ESE_CRT::reshape(int x,int y){
-	wigth=(float)x;height=(float)y;
+	wigth=x;height=y;
 	ManejadorForms->NewTotalsProp((float)x,(float)y,ManejadorForms);
-	ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelVersion")->NewCRD(CRD(wigth-50,height-20,0));
+	ContainerPrincipal->New_CRD("labelVersion",CRD(wigth-50,height-20,0));
+	//ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelVersion")->NewCRD(CRD(wigth-50,height-20,0));
 	ManejadorForms->GetForm("ButtonExit",ManejadorForms)->NewCRD(CRD(wigth-25,8,0));
 	//ManejadorForms->GetForm("radioButtonMostrarAngules",ManejadorForms)->NewCRD(CRD(wigth-120,8,0));
 	//ManejadorForms->GetForm("labelAngule0",ManejadorForms)->NewCRD(CRD(wigth-120,25,0));
@@ -2002,7 +2014,11 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 	{
 	   bool eRror=false;
 	   string s;
+	   cout<<x<<":"<<y<<endl; 
 	   
+	   if(_ManejadorForms.Pulsado(x,y))
+	   {
+	   }
 	   
 	   switch (ManejadorForms->PresionarForm((float)x,(float)y,ManejadorForms))
 	   {
@@ -2080,7 +2096,7 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 		   }
 		   else if(Forms::IsPulsdo((float)x,(float)y,ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)))
 		   {
-			   BoxInterfazPricipal=ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxGetElemChecket();
+			   BoxInterfazPricipalL=ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxGetElemChecket();
 			   ManejadorSketchs->Pintar_NoPintar_LineaSuspensiva(false,ManejadorSketchs);
 			   switch (interfaz)
 			   {
@@ -2093,7 +2109,7 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 						BoxInterfaz0=ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxGetRBGChecket("radioButtonGroupInterfaz0");
 					break;
 			   case 1://////////////////////////INTERFAZ 1
-				   switch (BoxInterfazPricipal)
+				   switch (BoxInterfazPricipalL)
 				   {
 				   case 1:////////////SELECC BOCETO
 					   PlanoChecket=ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxGetRBGChecket("radioButtonGroupInterfaz1");
@@ -2129,7 +2145,7 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 				   }
 				   break;
 			   case 2://///////////////////////INTERFAZ 2/////
-				    switch (BoxInterfazPricipal)
+				    switch (BoxInterfazPricipalL)
 					{
 					case 1:////////////RADIOBUTTONGROUP ITEMS
 						RadioButtomPintar=ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxGetRBGChecket("radioButtonGroupInterfaz2");
@@ -2182,7 +2198,7 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 					ManejadorSketchs->PlanoCheckeeado=bocetoARemover;
 				break;
 			   case -5:	///////////////SELECT NEW PLANO/////////
-				   switch (BoxInterfazPricipal)
+				   switch (BoxInterfazPricipalL)
 				   {
 					 case 1:
 						   bocetoACrear=ManejadorForms->GetForm("BoxInterfazPricipal",ManejadorForms)->BoxGetRBGChecket("RadioButtonInterfaz-5");
@@ -2240,14 +2256,14 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 					   if(!MostrarAngules)
 					   {   
 							MostrarAngules=true;
-							 ManejadorForms->Add(new Label("labelAngule1",(char*)to_string(DataESE[1]).c_str(), CRD(wigth-120,40,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-							ManejadorForms->Add(new Label("labelAngule2",(char*)to_string(DataESE[2]).c_str(), CRD(wigth-120,55,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-							ManejadorForms->Add(new Label("labelAngule3",(char*)to_string(DataESE[3]).c_str(), CRD(wigth-120,70,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-							ManejadorForms->Add(new Label("labelAngule4",(char*)to_string(DataESE[4]).c_str(), CRD(wigth-120,85,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-							ManejadorForms->Add(new Label("labelAngule5",(char*)to_string(DataESE[5]).c_str(), CRD(wigth-120,100,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-							ManejadorForms->Add(new Label("labelCoordX",(char*)(string("x:")+to_string(DataESE[0])).c_str(), CRD(wigth-120,115,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-							ManejadorForms->Add(new Label("labelCoordY",(char*)(string("y:")+to_string(DataESE[1])).c_str(), CRD(wigth-120,130,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
-							ManejadorForms->Add(new Label("labelCoordZ",(char*)(string("z:")+to_string(DataESE[2])).c_str(), CRD(wigth-120,145,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,wigth,height),ManejadorForms);
+							 ManejadorForms->Add(new Label("labelAngule1",(char*)to_string(DataESE[1]).c_str(), CRD(wigth-120,40,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,(float)wigth,(float)height),ManejadorForms);
+							ManejadorForms->Add(new Label("labelAngule2",(char*)to_string(DataESE[2]).c_str(), CRD(wigth-120,55,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,(float)wigth,(float)height),ManejadorForms);
+							ManejadorForms->Add(new Label("labelAngule3",(char*)to_string(DataESE[3]).c_str(), CRD(wigth-120,70,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,(float)wigth,(float)height),ManejadorForms);
+							ManejadorForms->Add(new Label("labelAngule4",(char*)to_string(DataESE[4]).c_str(), CRD(wigth-120,85,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,(float)wigth,(float)height),ManejadorForms);
+							ManejadorForms->Add(new Label("labelAngule5",(char*)to_string(DataESE[5]).c_str(), CRD(wigth-120,100,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,(float)wigth,(float)height),ManejadorForms);
+							ManejadorForms->Add(new Label("labelCoordX",(char*)(string("x:")+to_string(DataESE[0])).c_str(), CRD(wigth-120,115,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,(float)wigth,(float)height),ManejadorForms);
+							ManejadorForms->Add(new Label("labelCoordY",(char*)(string("y:")+to_string(DataESE[1])).c_str(), CRD(wigth-120,130,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,(float)wigth,(float)height),ManejadorForms);
+							ManejadorForms->Add(new Label("labelCoordZ",(char*)(string("z:")+to_string(DataESE[2])).c_str(), CRD(wigth-120,145,0),1,(GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4,(float)wigth,(float)height),ManejadorForms);
 							
 							ShowAngules(true);
 							
@@ -2342,12 +2358,12 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 			 //  }
 			 //  if(eRror)
 			 //  {
-				//   ManejadorMensajes->Add(Frases(48),position::CENTER_TOP,wigth,height,3,1,0,0,2);
+				//   ManejadorMensajes->Add(Frases(48),position::CENTER_TOP,(float)wigth,(float)height,3,1,0,0,2);
 				//  if(ModoSonido)sonidos(6);
 			 //  }
 			 //  else
 			 //  {
-				//   ManejadorMensajes->Add(Frases(49),position::CENTER_TOP,wigth,height,3,0,1,0,2);
+				//   ManejadorMensajes->Add(Frases(49),position::CENTER_TOP,(float)wigth,(float)height,3,0,1,0,2);
 				//   for(unsigned i=0;i<6;i++)
 				//   {
 				//   s=("textBoxsSetAngules");
@@ -2380,11 +2396,30 @@ void ESE_CRT::teclaRaton(int boton,int state,int x,int y){
 }
 void ESE_CRT::keyboard(unsigned char tecla,int x,int y )
 {
-	
+	if(_ManejadorForms.TextBox_Get_Escribiendo())
+	{
+		if(tecla!=8)
+			_ManejadorForms.TextBox_Add_Caracter(tecla);
+		else
+			_ManejadorForms.TextBox_Sub_Caracter();
+	}//return;
+
+	/*if(tb.TextBox_Get_Escribiendo())
+    {
+	if(tecla==8)
+		tb.TextBox_Sub_Caracter();
+	 else
+		tb.TextBox_Add_Caracter(tecla);*/
+  //}
+
+	if(tecla=='q')
+		BoxInterfazPricipal->Set_Draw(true); 
+	if(tecla=='w')
+		BoxInterfazPricipal->Set_Draw(false); 
 	if(tecla=='g'||tecla=='G')
    {
-	   ManejadorMensajes->Add("Se ha tocado la letra 'g' o 'G'",CENTER_TOP,wigth,height,5,1,1,1);
-	  /*if(GrabarBool)
+	   ManejadorMensajes->Add("Se ha tocado la letra 'g' o 'G'",CENTER_TOP,(float)wigth,(float)height,5,1,1,1);
+	   /*if(GrabarBool)
 	  {
 		GrabarBool=false;
 
@@ -2691,14 +2726,14 @@ void ESE_CRT::default_menu(int opcion){
 	case 4:///SET DataESE
 		/*if(ModoSonido)sonidos(9);
 	    default_menu(-6);
-		ManejadorForms->Add(new TextBox("textBoxsSetAngules0",CRD(0,175,0),110,wigth,height,(char*)to_string(DataESE[0]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
-		ManejadorForms->Add(new TextBox("textBoxsSetAngules1",CRD(0,200,0),110,wigth,height,(char*)to_string(DataESE[1]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
-		ManejadorForms->Add(new TextBox("textBoxsSetAngules2",CRD(0,225,0),110,wigth,height,(char*)to_string(DataESE[2]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
-		ManejadorForms->Add(new TextBox("textBoxsSetAngules3",CRD(0,250,0),110,wigth,height,(char*)to_string(DataESE[3]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
-		ManejadorForms->Add(new TextBox("textBoxsSetAngules4",CRD(0,275,0),110,wigth,height,(char*)to_string(DataESE[4]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
-		ManejadorForms->Add(new TextBox("textBoxsSetAngules5",CRD(0,300,0),110,wigth,height,(char*)to_string(DataESE[5]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
-		ManejadorForms->Add(new Button("buttonInitSetAngules",Type::BUTTONINITSETANGULES, CRD(0,325,0),0,1,0,80,10,wigth,height),ManejadorForms);
-		ManejadorForms->Add(new Button("buttonCancelSetAngules",Type::BUTTONCANCELSETANGULES, CRD(80,325,0),1,0,0,30,10,wigth,height),ManejadorForms);
+		ManejadorForms->Add(new TextBox("textBoxsSetAngules0",CRD(0,175,0),110,(float)wigth,(float)height,(char*)to_string(DataESE[0]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
+		ManejadorForms->Add(new TextBox("textBoxsSetAngules1",CRD(0,200,0),110,(float)wigth,(float)height,(char*)to_string(DataESE[1]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
+		ManejadorForms->Add(new TextBox("textBoxsSetAngules2",CRD(0,225,0),110,(float)wigth,(float)height,(char*)to_string(DataESE[2]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
+		ManejadorForms->Add(new TextBox("textBoxsSetAngules3",CRD(0,250,0),110,(float)wigth,(float)height,(char*)to_string(DataESE[3]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
+		ManejadorForms->Add(new TextBox("textBoxsSetAngules4",CRD(0,275,0),110,(float)wigth,(float)height,(char*)to_string(DataESE[4]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
+		ManejadorForms->Add(new TextBox("textBoxsSetAngules5",CRD(0,300,0),110,(float)wigth,(float)height,(char*)to_string(DataESE[5]).c_str(),9,TextBoxType::FLOATCONTENT),ManejadorForms);
+		ManejadorForms->Add(new Button("buttonInitSetAngules",Type::BUTTONINITSETANGULES, CRD(0,325,0),0,1,0,80,10,(float)wigth,(float)height),ManejadorForms);
+		ManejadorForms->Add(new Button("buttonCancelSetAngules",Type::BUTTONCANCELSETANGULES, CRD(80,325,0),1,0,0,30,10,(float)wigth,(float)height),ManejadorForms);
 		SetAngules=true;*/
 		break;
 	case 3://Cancel setangules
@@ -2707,36 +2742,38 @@ void ESE_CRT::default_menu(int opcion){
 		break;
 
 	case 0://inicializo botones para INIT CONNECTION
-		  if(ModoSonido)sonidos(9);
+		  /*if(ModoSonido)sonidos(9);
 		  default_menu(-5);
 		   if(Boxf1)
 					ManejadorForms->Add(Interfaz(7),ManejadorForms);
 		   if(BoxAbout)
 					ManejadorForms->Add(Interfaz(8),ManejadorForms);
 		  default_menu(-6); 
-		  ManejadorForms->Add(Interfaz(3),ManejadorForms);
+		  ManejadorForms->Add(Interfaz(3),ManejadorForms);*/
+		  BoxConnection->Set_Draw(true);
 	break;
 
 
 	case 1://inicializo botonos para el STOP CONNECTION
-			if(ModoSonido)sonidos(9);
+			/*if(ModoSonido)sonidos(9);
 		    ManejadorForms->Add(Interfaz(4),ManejadorForms);
 			 if(Boxf1)
 					ManejadorForms->Add(Interfaz(7),ManejadorForms);
-			default_menu(-6);
+			default_menu(-6);*/
+			BoxConnection->Set_Draw(true);
 	break;
 
 
 	case -1://Inicio la conexion
 		
-		if(!SeriPort.inicializa( ManejadorForms->GetForm("BoxInterfazConnections",ManejadorForms)->BoxGetEscritura("textBoxChar"),atol(ManejadorForms->GetForm("BoxInterfazConnections",ManejadorForms)->BoxGetEscritura("textBoxUnsigned"))))
+		if(!serialPort.inicializa( ManejadorForms->GetForm("BoxInterfazConnections",ManejadorForms)->BoxGetEscritura("textBoxChar"),atol(ManejadorForms->GetForm("BoxInterfazConnections",ManejadorForms)->BoxGetEscritura("textBoxUnsigned"))))
 		  {
 			  if(ModoSonido)sonidos(1);
 			  string f;
-			  if(SeriPort.ErrorStr()[0]=='C')
+			  if(serialPort.ErrorStr()[0]=='C')
 				  f=string(Frases(99))+string(ManejadorForms->GetForm("BoxInterfazConnections",ManejadorForms)->BoxGetEscritura("textBoxChar"))+string(":")+string(ManejadorForms->GetForm("BoxInterfazConnections",ManejadorForms)->BoxGetEscritura("textBoxUnsigned"));
 			  else
-				  f=string(SeriPort.ErrorStr());
+				  f=string(serialPort.ErrorStr());
 			  if(ModoLogger)cout<<f.c_str()<<endl;
 			   char*msg=new char[f.length()+1];
 			   msg[f.length()]=0;
@@ -2746,12 +2783,12 @@ void ESE_CRT::default_menu(int opcion){
 		   }
 		else 
 		   {
-			   char*msg=SeriPort.GetMesage(SeriPort);
-			   if(ModoLogger)cout<<endl<<SeriPort.getChar()<<":"<<SeriPort.getunsigned()<<endl;
+			   char*msg=serialPort.GetMesage(serialPort);
+			   if(ModoLogger)cout<<endl<<serialPort.getChar()<<":"<<serialPort.getunsigned()<<endl;
 		      //add
 			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelESE_CRT")->SetColor(0,(GLfloat)1,0);
-			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelChar")->AddNewText(SeriPort.getChar());
-			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelUnsigned")->AddNewText((char*)to_string(SeriPort.getunsigned()).c_str());
+			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelChar")->AddNewText(serialPort.getChar());
+			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelUnsigned")->AddNewText((char*)to_string(serialPort.getunsigned()).c_str());
 			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelChar")->SetDraw(false);
 			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelUnsigned")->SetDraw(false);
 			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->AddNewText(Frases(115));
@@ -2759,15 +2796,15 @@ void ESE_CRT::default_menu(int opcion){
 			   ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetDraw(false);
 			  
 
-			    /*ManejadorForms->Add(new Label("labelChar",SeriPort.getChar(),*(new CRD(97,-5,0)),0,0,1,0,wigth,height),ManejadorForms);
-			    ManejadorForms->Add(new Label("labelUnsigned",(char*)to_string(SeriPort.getunsigned()).c_str(),*(new CRD(97,5,0)),0,0,1,0,wigth,height),ManejadorForms);
+			    /*ManejadorForms->Add(new Label("labelChar",serialPort.getChar(),*(new CRD(97,-5,0)),0,0,1,0,(float)wigth,(float)height),ManejadorForms);
+			    ManejadorForms->Add(new Label("labelUnsigned",(char*)to_string(serialPort.getunsigned()).c_str(),*(new CRD(97,5,0)),0,0,1,0,(float)wigth,(float)height),ManejadorForms);
 			    ManejadorForms->SetColor("labelESE_CRT",0,1,0,ManejadorForms);
-			    ManejadorForms->Add(new Label("labelReferenaciar",Frases(115),*(new CRD(0,19,0)),1,0,1,0,wigth,height),ManejadorForms);
+			    ManejadorForms->Add(new Label("labelReferenaciar",Frases(115),*(new CRD(0,19,0)),1,0,1,0,(float)wigth,(float)height),ManejadorForms);
 				ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->SetColor(1,1,0);*/
 			    StackAnimation*sa=new StackAnimation("StackAnimationsConnection");
-			    sa->STANSetAnimation("AnimacionRoja", CRD(wigth-100,height-50,0),75,wigth,height,-25,1,0,0,1.5);
-			    sa->STANSetAnimation("AnimacionVerde", CRD(wigth-100,height-50,0),75,wigth,height,0,0,1,0,1.5);
-			    sa->STANSetAnimation("AnimacionAzul", CRD(wigth-100,height-50,0),75,wigth,height,25,0,0,1,1.5);
+			    sa->STANSetAnimation("AnimacionRoja", CRD(wigth-100,height-50,0),75,(float)wigth,(float)height,-25,1,0,0,1.5);
+			    sa->STANSetAnimation("AnimacionVerde", CRD(wigth-100,height-50,0),75,(float)wigth,(float)height,0,0,1,0,1.5);
+			    sa->STANSetAnimation("AnimacionAzul", CRD(wigth-100,height-50,0),75,(float)wigth,(float)height,25,0,0,1,1.5);
 			    ManejadorForms->Add(sa,ManejadorForms);
 			    ManejadorForms->MoveOnReshape("StackAnimationsConnection",true,ManejadorForms);
 
@@ -2778,11 +2815,11 @@ void ESE_CRT::default_menu(int opcion){
 			    contMenuToDraw=-1;
 			    ManejadorMensajes->Add(msg,position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,0,1,0,2);
 				delete[]toSaveCOM;
-				toSaveCOM=new char[strlen(SeriPort.getChar())+1];
-				toSaveCOM[strlen(SeriPort.getChar())]=0;
-				for(unsigned i=0;i<strlen(SeriPort.getChar());i++)
-					toSaveCOM[i]=SeriPort.getChar()[i];
-				toSaveSpeed=SeriPort.getunsigned();
+				toSaveCOM=new char[strlen(serialPort.getChar())+1];
+				toSaveCOM[strlen(serialPort.getChar())]=0;
+				for(unsigned i=0;i<strlen(serialPort.getChar());i++)
+					toSaveCOM[i]=serialPort.getChar()[i];
+				toSaveSpeed=serialPort.getunsigned();
 			   ESE_CRT::InitMenu();
 			   if(Boxf1)
 					ManejadorForms->Add(Interfaz(7),ManejadorForms);
@@ -2802,7 +2839,7 @@ void ESE_CRT::default_menu(int opcion){
 				ManejadorSketchs->SetDraw(false,ManejadorSketchs);
 			}
 			ThreadSerialPort->join();
-			SeriPort.CloseConnection();
+			serialPort.CloseConnection();
 			ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelChar")->SetDraw(true);
 			ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelUnsigned")->SetDraw(true);
 			ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetDraw(true);
@@ -2813,7 +2850,7 @@ void ESE_CRT::default_menu(int opcion){
 			ErrorConnect=false;
 			Acces=false;
 			ESE_CRT::InitMenu();
-			//if(SeriPort.GetType()==ConnectionType::SERIAL_PORT)
+			//if(serialPort.GetType()==ConnectionType::SERIAL_PORT)
 			 default_menu(-5);
 			 if(Boxf1)
 					ManejadorForms->Add(Interfaz(7),ManejadorForms);
@@ -2889,7 +2926,7 @@ void ESE_CRT::default_menu(int opcion){
 			ManejadorForms->Add(Interfaz(10),ManejadorForms);
 		break;
 		case -15:
-			if(SetAnglesREdirecc())
+			/*if(SetAnglesREdirecc())
 			{
 				ManejadorMensajes->Add(Frases(301),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,0,1,0,2);
 				SpecialKeys(GLUT_KEY_F4,0,0);
@@ -2897,7 +2934,7 @@ void ESE_CRT::default_menu(int opcion){
 			else
 			{
 				ManejadorMensajes->Add(Frases(302),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,0,0,2);
-			}
+			}*/
 			break;
 	}
 	
@@ -2982,13 +3019,117 @@ void ESE_CRT::MenuIdioma(int opcion)
 		idioma=Language::ENGLISH;
 		break;
 	}
-	ManejadorMensajes->Add(Frases(62),position::CENTER_TOP,wigth,height,3,1,1,0,2);
+	ManejadorMensajes->Add(Frases(62),position::CENTER_TOP,(float)wigth,(float)height,3,1,1,0,2);
 	if(ModoSonido)sonidos(7);
 	if(ModoLogger)cout<<Frases(66)<<endl;
 	glutPostRedisplay();
 
 }
 ///////////////////////// DATOS//////////////////////////////////////////////////
+
+bool ESE_CRT::IniciarConnection(char*Char,unsigned Unsigned)
+{
+	if(!serialPort.inicializa( Char,Unsigned))
+	{
+		if(ModoSonido)sonidos(1);
+		string f;
+		if(serialPort.ErrorStr()[0]=='C')
+			f=string(Frases(99))+string(Char)+to_string(Unsigned);
+		else
+			f=string(serialPort.ErrorStr());
+		if(ModoLogger)cout<<f.c_str()<<endl;
+		char*msg=new char[f.length()+1];
+		msg[f.length()]=0;
+		for(unsigned i=0;i<f.length();i++)
+			msg[i]=f[i]; 
+		ManejadorMensajes->Add((char*)f.c_str(),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,5,1,0,0,2);
+		return false;
+	}
+	else 
+	{
+		char*msg=serialPort.GetMesage(serialPort);
+		if(ModoLogger)cout<<endl<<serialPort.getChar()<<":"<<serialPort.getunsigned()<<endl;
+		//add
+		ManejadorMensajes->Add("Conectado Correctamente",position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,5,0,1,0,2);
+		ContainerPrincipal->LabelsInicarConeccion(Char,(char*)to_string(Unsigned).c_str(),"No Referenciado");
+		
+		
+		/*ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelESE_CRT")->SetColor(0,(GLfloat)1,0);
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelChar")->AddNewText(serialPort.getChar());
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelUnsigned")->AddNewText((char*)to_string(serialPort.getunsigned()).c_str());
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelChar")->SetDraw(false);
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelUnsigned")->SetDraw(false);
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->AddNewText(Frases(115));
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetColor(1,1,0);
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetDraw(false);
+		*/	  
+
+		/*ManejadorForms->Add(new Label("labelChar",serialPort.getChar(),*(new CRD(97,-5,0)),0,0,1,0,(float)wigth,(float)height),ManejadorForms);
+		ManejadorForms->Add(new Label("labelUnsigned",(char*)to_string(serialPort.getunsigned()).c_str(),*(new CRD(97,5,0)),0,0,1,0,(float)wigth,(float)height),ManejadorForms);
+		ManejadorForms->SetColor("labelESE_CRT",0,1,0,ManejadorForms);
+		ManejadorForms->Add(new Label("labelReferenaciar",Frases(115),*(new CRD(0,19,0)),1,0,1,0,(float)wigth,(float)height),ManejadorForms);
+		ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->SetColor(1,1,0);*/
+		
+		/*StackAnimation*sa=new StackAnimation("StackAnimationsConnection");
+		sa->STANSetAnimation("AnimacionRoja", CRD(wigth-100,height-50,0),75,(float)wigth,(float)height,-25,1,0,0,1.5);
+		sa->STANSetAnimation("AnimacionVerde", CRD(wigth-100,height-50,0),75,(float)wigth,(float)height,0,0,1,0,1.5);
+		sa->STANSetAnimation("AnimacionAzul", CRD(wigth-100,height-50,0),75,(float)wigth,(float)height,25,0,0,1,1.5);
+		ManejadorForms->Add(sa,ManejadorForms);
+		ManejadorForms->MoveOnReshape("StackAnimationsConnection",true,ManejadorForms);
+*/
+
+		recibir_serie=true;
+		delete ThreadSerialPort;
+		ThreadSerialPort=new thread(ESE_CRT::ThreadCOM);
+		contMenuToDraw=-1;
+		ManejadorMensajes->Add(msg,position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,0,1,0,2);
+		delete[]toSaveCOM;
+		toSaveCOM=new char[strlen(serialPort.getChar())+1];
+		toSaveCOM[strlen(serialPort.getChar())]=0;
+		for(unsigned i=0;i<strlen(serialPort.getChar());i++)
+			toSaveCOM[i]=serialPort.getChar()[i];
+		toSaveSpeed=serialPort.getunsigned();
+		ESE_CRT::InitMenu();
+		/*if(Boxf1)
+			ManejadorForms->Add(Interfaz(7),ManejadorForms);
+		if(BoxAbout)
+			ManejadorForms->Add(Interfaz(8),ManejadorForms);
+		if(ModoSonido)sonidos(5);*/
+		return true;
+	}
+}
+bool ESE_CRT::DetenerConnection()
+{
+		recibir_serie=false;
+		if(PlanoAcceso)
+		{
+			PlanoAcceso=false;
+			ManejadorSketchs->Sub("PlanoAcceso",ManejadorSketchs);
+			ManejadorSketchs->SetDraw(false,ManejadorSketchs);
+		}
+		ThreadSerialPort->join();
+		serialPort.CloseConnection();
+		ContainerPrincipal->LabelsDetenerConeccion();
+		/*ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelChar")->SetDraw(true);
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelUnsigned")->SetDraw(true);
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetDraw(true);
+		ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelESE_CRT")->SetColor((GLfloat)0.7,(GLfloat)0.7,(GLfloat)0.7);*/
+			
+		//ManejadorForms->Sub("StackAnimationsConnection",ManejadorForms);
+		EsperandoReedireccionar=true;
+		ErrorConnect=false;
+		Acces=false;
+		ESE_CRT::InitMenu();
+		//if(serialPort.GetType()==ConnectionType::SERIAL_PORT)
+		//default_menu(-5);
+		//if(Boxf1)
+			//ManejadorForms->Add(Interfaz(7),ManejadorForms);
+		ManejadorMensajes->Add("Desconectado Correctamente",position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,5,0,1,0,2);
+		if(ModoSonido)sonidos(10);
+		if(ModoLogger)cout<<endl<<Frases(79)<<endl;
+		return true;
+}
+
 void ESE_CRT::recivirDatosCOM(){
 	if(recibir_serie)
 	   {
@@ -3039,7 +3180,7 @@ void ESE_CRT::recivirDatosCOM(){
 			////////////////////////////////////////////////////ERROR:RECONECTAR/////////////////////////////////////////////////////////////
 		  if(ErrorConnect)
 		  {
-			 if(SeriPort.inicializa(toSaveCOM,toSaveSpeed))
+			 if(serialPort.inicializa(toSaveCOM,toSaveSpeed))
 			 {
 				ErrorConnect=false;
 				ManejadorForms->Add(Interfaz(9),ManejadorForms);
@@ -3050,14 +3191,14 @@ void ESE_CRT::recivirDatosCOM(){
 		  	return;
 		  }
 			///////////////////////////////////////////////////////RECIVO DATOS/////////////////////////////////////////////////////////////////////////
-		  char*c=SeriPort.Recibir();//Recivo un dato
+		  char*c=serialPort.Recibir();//Recivo un dato
 		  if(!recibir_serie)
 			  return;
 			/////////////////////////////////////////////////////////ERROR CONEXION////////////////////////////////////////////////////////////////////
-		  if(SeriPort.Error())	 //Si algo dio error
+		  if(serialPort.Error())	 //Si algo dio error
 		  {
-				if(ModoLogger)cout<<SeriPort.ErrorStr()<<endl<<Frases(89);
-				if(SeriPort.ErrorStr()[0]=='C')
+				if(ModoLogger)cout<<serialPort.ErrorStr()<<endl<<Frases(89);
+				if(serialPort.ErrorStr()[0]=='C')
 				{
 					ManejadorMensajes->Add(Frases(102),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,3,1,0,0,2);
 				}
@@ -3067,7 +3208,7 @@ void ESE_CRT::recivirDatosCOM(){
 				}
 				ErrorConnect=true;
 				EsperandoReedireccionar=true;
-				SeriPort.CloseConnection();
+				serialPort.CloseConnection();
 				ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->AddNewText(Frases(115));
 				ManejadorForms->GetForm("ESE_CRTContainer",ManejadorForms)->ContainerGetForms("labelReferenaciar")->SetColor(1,1,0);
 				/*ManejadorForms->GetForm("labelReferenaciar",ManejadorForms)->AddNewText(Frases(115));
@@ -3651,12 +3792,12 @@ void ESE_CRT::ThreadCargObject()
 	if(ManejadorObject->errorCarga)
 	{
 		if(ModoSonido)sonidos(10);
-		ManejadorMensajes->Add(Frases(82),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,10,1,0,0,2);
+		ManejadorMensajes->Add(Frases(82),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,1,1,0,0,2);
 	}
 	else
 	{
 		if(ModoSonido)sonidos(2);
-		ManejadorMensajes->Add(Frases(400),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,10,0,1,0,2);
+		ManejadorMensajes->Add(Frases(400),position::CENTER_TOP,(GLfloat)wigth,(GLfloat)height,1,0,1,0,2);
 	}
 }
 

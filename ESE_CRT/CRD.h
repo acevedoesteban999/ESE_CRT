@@ -13,6 +13,11 @@ public:
 	{
 		this->x=x;this->y=y;this->z=z;
 	}
+	CRD(double x,double y)
+	{
+		this->x=x;this->y=y;this->z=0;
+	}
+
 	CRD(double*coords)
 	{
 		 this->x=coords[0];
@@ -20,6 +25,14 @@ public:
 		 this->z=coords[2];
 	}
 	~CRD(){};
+	CRD AddX(double x)
+	{
+		return CRD(this->x+x,y,z);
+	}
+	CRD AddY(double y)
+	{
+		return CRD(x,this->y+y,z);
+	}
 	static void set(float x,float y,float z,CRD*crd)
 	{
 		crd->x=x;

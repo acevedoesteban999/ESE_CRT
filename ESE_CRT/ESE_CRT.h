@@ -24,6 +24,18 @@
 #include <mmsystem.h>
 #include "Container.h"
 #include "StackMessenger.h"
+#include "_forms.h"
+#include "_label.h"
+#include "_textBox.h"
+#include "_base_Chect_RadioButton.h"
+#include "_button.h"
+#include "_radioButtonGroup.h"
+#include "_box.h"
+#include "_baseArrayForms.h"
+#include "_baseLayouts.h"
+#include  "_manejadorForms.h"
+#include "_container.h"
+
 #define RazonDeAumento 1
 
 using namespace std;
@@ -65,6 +77,8 @@ public:
 	static void default_menu(int opcion);
 	static void MenuIdioma(int opcion);
 	//////////////DATOS
+	static bool IniciarConnection(char*Char,unsigned Unsigned);
+	static bool DetenerConnection();
    	static void cargarInitDatos();
 	static void salvarInitDatos();
 	static void recivirDatosCOM();

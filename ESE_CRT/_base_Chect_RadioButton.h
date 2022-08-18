@@ -9,7 +9,7 @@ protected:
 	GLfloat R,G,B;
 	bool Chect;
 public:	
-	_base_Chect_RadioButton(char*name,char*Escritura,CRD coord,int*TotalWigth,int*TotalHeight,bool Chect=false):_forms(name,coord,20,20,TotalWigth,TotalHeight),label("LabelBase",Escritura,coord.AddX(20),1,0,0,0,TotalWigth,TotalHeight)
+	_base_Chect_RadioButton(char*name,char*Escritura,CRD coord,int*TotalWigth,int*TotalHeight,bool Chect=false):_forms(name,coord,15,15,TotalWigth,TotalHeight),label("LabelBase",Escritura,coord.AddX(20),1,0,0,0,TotalWigth,TotalHeight)
 	{
 		this->Chect=Chect;
 		this->G=1;
@@ -36,7 +36,7 @@ public:
 	bool ChectBox_GetChect(){return Chect;}
 	float Get_All_Wigth()
 	{
-		return label.Get_All_Wigth()+20;
+		return label.Get_All_Wigth()+15;
 	}
 	//PURAS//
 	virtual void _draw()=0;
@@ -54,10 +54,10 @@ public:
 	{
 		if(Draw)
 		{
-				glPushMatrix();
-				glLoadIdentity();
-				glTranslatef((GLfloat)(-*TotalWigth/2+coord.x),(GLfloat)(*TotalHeight/2-coord.y),(GLfloat)2* *TotalWigth-1); 
-       			glColor3f((GLfloat)0.7,(GLfloat)0.7,(GLfloat)0.7);
+			glPushMatrix();
+			glLoadIdentity();
+			glTranslatef((GLfloat)(-*TotalWigth/2+coord.x),(GLfloat)(*TotalHeight/2-coord.y),(GLfloat)2* *TotalWigth-1); 
+       		glColor3f((GLfloat)0.7,(GLfloat)0.7,(GLfloat)0.7);
 			if(this->Chect)
 				glColor3f((GLfloat)0,(GLfloat)0,(GLfloat)0);
 			else
@@ -68,9 +68,12 @@ public:
 			glVertex3f(15,15,-1);
 			glVertex3f(1,15,-1);
 			glEnd();
-			if(this->Chect)
+			if(this->Chect||PulsadoPasivoBool)
 			{
-				glColor3f(this->active?this->R:(GLfloat)0.2,this->active?this->G:(GLfloat)0.2,this->active?this->B:(GLfloat)0.2);
+				if(PulsadoPasivoBool&&active)
+					glColor3f(0,(GLfloat)0.4,0);
+				else 
+					glColor3f(this->active?this->R:(GLfloat)0.2,this->active?this->G:(GLfloat)0.2,this->active?this->B:(GLfloat)0.2);
 				glBegin(GL_POLYGON);
 				glVertex3f(1,0,-1);
 				glVertex3f(15,0,-1);
@@ -99,7 +102,7 @@ public:
 			glLoadIdentity();
 			glTranslatef((GLfloat)(-*TotalWigth/2+coord.x),(GLfloat)(*TotalHeight/2-coord.y),(GLfloat)2* *TotalWigth-1); 
        		glColor3f((GLfloat)0.7,(GLfloat)0.7,(GLfloat)0.7);
-
+			
 			if(this->Chect)
 				glColor3f((GLfloat)0,(GLfloat)0,(GLfloat)0);
 			else
@@ -111,9 +114,12 @@ public:
 			glVertex3f(7.5,15,-1);
 			glVertex3f(0,7.5,-1);
 			glEnd();
-			if(this->Chect)
+			if(this->Chect||PulsadoPasivoBool)
 			{
-				glColor3f(this->active?this->R:(GLfloat)0.2,this->active?this->G:(GLfloat)0.2,this->active?this->B:(GLfloat)0.2);
+				if(PulsadoPasivoBool&&active)
+					glColor3f(0,(GLfloat)0.4,0);
+				else
+					glColor3f(this->active?this->R:(GLfloat)0.2,this->active?this->G:(GLfloat)0.2,this->active?this->B:(GLfloat)0.2);
 				glBegin(GL_POLYGON);
 				glVertex3f(7.5,0,-1);
 				glVertex3f(15,7.5,-1);

@@ -5,9 +5,7 @@ public:
 	double x,y,z;
 	CRD(void)
 	{
-		this->x=0;
-		this->y=0;
-		this->z=0;
+		this->x=0;this->y=0;this->z=0;
 	};
 	CRD(double x,double y,double z)
 	{
@@ -32,6 +30,14 @@ public:
 	CRD AddY(double y)
 	{
 		return CRD(x,this->y+y,z);
+	}
+	void SetX(double x)
+	{
+		this->x=x;
+	}
+	void SetY(double y)
+	{
+		this->y=y;
 	}
 	static void set(float x,float y,float z,CRD*crd)
 	{

@@ -103,35 +103,3 @@ public:
 	// };
 };
 
-/*MeSSenger(char*meSSenger,position Position,GLfloat wigth,GLfloat height,float Time=3,GLfloat R=1,GLfloat G=1,GLfloat B=1,unsigned BigLV=0,GLfloat x=0,GLfloat y=0,GLfloat z=0)
-	{
-	this->meSSenger=new char[strlen(meSSenger)+1];
-	this->meSSenger[strlen(meSSenger)]=0;
-		for(unsigned i=0;i<strlen(meSSenger);i++)
-			this->meSSenger[i]=meSSenger[i];
-		if(Position==position::CENTER_TOP)
-	{
-		this->x=(GLfloat)-int(strlen(meSSenger)*4.5);
-		this->y=(GLfloat)height/2-20;
-		this->z=(GLfloat)2*wigth-1;
-	}
-	
-		else if(Position==position::CENTER_BUTTOM)
-	{
-		this->x=(GLfloat)-int(strlen(meSSenger)*4.5);
-		this->y=-(GLfloat)height/2-20;
-		this->z=(GLfloat)2*wigth-1;
-	}
-	else
-	{
-	this->x=x;
-	this->y=y;
-	this->z=z;
-	}
-	this->t=new TimeDuration(Time);
-		this->R=R;
-		this->G=G;
-		this->B=B;
-		this->BigLV=BigLV;
-		Drawing=true;
-	};*/

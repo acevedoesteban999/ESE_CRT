@@ -2,13 +2,11 @@
 #include "_baseArrayForms.h"
 #include "_forms.h"
 
-class _baseLayouts:public _baseArrayForms, public _forms
+class _baseContainer:public _baseArrayForms, public _forms
 {
 public:
-	_baseLayouts(char*name,CRD crd,int*TotalWigth,int*TotalHeight):_forms(name,crd,0,0,TotalWigth,TotalHeight),_baseArrayForms()
-	{
-	}
-	~_baseLayouts()
+	_baseContainer(char*name,CRD crd,int*TotalWigth,int*TotalHeight):_forms(name,crd,0,0,TotalWigth,TotalHeight),_baseArrayForms(){}
+	~_baseContainer()
 	{
 	}
 	//NEW//
@@ -22,14 +20,14 @@ public:
 	{
 		_baseArrayForms::New_CRD(name,crd);
 	}
-	void New_Wigth(float Wigth)
+	void Actualizar_ParentWigth(float Wigth)
 	{
 		this->Wigth=Wigth;
-		for(unsigned i=0;i<cont;i++)
-			if(forms[i]->type==_TEXTBOX)
+		_baseArrayForms::Actualizar_ParentWigth();
+			/*if(forms[i]->type==_TEXTBOX)
 				forms[i]->New_Wigth(Wigth);
 			else if(forms[i]->type==_LABELCENTER)
-				forms[i]->New_CRD(forms[i]->coord);
+				forms[i]->New_CRD(forms[i]->coord);*/
 	}
 	void Clear()
 	{
@@ -37,8 +35,12 @@ public:
 		Wigth=0;
 		Height=0;
 	}
+	virtual bool PulsadoPasivo(int x,int y)
+	{
+		return false;
+	}
 	//ADD//
-	void  Add_Label_Free(char*name,char*escritura,CRD crd,bool Draw=true,unsigned LetterSize=1,GLfloat R=0,GLfloat G=0,GLfloat B=0)
+	void Add_Label_Free(char*name,char*escritura,CRD crd,bool Draw=true,unsigned LetterSize=1,GLfloat R=0,GLfloat G=0,GLfloat B=0)
 	{
 		_label*lF=new _label(name,escritura,crd,LetterSize,R,G,B,this->TotalWigth,this->TotalHeight);
 		lF->Set_Draw(Draw);
@@ -57,8 +59,13 @@ public:
 	}
 	void Add_TextBox(char*name,char*escritura,_textBoxType TextBoxType=_DEFAULT)
 	{
-		_textBox*tb=new _textBox(name,escritura,CRD(),(float)(this->Wigth-this->Wigth*0.05),this->TotalWigth,this->TotalHeight,TextBoxType);
-		Add_Element(tb);
+		_textBox*tB=new _textBox(name,escritura,CRD(),this->Wigth,this->TotalWigth,this->TotalHeight,TextBoxType);
+		Add_Element(tB);
+	}
+	void Add_TextBoxCenter(char*name,char*escritura,_textBoxType TextBoxType=_DEFAULT)
+	{
+		_textBoxCenter*tBC=new _textBoxCenter(name,escritura,CRD(),this->Wigth,this->TotalWigth,this->TotalHeight,&this->Wigth,TextBoxType);
+		Add_Element(tBC);
 	}
 	void Add_ChectBox(char*name,char*Escritura,bool Chect=false)
 	{
@@ -83,6 +90,11 @@ public:
 		_buttonLabel*btnL=new _buttonLabel(name,Escritura,CRD(),TotalWigth,TotalHeight);
 		Add_Element(btnL);
 	}
+	void Add_ButtonLabelCenter(char*name,char*Escritura)
+	{
+		_buttonLabelCenter*btnLC=new _buttonLabelCenter(name,Escritura,CRD(),&Wigth,TotalWigth,TotalHeight);
+		Add_Element(btnLC);
+	}
 	void Add_ButtonAccept(char*name)
 	{
 		_buttonAccept*btnA=new _buttonAccept(name,CRD(),this->TotalWigth,this->TotalHeight);
@@ -98,12 +110,11 @@ public:
 		_buttonsAcceptCancel*btnAC=new _buttonsAcceptCancel(name,CRD(),TotalWigth,TotalHeight,&this->Wigth);
 		Add_Element(btnAC);
 	}
-
-	void Add_ButtonX2(char*name,char*Escritura1,char*Escritura2)
+	void Add_ButtonAtras(char*name)
 	{
-		//_buttonsX2*btnX2=new _buttonsX2(name,Escritura1,Escritura2,,coord,TotalWigth,TotalHeight,&this->Wigth);
+		_buttonAtras*btnAtr=new _buttonAtras(name,CRD(),TotalWigth,TotalHeight);
+		Add_Element(btnAtr);
 	}
-
 	//TEXTBOX//
 	bool TextBox_Get_Escribiendo()
 	{
@@ -143,6 +154,11 @@ public:
 	{
 		return _baseArrayForms::Get_Text(name);
 	}
+	//TRABAJO_INTERNO//
+	virtual void Pulsar_Accept(){};
+	virtual void Pulsar_Cancel(){};
+	virtual void Pulsar_Btn(unsigned ElementPulsadoPositionInArray){}
+	virtual void Interfaz_Atras(){}
 	//PURAS//
 	virtual bool Pulsado(int x,int y)=0;
 	virtual void _draw()=0;

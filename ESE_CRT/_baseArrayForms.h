@@ -42,6 +42,11 @@ public:
 			delete forms[i];
 		cont=0;
 	}
+	virtual void Actualizar_ParentWigth()
+	{
+		for(unsigned i=0;i<cont;i++)
+			forms[i]->Actualizar_ParentWigth();
+	}
 	///ADD//
 	virtual void Add_Element(_forms*form)
 	{

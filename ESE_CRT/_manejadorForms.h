@@ -21,14 +21,19 @@ public:
 		for(unsigned i=0;i<cont;i++)
 		{
 			if(forms[i]->Pulsado(x,y))
-			{
-				if(forms[i]->type==_TEXTBOX)
-					TextBoxEscribiendo=i;
-				else if(forms[i]->type==_BOX)
-					if(forms[i]->TextBox_Get_Escribiendo())
+			{	
+				if(forms[i]->TextBox_Get_Escribiendo())
 						TextBoxEscribiendo=i;
+				return true;
 			}
 		}
 		return false;
 	}
+	bool PulsadoPasivo(int x,int y)
+	{
+		for(unsigned i=0;i<cont;i++)
+			if(forms[i]->PulsadoPasivo(x,y))
+				return true;
+		return false;
+	};
 };

@@ -32,9 +32,9 @@
 #include "_radioButtonGroup.h"
 #include "_box.h"
 #include "_baseArrayForms.h"
-#include "_baseLayouts.h"
+#include "_baseContainer.h"
 #include  "_manejadorForms.h"
-#include "_container.h"
+#include "_labelContainer.h"
 
 #define RazonDeAumento 1
 

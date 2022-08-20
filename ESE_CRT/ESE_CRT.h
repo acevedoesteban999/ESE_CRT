@@ -35,6 +35,8 @@
 #include "_baseContainer.h"
 #include  "_manejadorForms.h"
 #include "_labelContainer.h"
+#include "_manejadorBocetos.h"
+#include "_boceto.h"
 
 #define RazonDeAumento 1
 

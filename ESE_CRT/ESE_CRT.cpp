@@ -75,10 +75,12 @@ thread*ThreadSerialPort=new thread();
 //MeSSenger*messeng=new MeSSenger();
 StackForms*ManejadorForms=new StackForms();
 _manejadorForms _ManejadorForms;
+_manejadorBocetos _ManejadorBocetos;
+///PUNTEROS PARA ADD MANEJADORFORMS//
 //NO DELETE(MAMEJADORFORMS DELETE)
 _labelContainerPrincipal*LabelContainerPrincipal=new _labelContainerPrincipal("LabelContainerPrincipal",ESE_CRT_Version,&wigth,&height);
 _labelContainerCoordenadas*LabelContainerCoordenadas=new _labelContainerCoordenadas("LabelContainerCoordenadas",CRD(),&_dataESE,&wigth,&height);
-_boxInterfazPrincipal*BoxInterfazPricipal=new _boxInterfazPrincipal("BoxInterfazPricipal",CRD(10,200,0),&wigth,&height);
+_boxInterfazPrincipal*BoxInterfazPricipal=new _boxInterfazPrincipal("BoxInterfazPricipal",CRD(10,200,0),&_ManejadorBocetos,&wigth,&height);
 _boxConnection*BoxConnection=new _boxConnection("BoxConnection",CRD(10,55),toSaveCOM,&toSaveSpeed,&wigth,&height,ESE_CRT::IniciarConnection,ESE_CRT::DetenerConnection);
 ///////////////////////////////////////////////////////////METODOS//////////////////////////////////////////////////////////////
 StackMessenger*ManejadorMensajes=new StackMessenger();
@@ -1026,10 +1028,24 @@ ESE_CRT::ESE_CRT(){
 	
 	InitMenu();
 	///////////////////////_NEW////////////////////
+	
+	//FORMS//
 	_ManejadorForms.Add_Element(BoxInterfazPricipal);
 	_ManejadorForms.Add_Element(BoxConnection);
 	_ManejadorForms.Add_Element(LabelContainerPrincipal);
 	_ManejadorForms.Add_Element(LabelContainerCoordenadas);
+	//BOCETOS//
+	_ManejadorBocetos.Add_Boceto(new _boceto3D("B0"));
+	_ManejadorBocetos.Set_DrawType(_drawType::_STRIPLINES);
+	_ManejadorBocetos.Set_BocetoAPintar(0);
+	_ManejadorBocetos.Add_Point_to_BocetoAPintar(CRD());
+	_ManejadorBocetos.Add_Point_to_BocetoAPintar(CRD(100));
+	_ManejadorBocetos.Add_Point_to_BocetoAPintar(CRD(100,100));
+	_ManejadorBocetos.Add_Point_to_BocetoAPintar(CRD(50,200));
+	_ManejadorBocetos.Add_Point_to_BocetoAPintar(CRD(100,200));
+	_ManejadorBocetos.Add_Point_to_BocetoAPintar(CRD(10,90));
+	_ManejadorBocetos.Set_BocetoAPintar(-1);
+	
 	glutPostRedisplay();
 }
 ESE_CRT::~ESE_CRT(){
@@ -1165,6 +1181,7 @@ void ESE_CRT::display(){
 	Entorno();//Cargo los objetos, forms y demas elementos
 
 	_ManejadorForms._draw();
+	_ManejadorBocetos._draw();
 
     glFlush();//siempre lleva esto  (asegura que los comandos anteriores de OpenGL debe completarse en un tiempo finito)
 	glutSwapBuffers();

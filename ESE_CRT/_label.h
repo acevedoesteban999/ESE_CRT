@@ -12,17 +12,16 @@ protected:
 	friend class _baseChRbBtn;
 	friend class _textBoxCenter;
 public:
-	_label(char*name,char*escritura,CRD crd,unsigned LetterSize,GLfloat R,GLfloat G,GLfloat B,int*TotalWigth,int*TotalHeight):_forms(name,crd, 0, 20, TotalWigth, TotalHeight)
+	_label(char*name,char*escritura,CRD crd,unsigned LetterSize,double R,double G,double B,int*TotalWigth,int*TotalHeight):_forms(name,crd, 0, 20, TotalWigth, TotalHeight)
 	{
 		type=_LABEL;
-		this->R=R;
-		this->G=G;
-		this->B=B;
+		this->R=(GLfloat)R;
+		this->G=(GLfloat)G;
+		this->B=(GLfloat)B;
 		this->LetterSize=LetterSize;
 		this->text=new char[1];
 		this->Set_Text(escritura);
 	}
-
 	~_label()
 	{
 		delete[]text;
@@ -33,11 +32,11 @@ public:
 	}
 	//SET//
 	void Set_Letter_Size(unsigned letterSize){LetterSize=letterSize;}
-	void Set_Color(GLfloat R,GLfloat G,GLfloat B)
+	void Set_Color(double R,double G,double B)
 	{
-		this->R=R;
-		this->G=G;
-		this->B=B;
+		this->R=(GLfloat)R;
+		this->G=(GLfloat)G;
+		this->B=(GLfloat)B;
 	}
 	virtual void Set_Text(char*text)
 	{
@@ -46,6 +45,7 @@ public:
 		this->text[strlen(text)]=0;
 		for(unsigned i=0;i<strlen(text);i++)
 			this->text[i]=text[i];
+		this->Wigth=Get_All_Wigth();
 	}
 	//GET//
 	float Get_All_Wigth()
@@ -66,17 +66,27 @@ public:
 			glColor3f(R,G,B);
 			glRasterPos3f((GLfloat)(-*TotalWigth/2+coord.x),(GLfloat)(*TotalHeight/2-coord.y),(GLfloat)(2* *TotalWigth-1));
 			
-			glColor3f(0,0,1);
 			
-			//PUNTO EN (0;0)
-			
-			/*glPointSize(5);
-			glColor3f(0,1,0);
-			glBegin(GL_POINTS);
-			glVertex3f(-*TotalWigth/2+coord.x,*TotalHeight/2-coord.y,2* *TotalWigth-1);
-			glEnd();*/
-			
-			
+			if(!active)
+			{
+				glTranslatef((GLfloat)(-*TotalWigth/2+coord.x),(GLfloat)(*TotalHeight/2-coord.y),(GLfloat)2* *TotalWigth-1); 
+				
+				glColor3f((GLfloat)0.3,(GLfloat)0.3,(GLfloat)0.3);
+				glBegin(GL_LINES);
+				glVertex3f(0,0,(GLfloat)-0.9);
+				glVertex3f((GLfloat)Wigth/4,Height-3,(GLfloat)-0.9);
+
+				glVertex3f((GLfloat)Wigth/4,(GLfloat)0,(GLfloat)-0.9);
+				glVertex3f((GLfloat)2*Wigth/4,(GLfloat)Height-3,(GLfloat)-0.9);
+
+				glVertex3f((GLfloat)Wigth/2,(GLfloat)0,(GLfloat)-0.9);
+				glVertex3f((GLfloat)3*Wigth/4,(GLfloat)Height-3,(GLfloat)-0.9);
+
+				glVertex3f((GLfloat)3*Wigth/4,(GLfloat)0,(GLfloat)-0.9);
+				glVertex3f((GLfloat)Wigth,(GLfloat)Height-3,(GLfloat)-0.9);
+				glEnd();
+				
+			}
 			for(unsigned int i=0;i<strlen(text);i++)
 			{
 				if(LetterSize==2)
@@ -95,7 +105,7 @@ public:
 class _labelCenter:public _label,public _center
 {
 public:
-	_labelCenter(char*name,char*escritura,CRD crd,unsigned LetterSize,GLfloat R,GLfloat G,GLfloat B,int*TotalWigth,int*TotalHeight,float*ParentWigth):_label(name,escritura,CRD(),LetterSize,R,G,B,TotalWigth,TotalHeight),_center(ParentWigth,this)
+	_labelCenter(char*name,char*escritura,CRD crd,unsigned LetterSize,double R,double G,double B,int*TotalWigth,int*TotalHeight,float*ParentWigth):_label(name,escritura,CRD(),LetterSize,R,G,B,TotalWigth,TotalHeight),_center(ParentWigth,this)
 	{
 		this->type=_LABELCENTER;
 		this->New_CRD(crd);

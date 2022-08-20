@@ -32,8 +32,14 @@ public:
 		}
 		return false;
 	}
+	//SET//
+	void Set_Active(bool Active)
+	{
+		_forms::Set_Active(Active);
+		label.Set_Active(Active);
+	}
 	//GET//
-	bool ChectBox_GetChect(){return Chect;}
+	bool Get_Chect(){return Chect;}
 	float Get_All_Wigth()
 	{
 		return label.Get_All_Wigth()+15;
@@ -47,7 +53,7 @@ class _chectBox:public _base_Chect_RadioButton
 public:
 	_chectBox(char*name,char*Escritura,CRD crd,int*TotalWigth,int*TotalHeight,bool Chect=false):_base_Chect_RadioButton(name,Escritura,crd,TotalWigth,TotalHeight,Chect)
 	{
-		this->type=_TEXTBOX;
+		this->type=_CHECTBOX;
 	}
 	~_chectBox(){}
 	void _draw()
@@ -68,7 +74,7 @@ public:
 			glVertex3f(15,15,-1);
 			glVertex3f(1,15,-1);
 			glEnd();
-			if(this->Chect||PulsadoPasivoBool)
+			if(this->Chect||PulsadoPasivoBool||!active)
 			{
 				if(PulsadoPasivoBool&&active)
 					glColor3f(0,(GLfloat)0.4,0);
@@ -114,7 +120,7 @@ public:
 			glVertex3f(7.5,15,-1);
 			glVertex3f(0,7.5,-1);
 			glEnd();
-			if(this->Chect||PulsadoPasivoBool)
+			if(this->Chect||PulsadoPasivoBool||!active)
 			{
 				if(PulsadoPasivoBool&&active)
 					glColor3f(0,(GLfloat)0.4,0);

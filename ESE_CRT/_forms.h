@@ -8,6 +8,7 @@ enum _type
 	_TEXTBOXCENTER,
 	_LABEL,
 	_RADIOBUTTONGROUP,
+	_RADIOBUTTONGROUPFREE,
 	_CHECTBOX,
 	_RADIOBUTTON,
 	_BOX,
@@ -16,10 +17,11 @@ enum _type
 	_BUTTONLABELCENTER,
 	_BUTTONATRAS,
 	_CONTAINER,
-	_BUTTONSACCEPTCANCEL
-	,_BASEBUTTON,
+	_BUTTONSACCEPTCANCEL,
+	_BUTTONSACCEPTATRAS,
+	_BASEBUTTON,
 	_BUTTONACCEPT,
-	_BUTTONCANCEl,
+	_BUTTONCANCEL,
 	_LABELCENTER,
 	_LABELCONTAINERFREE,
 	_LABELCONTAINER
@@ -36,12 +38,6 @@ public:
 	_type type;
 	bool PulsadoPasivoBool;
 	//////////////////////////
-	_forms(){
-		name=new char[1];
-		active=Draw=true;
-		type=_FORMS;
-		PulsadoPasivoBool=false;
-	};
 	_forms(char*name,CRD coord,float wigth,float height,int*TotalWigth,int*TotalHeight){
 		this->name=new char[strlen(name)+1];
 		this->name[strlen(name)]=0;
@@ -103,6 +99,7 @@ public:
 		return _NULL;
 	}
 	virtual void Actualizar_ParentWigth(){};
+	virtual int Get_Element_Chect(){return  -1;}
 	//GET//
 	virtual float Get_All_Wigth()
 	{
@@ -113,13 +110,17 @@ public:
 		return Height;
 	}
 	virtual char* Get_Text(){return 0;}
+	virtual bool Get_Chect(){return false;}
+	virtual _type Get_Type_Last_Pulsado(){return type;}
+	_type Get_Type(){return type;}
 	//SET//
 	virtual void Set_Draw(bool Draw)
 	{
 		this->Draw=Draw;
 	}
-	virtual void Set_Color(GLfloat R,GLfloat G,GLfloat B)
-	{}
+	virtual void Set_Color(float R,float G,float B){}
+	virtual void Set_Active(bool Active){this->active=Active;}
+	virtual void Set_Element_Chect(unsigned DrawType){}
 	//////LABEL//////
 	virtual void Set_Text(char*text){};
 	
@@ -131,7 +132,7 @@ public:
 	
 	///////CHECTBOX/////
 	
-	//virtual bool ChectBox_GetChect(){	return false;}
+	//virtual bool Get_Chect(){	return false;}
 	
 	//////RADIOBUTTON////
 	

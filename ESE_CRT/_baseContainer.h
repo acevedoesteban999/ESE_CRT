@@ -40,18 +40,18 @@ public:
 		return false;
 	}
 	//ADD//
-	void Add_Label_Free(char*name,char*escritura,CRD crd,bool Draw=true,unsigned LetterSize=1,GLfloat R=0,GLfloat G=0,GLfloat B=0)
+	void Add_Label_Free(char*name,char*escritura,CRD crd,bool Draw=true,unsigned LetterSize=1,double R=0,double G=0,double B=0)
 	{
 		_label*lF=new _label(name,escritura,crd,LetterSize,R,G,B,this->TotalWigth,this->TotalHeight);
 		lF->Set_Draw(Draw);
 		Add_Element(lF);
 	}
-	void Add_Label(char*name,char*escritura,unsigned LetterSize=1,GLfloat R=0,GLfloat G=0,GLfloat B=0)
+	void Add_Label(char*name,char*escritura,unsigned LetterSize=1,double R=0,double G=0,double B=0)
 	{
 		_label*l=new _label(name,escritura,CRD(),LetterSize,R,G,B,this->TotalWigth,this->TotalHeight);
 		Add_Element(l);
 	}
-	void Add_LabelCenter(char*name,char*escritura,unsigned LetterSize=1,GLfloat R=0,GLfloat G=0,GLfloat B=0)
+	void Add_LabelCenter(char*name,char*escritura,unsigned LetterSize=1,double R=0,double G=0,double B=0)
 	{
 		_labelCenter*lC=new _labelCenter(name,escritura,CRD(),LetterSize,R,G,B,TotalWigth,TotalHeight,&this->Wigth);
 		Add_Element(lC);
@@ -77,6 +77,12 @@ public:
 		_radioButtonGroup* rbg=new _radioButtonGroup(name,CRD(),this->TotalWigth,this->TotalHeight);
 		Add_Element(rbg);
 	}
+	void Add_RadioButtonGroupFree(char*name)
+	{
+		_radioButtonGroupFree* rbgf=new _radioButtonGroupFree(name,CRD(),this->TotalWigth,this->TotalHeight);
+		Add_Element(rbgf);
+	}
+	
 	void Add_RadioButton_To_RadioButtonGroup(char*RadioButtonGroupName,char*RadioButtonName,char*Escritura,bool Chect=false)
 	{
 		int i=Get_Element_By_Name(RadioButtonGroupName);
@@ -110,6 +116,11 @@ public:
 		_buttonsAcceptCancel*btnAC=new _buttonsAcceptCancel(name,CRD(),TotalWigth,TotalHeight,&this->Wigth);
 		Add_Element(btnAC);
 	}
+	void Add_ButtonsAcceptAtras(char*name)
+	{
+		_buttonsAcceptAtras*btnAt=new _buttonsAcceptAtras(name,CRD(),TotalWigth,TotalHeight,&this->Wigth);
+		Add_Element(btnAt);
+	}
 	void Add_ButtonAtras(char*name)
 	{
 		_buttonAtras*btnAtr=new _buttonAtras(name,CRD(),TotalWigth,TotalHeight);
@@ -137,7 +148,7 @@ public:
 	{
 		_baseArrayForms::Set_Draw(name,Draw);
 	}
-	void Set_Color(GLfloat R,GLfloat G,GLfloat B)
+	void Set_Color(float R,float G,float B)
 	{
 		_forms::Set_Color(R,G,B);
 	}
@@ -149,6 +160,15 @@ public:
 	{
 		_baseArrayForms::Set_Text(name,text);
 	}
+	void Set_Active(bool Active)
+	{
+		_forms::Set_Active(Active);
+		_baseArrayForms::Set_Active(Active);
+	}
+	void Set_Active(char*name,bool Draw)
+	{
+		_baseArrayForms::Set_Active(name,Draw);
+	}
 	//GET//
 	char* Get_Text(char*name)
 	{
@@ -158,7 +178,7 @@ public:
 	virtual void Pulsar_Accept(){};
 	virtual void Pulsar_Cancel(){};
 	virtual void Pulsar_Btn(unsigned ElementPulsadoPositionInArray){}
-	virtual void Interfaz_Atras(){}
+	virtual void Pulsar_Atras(){}
 	//PURAS//
 	virtual bool Pulsado(int x,int y)=0;
 	virtual void _draw()=0;

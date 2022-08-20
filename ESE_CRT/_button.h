@@ -28,13 +28,29 @@ public:
 	{
 		_forms::New_CRD(crd.AddX(5));
 	}
-	void _buttonDraw()
+	void _buttonSimpleDraw()
 	{
 		if(Draw)
 		{
 			glPushMatrix();
 			glLoadIdentity();
 			glTranslatef((GLfloat)(-*TotalWigth/2+coord.x),(GLfloat)(*TotalHeight/2-coord.y),(GLfloat)2* *TotalWigth-1); 
+			
+			if(!active)
+			{
+				glColor3f((GLfloat)0.3,(GLfloat)0.3,(GLfloat)0.3);
+				glBegin(GL_LINES);
+				glVertex3f(0,0,(GLfloat)-0.9);
+				glVertex3f((GLfloat)Wigth/4,Height-3,(GLfloat)-0.9);
+				glVertex3f((GLfloat)Wigth/4,(GLfloat)0,(GLfloat)-0.9);
+				glVertex3f((GLfloat)2*Wigth/4,(GLfloat)Height-3,(GLfloat)-0.9);
+				glVertex3f((GLfloat)Wigth/2,(GLfloat)0,(GLfloat)-0.9);
+				glVertex3f((GLfloat)3*Wigth/4,(GLfloat)Height-3,(GLfloat)-0.9);
+				glVertex3f((GLfloat)3*Wigth/4,(GLfloat)0,(GLfloat)-0.9);
+				glVertex3f((GLfloat)Wigth,(GLfloat)Height-3,(GLfloat)-0.9);
+				glEnd();	
+			}
+			
 			glLineWidth(2);
 			glColor3f(0,0,0);
 			glBegin(GL_LINE_LOOP);
@@ -48,6 +64,7 @@ public:
 	void _draw()=0;
 };
 
+
 class _buttonAccept:public _button
 {
 public:
@@ -59,7 +76,7 @@ public:
 	{}
 	void _draw()
 	{
-		_buttonDraw();
+		_buttonSimpleDraw();
 		if(PulsadoPasivoBool&&active)
 			glColor3f(0,(GLfloat)0.5,0);
 		else
@@ -87,13 +104,13 @@ class _buttonCancel:public _button
 public:
 	_buttonCancel(char*name,CRD coord,int*TotalWigth,int*TotalHeight):_button(name,coord,TotalWigth,TotalHeight)
 	{
-		this->type=_BUTTONACCEPT;
+		this->type=_BUTTONCANCEL;
 	}
 	~_buttonCancel()
 	{}
 	void _draw()
 	{
-		_buttonDraw();
+		_buttonSimpleDraw();
 		if(PulsadoPasivoBool&&active)
 			glColor3f((GLfloat)0.5,0,0);
 		else
@@ -116,6 +133,42 @@ public:
 	}
 };
 
+class _buttonAtras:public _button
+{
+public:
+	_buttonAtras(char*name,CRD coord,int*TotalWigth,int*TotalHeight):_button(name,coord,TotalWigth,TotalHeight)
+	{
+		this->type=_BUTTONATRAS;
+	}
+	~_buttonAtras()
+	{}
+	void _draw()
+	{
+		_buttonSimpleDraw();
+		if(PulsadoPasivoBool&&active)
+			glColor3f((GLfloat)0.4,(GLfloat)0.4,0);
+		else
+			glColor3f((GLfloat)0.8,(GLfloat)0.8,0);
+		glBegin(GL_POLYGON);
+		glVertex3f(-2,-2,(GLfloat)-1);
+		glVertex3f(-2,Height+2,(GLfloat)-1);
+		glVertex3f(Wigth+2,Height+2,(GLfloat)-1);
+		glVertex3f(Wigth+2,-2,(GLfloat)-1);
+		glEnd();
+		
+		glColor3f(0,0,0);
+		glBegin(GL_LINE_STRIP);
+		glVertex3f(Wigth,Height/2,(GLfloat)-0.9);
+		glVertex3f(Wigth/2,Height/2,(GLfloat)-0.9);
+		glVertex3f(Wigth/2,Height,(GLfloat)-0.9);
+		glVertex3f(0,Height/2,(GLfloat)-0.9);
+		glVertex3f(Wigth/2,0,(GLfloat)-0.9);
+		glVertex3f(Wigth/2,Height/2,(GLfloat)-0.9);
+		glEnd();
+		glPopMatrix();
+	}
+};
+
 class _buttonLabel:public _baseButton
 {
 protected:
@@ -133,6 +186,13 @@ public:
 		_forms::New_CRD(crd);
 		label.New_CRD(crd);
 	}
+	//SET//
+	void Set_Active(bool Active)
+	{
+		_forms::Set_Active(Active);
+		label.Set_Active(Active);
+	}
+	//GET//
 	float Get_All_Wigth()
 	{
 		return label.Get_All_Wigth()+5;
@@ -165,20 +225,20 @@ public:
 			glLineWidth(2);
 
 			glBegin(GL_LINE_LOOP);
-			glVertex3f(-2.5,-2.5,(GLfloat)-1);
-			glVertex3f(-2.5,Height+2.5,(GLfloat)-1);
-			glVertex3f(Wigth,Height+2.5,(GLfloat)-1);
-			glVertex3f(Wigth,-2.5,(GLfloat)-1);
+			glVertex3f((GLfloat)-2.5,(GLfloat)-2.5,(GLfloat)-1);
+			glVertex3f((GLfloat)-2.5,(GLfloat)(Height+2.5),(GLfloat)-1);
+			glVertex3f((GLfloat)Wigth,(GLfloat)(Height+2.5),(GLfloat)-1);
+			glVertex3f((GLfloat)Wigth,(GLfloat)-2.5,(GLfloat)-1);
 			glEnd();
 			if(PulsadoPasivoBool&&active)
 				glColor3f((GLfloat)0.4,(GLfloat)0.4,(GLfloat)0.4);
 			else
 				glColor3f((GLfloat)0.8,(GLfloat)0.8,(GLfloat)0.8);
 			glBegin(GL_POLYGON);
-			glVertex3f(-2.5,-2.5,(GLfloat)-1);
-			glVertex3f(-2.5,Height+2.5,(GLfloat)-1);
-			glVertex3f(Wigth,Height+2.5,(GLfloat)-1);
-			glVertex3f(Wigth,-2.5,(GLfloat)-1);
+			glVertex3f((GLfloat)-2.5,(GLfloat)-2.5,(GLfloat)-1);
+			glVertex3f((GLfloat)-2.5,(GLfloat)(Height+2.5),(GLfloat)-1);
+			glVertex3f((GLfloat)Wigth,(GLfloat)(Height+2.5),(GLfloat)-1);
+			glVertex3f((GLfloat)Wigth,(GLfloat)-2.5,(GLfloat)-1);
 			glEnd();
 			glPopMatrix();
 			label._draw();
@@ -226,38 +286,40 @@ public:
 	}
 };
 
-class _buttonsAcceptCancel:public _forms
+class _buttonsDouble:public _forms
 {
-private:
+protected:
 	float*ParentWigth;
-	_buttonAccept btnA;
-	_buttonCancel btnC;
-	_type BtnPulsado;//true btnA false btnC
+	_button*btn1;
+	_button*btn2;
+	_type BtnPulsado;//true btn1 false btn2
 public:
-	_buttonsAcceptCancel(char*name,CRD coord,int*TotalWigth,int*TotalHeight,float*ParentWigth):_forms(name,coord,0,15,TotalWigth,TotalHeight),btnA("btnAcept",CRD(),TotalWigth,TotalHeight),btnC("btnCancel",CRD(),TotalWigth,TotalHeight)
+	_buttonsDouble(char*name,CRD coord,int*TotalWigth,int*TotalHeight,float*ParentWigth):_forms(name,coord,0,15,TotalWigth,TotalHeight)
 	{
-		this->type=_BUTTONSACCEPTCANCEL;
 		this->ParentWigth=ParentWigth;
-		this->New_CRD(coord);
 	}
-	~_buttonsAcceptCancel(){}
+	virtual ~_buttonsDouble()
+	{
+		delete btn1;
+		delete btn2;
+	}
 	void New_CRD(CRD crd)
 	{
 		_forms::New_CRD(crd);
-		btnA.New_CRD(crd.AddX((double)(*ParentWigth*0.25-btnA.Get_All_Wigth())));
-		btnC.New_CRD(crd.AddX((double)(*ParentWigth*0.75-btnC.Get_All_Wigth())));
+		btn1->New_CRD(crd.AddX((double)(*ParentWigth*0.25-btn1->Get_All_Wigth())));
+		btn2->New_CRD(crd.AddX((double)(*ParentWigth*0.75-btn2->Get_All_Wigth())));
 	}
 	bool Pulsado(int x,int y)
 	{
 		
-		if(btnA.Pulsado(x,y))
+		if(btn1->Pulsado(x,y))
 		{
-			BtnPulsado=_BUTTONACCEPT;
+			BtnPulsado=btn1->type;
 			return true;
 		}
-		if(btnC.Pulsado(x,y))
+		if(btn2->Pulsado(x,y))
 		{
-			BtnPulsado=_BUTTONCANCEl;
+			BtnPulsado=btn2->type;
 			return true;
 		}
 		BtnPulsado=_NULL;
@@ -267,58 +329,54 @@ public:
 	bool PulsadoPasivo(int x,int y)
 	{
 		bool ToReturnA,ToReturnC;
-		ToReturnA=btnA.PulsadoPasivo(x,y);
-		ToReturnC=btnC.PulsadoPasivo(x,y);
+		ToReturnA=btn1->PulsadoPasivo(x,y);
+		ToReturnC=btn2->PulsadoPasivo(x,y);
 		return (ToReturnA||ToReturnC);
 	}
-	
 	float Get_All_Wigth()
 	{
-		return (float)btnA.Get_All_Wigth()+btnC.Get_All_Wigth();
+		return (float)btn1->Get_All_Wigth()+btn2->Get_All_Wigth();
 	}
 	void _draw()
 	{
-		btnA._draw();
-		btnC._draw();
+		btn1->_draw();
+		btn2->_draw();
 	}
-	_type Get_BtnPulsado()
+	_type Get_Type_Last_Pulsado()
 	{
 		return BtnPulsado;
 	}
+	virtual void PURE()=0;
 };
 
-class _buttonAtras:public _button
+class _buttonsAcceptCancel:public _buttonsDouble
 {
 public:
-	_buttonAtras(char*name,CRD coord,int*TotalWigth,int*TotalHeight):_button(name,coord,TotalWigth,TotalHeight)
+	_buttonsAcceptCancel(char*name,CRD coord,int*TotalWigth,int*TotalHeight,float*ParentWigth):_buttonsDouble(name,coord,TotalWigth,TotalHeight,ParentWigth)
 	{
-		this->type=_BUTTONATRAS;
+		btn1=new _buttonCancel("btnCancel",CRD(),TotalWigth,TotalHeight);
+		btn2=new _buttonAccept("btnAcept",CRD(),TotalWigth,TotalHeight);
+		this->type=_BUTTONSACCEPTCANCEL;
+		this->New_CRD(coord);
+	
 	}
-	~_buttonAtras()
-	{}
-	void _draw()
-	{
-		_buttonDraw();
-		if(PulsadoPasivoBool&&active)
-			glColor3f((GLfloat)0.4,(GLfloat)0.4,0);
-		else
-			glColor3f((GLfloat)0.8,(GLfloat)0.8,0);
-		glBegin(GL_POLYGON);
-		glVertex3f(-2,-2,(GLfloat)-1);
-		glVertex3f(-2,Height+2,(GLfloat)-1);
-		glVertex3f(Wigth+2,Height+2,(GLfloat)-1);
-		glVertex3f(Wigth+2,-2,(GLfloat)-1);
-		glEnd();
-		
-		glColor3f(0,0,0);
-		glBegin(GL_LINE_STRIP);
-		glVertex3f(Wigth,Height/2,(GLfloat)-0.9);
-		glVertex3f(Wigth/2,Height/2,(GLfloat)-0.9);
-		glVertex3f(Wigth/2,Height,(GLfloat)-0.9);
-		glVertex3f(0,Height/2,(GLfloat)-0.9);
-		glVertex3f(Wigth/2,0,(GLfloat)-0.9);
-		glVertex3f(Wigth/2,Height/2,(GLfloat)-0.9);
-		glEnd();
-		glPopMatrix();
-	}
+	~_buttonsAcceptCancel(){}
+	void PURE(){}
 };
+
+class _buttonsAcceptAtras:public _buttonsDouble
+{
+public:
+	_buttonsAcceptAtras(char*name,CRD coord,int*TotalWigth,int*TotalHeight,float*ParentWigth):_buttonsDouble(name,coord,TotalWigth,TotalHeight,ParentWigth)
+	{
+		btn1=new _buttonAtras("btnAtras",CRD(),TotalWigth,TotalHeight);
+		btn2=new _buttonAccept("btnAccept",CRD(),TotalWigth,TotalHeight);
+		this->type=_BUTTONSACCEPTATRAS;
+		this->New_CRD(coord);
+	
+	}
+	~_buttonsAcceptAtras(){}
+	void PURE(){}
+};
+
+

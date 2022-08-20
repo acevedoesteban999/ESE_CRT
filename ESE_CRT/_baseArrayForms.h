@@ -68,7 +68,7 @@ public:
 		if(i==-1)
 			return;
 		delete forms[(unsigned)i];
-		for(unsigned ii=(unsigned)i;ii<this->cont-1;i++)
+		for(unsigned ii=(unsigned)i;ii<this->cont-1;ii++)
 			forms[ii]=forms[ii+1];
 		cont--;
 	}
@@ -87,6 +87,13 @@ public:
 			if(forms[i]->Get_All_Wigth()>toReturn)
 				toReturn=forms[i]->Get_All_Wigth();
 		return toReturn;
+	}
+	virtual char* Get_Text(char*name)
+	{
+		int i=Get_Element_By_Name(name);
+		if(i==-1)
+			return 0;
+		return forms[i]->Get_Text();
 	}
 	//SET//
 	virtual void Set_Draw(char*name,bool Draw)
@@ -110,12 +117,17 @@ public:
 			return;
 		forms[i]->Set_Text(text);
 	}
-	virtual char* Get_Text(char*name)
+	virtual void Set_Active(bool Active)
+	{
+		for(unsigned i=0;i<cont;i++)
+			forms[i]->Set_Active(Active);
+	}
+	virtual void Set_Active(char*name,bool Active)
 	{
 		int i=Get_Element_By_Name(name);
 		if(i==-1)
-			return 0;
-		return forms[i]->Get_Text();
+			return;
+		forms[i]->Set_Active(Active);
 	}
 	//TEXTBOX//
 	void TextBox_Add_Caracter(char caracter)

@@ -15,7 +15,10 @@ public:
 	{
 		this->x=x;this->y=y;this->z=0;
 	}
-
+	CRD(double x)
+	{
+		this->x=x;this->y=0;this->z=0;
+	}
 	CRD(double*coords)
 	{
 		 this->x=coords[0];

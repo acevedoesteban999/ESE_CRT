@@ -25,17 +25,6 @@ public:
 		else
 			this->Wigth=wigth;
 		Set_Text(Escritura);
-		/*max=(unsigned)Wigth/9;
-		delete[]label.text;
-		label.text=new char[max+1];
-		
-		cont=strlen(Escritura);
-		if(cont>max)
-			cont=max;
-			
-		label.text[cont]=0;
-		for(unsigned i=0;i<cont;i++)
-			label.text[i]=Escritura[i];*/
 		type=_TEXTBOX;
 	}
 	~_textBox(){}
@@ -134,9 +123,14 @@ public:
 			delete[]newText;
 		cont=contMax;
 	}
-	void Set_Color(GLfloat R,GLfloat G,GLfloat B)
+	void Set_Color(float R,float G,float B)
 	{
 		label.Set_Color(R,G,B);
+	}
+	void Set_Active(bool Active)
+	{
+		_forms::Set_Active(Active);
+		label.Set_Active(Active);
 	}
 	//GET//
 	bool TextBox_Get_Escribiendo()

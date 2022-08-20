@@ -70,11 +70,11 @@ class _labelContainerPrincipal:public _labelContainerFree
 public:
 	_labelContainerPrincipal(char*name,char*Frases100,int*TotalWigth,int*TotalHeight):_labelContainerFree(name,TotalWigth,TotalHeight)
 	{
-		Add_Label_Free("labelESE_CRT","ESE_CRT",CRD(0,17),true,1,0.7,0.7,0.7);
+		Add_Label_Free("labelESE_CRT","ESE_CRT",CRD(0,17),true,1,(GLfloat)0.7,(GLfloat)0.7,(GLfloat)0.7);
 		Add_Label_Free("labelChar","COM#",CRD(85,10),false,0,0,1,0);
 		Add_Label_Free("labelUnsigned","00000",CRD(85,20),false,0,0,1,0);
 		Add_Label_Free("labelReferenciar","No_Referenciado",CRD(0,40),false,1,1,1,0);
-		Add_Label_Free("labelVersion",Frases100,CRD(),true,1,0.6,0.6,0.6);
+		Add_Label_Free("labelVersion",Frases100,CRD(),true,1,(GLfloat)0.6,(GLfloat)0.6,(GLfloat)0.6);
 	}
 	~_labelContainerPrincipal()
 	{
@@ -119,11 +119,11 @@ public:
 	_labelContainerCoordenadas(char*name,CRD coord,CRD*dataESE,int*TotalWigth,int*TotalHeight):_labelContainer(name,coord,TotalWigth,TotalHeight)
 	{
 		this->dataESE=dataESE;
-		lX=new _label(name,"",CRD(),1,0.1,0.1,0.1,this->TotalWigth,this->TotalHeight);
+		lX=new _label(name,"",CRD(),1,(GLfloat)0.1,(GLfloat)0.1,(GLfloat)0.1,this->TotalWigth,this->TotalHeight);
 		Add_Element(lX);
-		lY=new _label(name,"",CRD(),1,0.1,0.1,0.1,this->TotalWigth,this->TotalHeight);
+		lY=new _label(name,"",CRD(),1,(GLfloat)0.1,(GLfloat)0.1,(GLfloat)0.1,this->TotalWigth,this->TotalHeight);
 		Add_Element(lY);
-		lZ=new _label(name,"",CRD(),1,0.1,0.1,0.1,this->TotalWigth,this->TotalHeight);
+		lZ=new _label(name,"",CRD(),1,(GLfloat)0.1,(GLfloat)0.1,(GLfloat)0.1,this->TotalWigth,this->TotalHeight);
 		Add_Element(lZ);
 		Actualizar_Coord();
 	}
